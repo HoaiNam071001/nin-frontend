@@ -1,0 +1,26 @@
+
+.icon {
+  &.icon-sm {
+    @apply w-[16px] h-[16px];
+  }
+  &.icon-md {
+    @apply w-[24px] h-[24px];
+  }
+  &.icon-lg {
+    @apply w-[32px] h-[32px];
+  }
+  &.icon-xl {
+    @apply w-[48px] h-[48px];
+  }
+}
+.form-group {
+  @apply mb-3; /* mb-4 */
+}
+
+/* Label styling */
+.form-group label {
+  @apply block text-sm font-semibold text-gray-700 mb-2;
+  &.large {
+    @apply text-[16px] font-bold;
+  }
+}
