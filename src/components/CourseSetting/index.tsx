@@ -1,13 +1,13 @@
-import { CourseSteps, StepType } from "@/models";
+import { CourseStepItem, CourseSteps, StepType } from "@/models";
 import I18n from "../_commons/I18n";
 import SvgIcon from "../_commons/SvgIcon";
 
 const CourseSetting = (props: {
   currentStep: StepType,
-  setStep: (step: StepType) => void,
+  setStep: (step: CourseStepItem) => void,
 }) => {
   return (
-    <div className="h-full gap-2 grid">
+    <div className="gap-2 grid">
       <div className="text-title-md font-semibold">
         <I18n i18key="Create Course"></I18n>
       </div>
@@ -23,7 +23,7 @@ const CourseSetting = (props: {
         {CourseSteps.map((step, index) => (
           <div
             key={index}
-            onClick={() => props.setStep(step.type)}
+            onClick={() => props.setStep(step)}
             className={`py-1 cursor-pointer`}
           >
             <div

@@ -97,121 +97,121 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
 
   return (
     <>
-      <div className="form-group">
-        <label htmlFor="overview-name">Name</label>
-        <FormInput
-          name={`name`}
-          control={control}
-          defaultValue={""}
-          rules={{
-            required: "Name is required",
-          }}
-          placeholder="Enter your target"
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Description</label>
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <NEditor value={field.value} onChange={field.onChange} />
-          )}
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Overview</label>
-        <Controller
-          name="overview"
-          control={control}
-          render={({ field }) => (
-            <NEditor value={field.value} onChange={field.onChange} />
-          )}
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Basic Info</label>
-        <div className="flex space-x-3">
-        <DropdownSelect
-          control={control}
-          name={"level"}
-          options={items}
-          placeholder="Select Level"
-        ></DropdownSelect>
-        <DropdownSelect
-          control={control}
-          name={"category"}
-          options={categories}
-          searchable={true}
-          placeholder="Select Category"
-        ></DropdownSelect>
-        <DropdownSelect
-          control={control}
-          name={"subCategory"}
-          searchable={true}
-          options={categories}
-          placeholder="Select SubCategory"
-        ></DropdownSelect>
-        </div>
-
-      </div>
-
-      <div className="form-group">
-        <label>What is the course about?:</label>
-        <Controller
-          name={`tempTag`}
-          control={control}
-          defaultValue={""}
-          render={({ field }) => (
-            <>
-              <NInput
-                id={`tempTag`}
-                value={field.value}
-                onValueChange={field.onChange}
-                keyDown={handleKeyDown}
-                placeholder="Enter your target"
-              />
-            </>
-          )}
-        />
-        <div className="min-h-[50px] mt-4">
-          <Controller
-            name="tag"
+      <div className="overflow-auto">
+        <div className="form-group">
+          <label htmlFor="overview-name">Name</label>
+          <FormInput
+            name={`name`}
             control={control}
-            render={({ field }) =>
-              field.value?.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {field.value.map((tag, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between px-3 py-1 bg-blue-200 text-blue-800 rounded-full"
-                    >
-                      <span>{tag}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveTag(tag)}
-                        className="ml-2 text-blue-600 hover:text-blue-800"
-                      >
-                        &times;
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <span className="text-gray-500"></span>
-              )
-            }
+            defaultValue={""}
+            rules={{
+              required: "Name is required",
+            }}
+            placeholder="Enter your target"
           />
         </div>
-      </div>
 
-      <div>
-        <FileUpload></FileUpload>
-      </div>
+        <div className="form-group">
+          <label>Description</label>
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <NEditor value={field.value} onChange={field.onChange} />
+            )}
+          />
+        </div>
 
+        <div className="form-group">
+          <label>Overview</label>
+          <Controller
+            name="overview"
+            control={control}
+            render={({ field }) => (
+              <NEditor value={field.value} onChange={field.onChange} />
+            )}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Basic Info</label>
+          <div className="flex space-x-3">
+            <DropdownSelect
+              control={control}
+              name={"level"}
+              options={items}
+              placeholder="Select Level"
+            ></DropdownSelect>
+            <DropdownSelect
+              control={control}
+              name={"category"}
+              options={categories}
+              searchable={true}
+              placeholder="Select Category"
+            ></DropdownSelect>
+            <DropdownSelect
+              control={control}
+              name={"subCategory"}
+              searchable={true}
+              options={categories}
+              placeholder="Select SubCategory"
+            ></DropdownSelect>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>What is the course about?</label>
+          <Controller
+            name={`tempTag`}
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <>
+                <NInput
+                  id={`tempTag`}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  keyDown={handleKeyDown}
+                  placeholder="Enter your target"
+                />
+              </>
+            )}
+          />
+          <div className="min-h-[50px] mt-4">
+            <Controller
+              name="tag"
+              control={control}
+              render={({ field }) =>
+                field.value?.length > 0 ? (
+                  <div className="flex flex-wrap gap-2">
+                    {field.value.map((tag, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between px-3 py-1 bg-blue-200 text-blue-800 rounded-full"
+                      >
+                        <span>{tag}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveTag(tag)}
+                          className="ml-2 text-blue-600 hover:text-blue-800"
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-gray-500"></span>
+                )
+              }
+            />
+          </div>
+        </div>
+
+        <div>
+          <FileUpload></FileUpload>
+        </div>
+      </div>
       {/* Submit Button */}
       <CourseSubmit
         moveToNextStep={onNext}

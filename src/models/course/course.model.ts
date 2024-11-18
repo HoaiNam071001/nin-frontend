@@ -6,6 +6,21 @@ export interface Course {
   updatedAt: string; // Thời gian cập nhật khóa học
 }
 
+export interface CourseFile {
+  name: string;
+  size: number;
+  time: string;
+  url: string;
+  type: CourseFileType;
+};
+
+export interface CourseSectionItem {
+  name: string;
+  description: string;
+  children: CourseSectionItem[];
+  files: CourseFile[];
+};
+
 export enum StepType {
   Target,
   OverView,
@@ -14,7 +29,13 @@ export enum StepType {
   Payment,
 }
 
-export const CourseSteps = [
+export interface CourseStepItem {
+  label: string;
+  icon: string;
+  type: StepType;
+}
+
+export const CourseSteps: CourseStepItem[] = [
   {
     label: "Target",
     icon: "over",

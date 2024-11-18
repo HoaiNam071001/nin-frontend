@@ -18,11 +18,12 @@ interface CustomButtonProps {
     | "secondary-black"
     | "secondary-gray"
     | "white"
-    | "secondary-primary"; // Button color variant
+    | "primary-outline"; // Button color variant
   onClick?: () => void; // Function to call when button is clicked
   loading?: boolean; // If true, show loading spinner
   disabled?: boolean; // If true, disable the button
   shape?: "sm" | "md" | "lg" | "xl" | "xxl"; // Border radius shape for the button
+  className?: string;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -33,6 +34,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   loading = false,
   disabled = false,
   shape = "md", // Default to medium shape
+  className
 }) => {
   // Define styles for different button sizes
   const sizeClasses = {
@@ -50,13 +52,13 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
   // Define styles for different button variants
   const variantClasses = {
-    primary: "bg-blue-500 text-white hover:bg-blue-600",
+    primary: "bg-system text-white hover:bg-blue-600",
     "secondary-black":
       "bg-white border border-black text-black hover:bg-gray-100",
     "secondary-gray":
       "bg-white border border-gray-400 text-gray-400 hover:bg-gray-100",
-    "secondary-primary":
-      "bg-white border border-blue-500 text-blue-500 hover:bg-blue-100",
+    "primary-outline":
+      "bg-white border border-system text-system hover:bg-blue-100",
     white: "bg-white text-gray-400 hover:bg-gray-100",
   };
 
@@ -73,7 +75,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className={`${variantClasses[variant]} ${sizeClasses[size]} ${shapeClasses[shape]} focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed`}
+      className={`${className} ${variantClasses[variant]} ${sizeClasses[size]} ${shapeClasses[shape]} focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed`}
     >
       {loading ? <span className="loader"></span> : children}
     </button>
