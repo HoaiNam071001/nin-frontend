@@ -1,13 +1,13 @@
-import CoursePage from "./ClientCoursePage";
+import CourseDetail from "@/components/CourseDetail";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
 interface PageProps {
   params: { slug: string }; // Next.js tự động cung cấp params
 }
 const CourseOverviewPage = ({ params }: PageProps) => {
-
   return (
-    <div>
-        <CoursePage slug={params.slug}></CoursePage>
-    </div>
+    <DefaultLayout>
+      <CourseDetail slug={params.slug}/>
+    </DefaultLayout>
   );
 };
 

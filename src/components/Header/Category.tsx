@@ -43,7 +43,7 @@ export function Category() {
           <I18n i18key="Category"></I18n>
         </a>
         <span className="group-hover:rotate-0 rotate-180">
-          <SvgIcon icon="arrow" className="icon icon-md"></SvgIcon>
+          <SvgIcon icon="arrow" className="icon icon-md text-white"></SvgIcon>
         </span>
       </div>
 

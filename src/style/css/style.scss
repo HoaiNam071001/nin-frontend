@@ -1,16 +1,16 @@
 
 .icon {
   &.icon-sm {
-    @apply w-[16px] h-[16px];
+    @apply w-[16px] h-[16px] min-w-[16px] min-h-[16px];
   }
   &.icon-md {
-    @apply w-[24px] h-[24px];
+    @apply w-[24px] h-[24px] min-w-[24px] min-h-[24px];
   }
   &.icon-lg {
-    @apply w-[32px] h-[32px];
+    @apply w-[32px] h-[32px] min-w-[32px] min-h-[32px];
   }
   &.icon-xl {
-    @apply w-[48px] h-[48px];
+    @apply w-[48px] h-[48px] min-w-[48px] min-h-[48px];
   }
 }
 .form-group {

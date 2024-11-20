@@ -18,6 +18,7 @@ interface CustomButtonProps {
     | "secondary-black"
     | "secondary-gray"
     | "white"
+    | "transparent"
     | "primary-outline"; // Button color variant
   onClick?: () => void; // Function to call when button is clicked
   loading?: boolean; // If true, show loading spinner
@@ -40,12 +41,12 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   const sizeClasses = {
     sm: "text-xs px-2 py-1", // Small size
     md: "text-base px-3 py-1", // Medium size (default)
-    lg: "text-lg px-6 py-3", // Large size
+    lg: "text-lg px-4 py-2", // Large size
     xl: "text-xl px-8 py-4", // Extra large size
     xxl: "text-2xl px-10 py-5", // Double extra large size
     "sm-circle": "text-xs p-1", // Small size
     "md-circle": "text-base p-2", // Medium size (default)
-    "lg-circle": "text-lg p-3", // Large size
+    "lg-circle": "text-lg p-2", // Large size
     "xl-circle": "text-xl p-4", // Extra large size
     "xxl-circle": "text-2xl p-5", // Double extra large size
   };
@@ -60,6 +61,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     "primary-outline":
       "bg-white border border-system text-system hover:bg-blue-100",
     white: "bg-white text-gray-400 hover:bg-gray-100",
+    transparent: "bg-transparent hover:bg-transparent"
   };
 
   // Define styles for different border radius shapes
@@ -75,7 +77,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className={`${className} ${variantClasses[variant]} ${sizeClasses[size]} ${shapeClasses[shape]} focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed`}
+      className={`${className} ${variantClasses[variant]} ${sizeClasses[size]} ${shapeClasses[shape]}`}
     >
       {loading ? <span className="loader"></span> : children}
     </button>
