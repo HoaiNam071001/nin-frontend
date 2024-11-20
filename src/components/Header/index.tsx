@@ -8,6 +8,7 @@ import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import SystemSearch from "./SystemSearch";
 import { Category } from "./Category";
+import CustomImage from "../_commons/CustomImage";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -70,7 +71,13 @@ const Header = (props: {
           </Link>
         </div>
 
-        <div>
+        <div className="flex items-center gap-2">
+          <Link href="/" className="cursor-pointer">
+            <CustomImage
+              src={"/images/logo-full.png"}
+              alt={"logo"}
+            ></CustomImage>
+          </Link>
           <Category></Category>
         </div>
 

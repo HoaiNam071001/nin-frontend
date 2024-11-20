@@ -38,14 +38,14 @@ export function Category() {
 
   return (
     <div className="group relative cursor-pointer">
-      <div className="flex items-center justify-between space-x-2 px-4 py-4 bg-system">
-        <a className="menu-hover text-base font-medium text-white">
+      <div className="flex items-center justify-between space-x-2 px-4 py-4">
+        <a className="menu-hover text-base font-medium text-system">
           <I18n i18key="Category"></I18n>
         </a>
-        <span className="group-hover:rotate-0 rotate-180">
-          <SvgIcon icon="arrow" className="icon icon-md text-white"></SvgIcon>
+        <span className="group-hover:rotate-0 rotate-180 transition-all">
+          <SvgIcon icon="arrow" className="icon icon-md text-system"></SvgIcon>
         </span>
-      </div>
+      </div> 
 
       <div className="invisible absolute z-50 flex w-[300px] flex-col rounded-md max-h-[300px] overflow-auto
         space-y-3 bg-gray-100 py-3 px-4 text-gray-800 shadow-xl group-hover:visible">
