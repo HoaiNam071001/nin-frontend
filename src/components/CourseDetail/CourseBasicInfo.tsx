@@ -24,7 +24,7 @@ export const CourseBasicInfo = () => {
         <NAvatar tooltip="" src="/images/course.jpg" name="nam" />
         <div className="flex flex-col justify-between space-y-1 leading-[1rem]">
           <div className="font-semibold ">Hoai Nam</div>
-          <div className="text-gray-400 ">nam@gmail.com</div>
+          <div className="text-black ">nam@gmail.com</div>
         </div>
       </div>
 

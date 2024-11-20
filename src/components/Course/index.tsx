@@ -16,7 +16,7 @@ const item = {
 };
 
 type CourseProps = {
-  onView?: () => void 
+  onView?: () => void;
 };
 
 export const CourseItem: React.FC<CourseProps> = (props) => {
@@ -43,7 +43,10 @@ export const CourseItem: React.FC<CourseProps> = (props) => {
       <div className="my-2 flex items-center">
         <div className="flex items-center space-x-1">
           <div className="">
-            <SvgIcon icon="star" className="fill-system icon icon-sm"></SvgIcon>
+            <SvgIcon
+              icon="star"
+              className="fill-system text-system icon icon-sm"
+            ></SvgIcon>
           </div>
           <div className="">{item.rating}</div>
           <div className="text-secondary">

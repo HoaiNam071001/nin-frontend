@@ -17,23 +17,25 @@ const NAvatar: React.FC<AvatarProps> = ({
   alt = "Avatar",
   size = "medium",
   className,
-  tooltip = <div className="max-w-[300px]">{name}</div>
+  tooltip = <div className="max-w-[300px]">{name}</div>,
 }) => {
   const sizeClasses = {
-    small: "w-6 h-6",
-    medium: "w-9 h-9",
-    large: "w-12 h-12",
+    small: "w-6 h-6 max-w-6 min-w-6",
+    medium: "w-9 h-9 max-w-9 min-w-9",
+    large: "w-12 h-12 max-w-12 min-w-12",
   };
 
   return (
     <Tooltip title={tooltip}>
-      <Image 
+      {/* <div className={`${sizeClasses[size]} border border-slate-200 rounded-full`}> */}
+      <Image
         src={src}
         alt={alt}
         width={100}
         height={100}
-        className={`${sizeClasses[size]} rounded-full border border-gray-300 ${className}`}
+        className={`${sizeClasses[size]} rounded-full border border-white ${className}`}
       />
+      {/* </div> */}
     </Tooltip>
   );
 };
