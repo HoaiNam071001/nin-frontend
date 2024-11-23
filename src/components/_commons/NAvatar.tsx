@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Tooltip } from "antd";
+import { getAbbreviatedName } from "@/helpers";
 
 interface AvatarProps {
   src: string; // URL ảnh đại diện
@@ -28,13 +29,28 @@ const NAvatar: React.FC<AvatarProps> = ({
   return (
     <Tooltip title={tooltip}>
       {/* <div className={`${sizeClasses[size]} border border-slate-200 rounded-full`}> */}
-      <Image
-        src={src}
-        alt={alt}
-        width={100}
-        height={100}
-        className={`${sizeClasses[size]} rounded-full border border-white ${className}`}
-      />
+      {src ? (
+        <Image
+          src={src}
+          alt={alt}
+          width={100}
+          height={100}
+          className={`${sizeClasses[size]} rounded-full border border-white ${
+            className || ""
+          }`}
+        />
+      ) : (
+        <div
+          className={`${
+            sizeClasses[size]
+          } rounded-full border border-white text-white bg-system flex items-center text-[13px] justify-center ${
+            className || ""
+          }`}
+        >
+          <span>{getAbbreviatedName(name)}</span>
+        </div>
+      )}
+
       {/* </div> */}
     </Tooltip>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 // import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 
@@ -8,7 +8,6 @@ export default function DefaultLayout({
 }: {
   children?: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <>
       {/* <!-- ===== Page Wrapper Start ===== --> */}
@@ -20,7 +19,7 @@ export default function DefaultLayout({
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <Header />
 
           {/* <!-- ===== Header End ===== --> */}
 

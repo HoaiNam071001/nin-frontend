@@ -1,4 +1,4 @@
-import { formatNumber } from "@/utils/formatNumber";
+import { formatNumber } from "@/helpers";
 import CustomImage from "../_commons/CustomImage";
 import I18n from "../_commons/I18n";
 import SvgIcon from "../_commons/SvgIcon";

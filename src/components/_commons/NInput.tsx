@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FocusEventHandler, useState } from "react";
 import { Input } from "antd";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
@@ -10,6 +10,7 @@ interface NInputProps {
   input?: React.FormEventHandler<HTMLInputElement>; // Handler for onInput event
   keyUp?: React.KeyboardEventHandler<HTMLInputElement>; // Handler for onKeyUp event
   keyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void; // Handler for onKeyDown event
+  onBlur?: FocusEventHandler<HTMLInputElement>; // Handler for
   placeholder?: string; // Placeholder text
   className?: string; // Optional CSS class for styling
   addonBefore?: React.ReactNode; // Addon content before the input
@@ -25,6 +26,7 @@ const NInput: React.FC<NInputProps> = ({
   input,
   keyUp,
   keyDown,
+  onBlur,
   placeholder = "",
   className = "",
   addonBefore,
@@ -66,7 +68,7 @@ const NInput: React.FC<NInputProps> = ({
         </div>
       )}
       {(addonAfter || passwordAddonAfter) && (
-        <div className="absolute right-1 z-10 h-full flex items-center">
+        <div className="absolute right-3 z-10 h-full flex items-center">
           {addonAfter || passwordAddonAfter}
         </div>
       )}
@@ -79,6 +81,7 @@ const NInput: React.FC<NInputProps> = ({
         onInput={input}
         onKeyUp={keyUp}
         onKeyDown={handleKeyDown}
+        onBlur={onBlur}
         placeholder={placeholder}
         className={`border-stroke ${className} ${
           addonBefore ? "pl-[40px]" : ""

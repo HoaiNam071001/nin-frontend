@@ -1,36 +1,23 @@
-"use client";
-
-import Loader from "@/components/_commons/Loader";
-// import localFont from "next/font/local";
+import AppInitializerWithProvider from "./appInitializer";
 import "./globals.scss";
-import { useEffect, useState } from "react";
+import { Metadata } from "next";
 
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
+export const metadata: Metadata = {
+  title: "NIN Education",
+  description:
+    "NIN is a 4.0 technology platform that provides a comprehensive solution for organizing, managing, and delivering online learning. It supports the storage of resources such as videos, documents, and interactive lectures, as well as the management of courses, users, and learning progress.",
+  icons: "/images/logo.png",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [loading, setLoading] = useState<boolean>(true);
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 0);
-  }, []);
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        <div className="dark:bg-boxdark-2 dark:text-bodydark">
-          {loading ? <Loader /> : children}
-        </div>
+        <AppInitializerWithProvider>{children}</AppInitializerWithProvider>
       </body>
     </html>
   );

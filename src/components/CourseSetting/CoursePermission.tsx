@@ -24,7 +24,6 @@ export const CoursePermisison: React.FC<SettingSubmitProps> = ({
   };
 
   const onSubmit = (data, callback) => {
-    console.log(data);
     callback();
   };
 

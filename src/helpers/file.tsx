@@ -1,4 +1,4 @@
-function getVideoDuration(file: File): Promise<number> {
+export function getVideoDuration(file: File): Promise<number> {
   return new Promise((resolve, reject) => {
     if (!file.type.startsWith("video/")) {
       reject(new Error("File is not a valid video."));

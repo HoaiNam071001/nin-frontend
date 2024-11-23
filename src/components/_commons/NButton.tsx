@@ -42,8 +42,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     sm: "text-xs px-2 py-1", // Small size
     md: "text-base px-3 py-1", // Medium size (default)
     lg: "text-lg px-4 py-2", // Large size
-    xl: "text-xl px-8 py-4", // Extra large size
-    xxl: "text-2xl px-10 py-5", // Double extra large size
+    xl: "text-xl px-8 py-3", // Extra large size
+    xxl: "text-2xl px-10 py-4", // Double extra large size
     "sm-circle": "text-xs p-1", // Small size
     "md-circle": "text-base p-2", // Medium size (default)
     "lg-circle": "text-lg p-2", // Large size
@@ -77,7 +77,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className={`${className} ${variantClasses[variant]} ${sizeClasses[size]} ${shapeClasses[shape]}`}
+      className={`${className} ${variantClasses[variant]} ${sizeClasses[size]} ${shapeClasses[shape]} ${disabled || loading ? "opacity-80" : ""}`}
     >
       {loading ? <span className="loader"></span> : children}
     </button>

@@ -66,7 +66,6 @@ export const CourseTarget: React.FC<SettingSubmitProps> = ({
   // };
 
   const onSubmit = (data, callback) => {
-    console.log(data);
     callback();
   };
 

@@ -7,10 +7,8 @@ const SystemSearch = () => {
 
   const onSearch = () => {
     if (keyword.trim()) {
-      console.log("Searching for:", keyword);
       // Add search logic here
     } else {
-      console.log("Please enter a search term");
     }
   };
 

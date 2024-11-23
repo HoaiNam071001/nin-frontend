@@ -1,6 +1,6 @@
 "use client";
 
-import { formatNumber } from "@/utils/formatNumber";
+import { formatNumber } from "@/helpers";
 import CustomImage from "../_commons/CustomImage";
 import NButton from "../_commons/NButton";
 import SvgIcon from "../_commons/SvgIcon";

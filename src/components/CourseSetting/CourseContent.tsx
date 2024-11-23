@@ -9,7 +9,7 @@ import {
 import FormInput from "../_commons/FormInput";
 import NButton from "../_commons/NButton";
 import SvgIcon from "../_commons/SvgIcon";
-import { formatFileSize } from "@/utils/formatNumber";
+import { formatFileSize } from "@/helpers";
 import { Button, Empty, Popconfirm } from "antd";
 import { CourseFilePreview } from "./_components/CourseFilePreview";
 import { CourseFileUpload } from "./_components/CourseFileUpload";
@@ -44,7 +44,6 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
   };
 
   const onSubmit = (data, callback) => {
-    console.log(data);
     callback();
   };
 

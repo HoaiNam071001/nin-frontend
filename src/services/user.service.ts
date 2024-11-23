@@ -1,28 +1,25 @@
-import apiClient from './_config';
+import { Role, RoleRequest, User } from "@/models";
+import apiClient from "./_config";
 
 export const userService = {
-  getUsers: async () => {
-    const response = await apiClient.get('/users');
+  getProfile: async () => {
+    const response = await apiClient.get<User>(`/users/profile`);
     return response.data;
   },
 
   getUserById: async (id: string) => {
-    const response = await apiClient.get(`/users/${id}`);
+    const response = await apiClient.get<User>(`/users/${id}`);
     return response.data;
   },
 
-  createUser: async (data: { name: string; email: string }) => {
-    const response = await apiClient.post('/users', data);
+  addMyRole: async (request: RoleRequest) => {
+    const response = await apiClient.post<User>(`/users/roles`, request);
     return response.data;
-  },
+  }
 
-  updateUser: async (id: string, data: { name?: string; email?: string }) => {
-    const response = await apiClient.put(`/users/${id}`, data);
-    return response.data;
-  },
-
-  deleteUser: async (id: string) => {
-    const response = await apiClient.delete(`/users/${id}`);
-    return response.data;
-  },
+  // updateUser: async (id: string, data: { name?: string; email?: string }) => {
+  //   const response = await apiClient.put(`/users/${id}`, data);
+  //   return response;
+  // },
 };
+

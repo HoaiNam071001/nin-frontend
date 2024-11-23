@@ -5,6 +5,7 @@ import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/_commons/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { ROUTES } from "@/constants";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -332,7 +333,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       >
         {/* <!-- SIDEBAR HEADER --> */}
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-          <Link href="/">
+          <Link href={ROUTES.HOME}>
             <Image
               width={176}
               height={32}

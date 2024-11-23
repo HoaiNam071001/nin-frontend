@@ -1,11 +1,12 @@
 import Image from "next/image";
 
 interface CustomImageProps {
-  src: string;
+  src?: string;
   alt: string;
   width?: number;
   height?: number;
   className?: string;
+  svgIcon?: string;
 }
 
 const CustomImage: React.FC<CustomImageProps> = ({
@@ -14,10 +15,13 @@ const CustomImage: React.FC<CustomImageProps> = ({
   width = 100, 
   height = 75,
   className = "",
+  svgIcon
 }) => {
+  const svg = svgIcon ? `/icons/${svgIcon}.svg` : null;
+  
   return (
     <Image
-      src={src}
+      src={src || svg}
       alt={alt}
       width={width}
       height={height}

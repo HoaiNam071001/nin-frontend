@@ -2,6 +2,7 @@ import { useState } from "react";
 import I18n from "../_commons/I18n";
 import SvgIcon from "../_commons/SvgIcon";
 import Link from "next/link";
+import { ROUTES } from "@/constants";
 
 const categoryList = [
   {
@@ -50,7 +51,7 @@ export function Category() {
       <div className="invisible absolute z-50 flex w-[300px] flex-col rounded-md max-h-[300px] overflow-auto
         space-y-3 bg-gray-100 py-3 px-4 text-gray-800 shadow-xl group-hover:visible">
         {categories.map((category, index) => (
-          <Link href="/" key={index} className="bg-gray-3 rounded-md border border-stroke px-3 py-1">
+          <Link href={ROUTES.HOME} key={index} className="bg-gray-3 rounded-md border border-stroke px-3 py-1">
             {category.name}
           </Link>
         ))}

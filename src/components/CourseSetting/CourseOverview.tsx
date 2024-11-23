@@ -4,7 +4,7 @@ import { CourseSubmit } from "./CourseSubmit";
 import { SettingSubmitProps } from "@/models";
 import DropdownSelect from "../_commons/DropdownSelect";
 import NEditor from "../_commons/NEditor";
-import { upsertItem } from "@/utils/arrayUtils";
+import { upsertItem } from "@/helpers";
 import FileUpload from "../_commons/FileUpload";
 import FormInput from "../_commons/FormInput";
 import NInput from "../_commons/NInput";
@@ -67,7 +67,6 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
   };
 
   const onSubmit = (data, callback) => {
-    console.log(data);
     callback();
   };
 

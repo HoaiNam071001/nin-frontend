@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import {
   Controller,
@@ -22,6 +23,7 @@ type ControlledInputProps<TFieldValues extends FieldValues> = {
   id?: string;
   addonBefore?: React.ReactNode; // Addon content before the input
   addonAfter?: React.ReactNode; 
+  type?: "text" | "password" | "email" | "number" | "tel"; // Common input types
 };
 
 const FormInput = <TFieldValues extends FieldValues>({
@@ -31,6 +33,7 @@ const FormInput = <TFieldValues extends FieldValues>({
   placeholder = "",
   rules,
   id,
+  type = "text",
   addonBefore,
   addonAfter
 }: ControlledInputProps<TFieldValues>) => {
@@ -45,6 +48,8 @@ const FormInput = <TFieldValues extends FieldValues>({
           <NInput
             id={id || name}
             value={field.value}
+            type={type}
+            onBlur={field.onBlur}
             onValueChange={field.onChange}
             placeholder={placeholder}
             addonBefore={addonBefore}
