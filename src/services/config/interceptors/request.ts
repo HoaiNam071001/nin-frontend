@@ -1,11 +1,14 @@
+import { StorageKey } from "@/constants";
 import store, { RootState } from "@/redux/store";
 
 const requestInterceptor = (config) => {
   // Xử lý trước khi gửi request (ví dụ: thêm token vào header)
-  const token = (store.getState() as RootState).auth.token || localStorage.getItem('token');
+  const token =
+    (store.getState() as RootState).auth.token ||
+    localStorage.getItem(StorageKey.AUTH_TOKEN);
 
   if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`;
+    config.headers["Authorization"] = `Bearer ${token}`;
   }
   return config;
 };

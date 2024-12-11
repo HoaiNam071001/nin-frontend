@@ -1,5 +1,5 @@
 import { AuthCreateUserPayload, AuthUserPayload, AuthUserResponse } from "@/models/auth.model";
-import apiClient from "./_config";
+import apiClient from "./config";
 
 export const authService = {
   signup: async (data: AuthCreateUserPayload) => {

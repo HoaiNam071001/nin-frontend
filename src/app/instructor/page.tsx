@@ -2,6 +2,7 @@
 
 import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
+import MyCourse from "@/components/MyCourse";
 import { ROUTES } from "@/constants";
 import { useRouter } from "next/navigation";
 
@@ -9,11 +10,10 @@ const CourseBoard: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="h-[80vh] rounded-md flex container mx-auto">
-      <div>
+    <div className="h-[80vh] rounded-md container mx-auto">
+      <div className="mb-4">
         <NButton
           variant="primary"
-          className="w-full"
           onClick={() => router.push(`${ROUTES.INSTRUCTOR_COURSE}`)}
         >
           <div className="flex items-center">
@@ -25,6 +25,8 @@ const CourseBoard: React.FC = () => {
           </div>
         </NButton>
       </div>
+
+      <MyCourse/>
     </div>
   );
 };

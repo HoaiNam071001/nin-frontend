@@ -1,5 +1,9 @@
+import { Course } from "./course.model";
+
 export interface SettingSubmitProps {
-    moveToNextStep?: () => void;
-    moveToPrevStep?: () => void;
-    cancel?: () => void;
-  }
+  course?: Course;
+  setCourse?: (course: Course) => void;
+  moveToNextStep?: () => void;
+  moveToPrevStep?: () => void;
+  cancel?: () => void;
+}

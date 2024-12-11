@@ -21,12 +21,12 @@ const withRoleGuard = <P extends object>(
       if (
         !user ||
         !requiredRoles.some((role) =>
-          !user.roles?.some((e) => role === e.roleName)
+          user.roles?.some((e) => role === e.roleName)
         )
       ) {
         router.push(path);
       }
-    }, [user, router, requiredRoles, path]);
+    }, [user, router]);
 
     return <WrappedComponent {...props} />;
   };

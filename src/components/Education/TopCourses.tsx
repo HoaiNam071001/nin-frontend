@@ -1,5 +1,5 @@
 import React from "react";
-import { ItemList } from "../Course/ItemList";
+import { ItemList } from "../CourseItem/ItemList";
 import I18n from "../_commons/I18n";
 
 type TopCourseProps = {

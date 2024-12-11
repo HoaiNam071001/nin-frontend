@@ -1,5 +1,5 @@
 import { Role, RoleRequest, User } from "@/models";
-import apiClient from "./_config";
+import apiClient from "./config";
 
 export const userService = {
   getProfile: async () => {

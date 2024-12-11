@@ -10,7 +10,6 @@ import { Role } from "@/models";
 import { authAction } from "@/redux";
 import { toastService } from "@/services/toast.service";
 import { userService } from "@/services/user.service";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -24,11 +23,12 @@ const CoursePreview: React.FC = () => {
   useEffect(() => {
     if (
       currentUser &&
-      currentUser.roles.some((e) => e.roleName === Role.TEACHER)
+      currentUser.roles?.some((e) => e.roleName === Role.TEACHER)
     ) {
       router.push(ROUTES.INSTRUCTOR);
     }
-  }, [currentUser]);
+  }, [currentUser, router]);
+
   const onStart = async () => {
     try {
       setLoading(true);
@@ -77,7 +77,7 @@ const CoursePreview: React.FC = () => {
               <NButton
                 variant="primary"
                 size="xl"
-                onClick={onStart}
+                onClick={()=> onStart()}
                 className="flex justify-center items-center gap-3"
               >
                 <div className="flex items-center justify-center space-x-2">

@@ -6,11 +6,12 @@ interface NInputProps {
   id?: string;
   type?: "text" | "password" | "email" | "number" | "tel"; // Common input types
   value?: string | number; // Input value
-  onValueChange: (value: string | number) => void; // Handler for value changes
+  onValueChange?: (value: string | number) => void; // Handler for value changes
   input?: React.FormEventHandler<HTMLInputElement>; // Handler for onInput event
   keyUp?: React.KeyboardEventHandler<HTMLInputElement>; // Handler for onKeyUp event
   keyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void; // Handler for onKeyDown event
   onBlur?: FocusEventHandler<HTMLInputElement>; // Handler for
+  onFocus?: FocusEventHandler<HTMLInputElement>; // Handler
   placeholder?: string; // Placeholder text
   className?: string; // Optional CSS class for styling
   addonBefore?: React.ReactNode; // Addon content before the input
@@ -27,6 +28,7 @@ const NInput: React.FC<NInputProps> = ({
   keyUp,
   keyDown,
   onBlur,
+  onFocus,
   placeholder = "",
   className = "",
   addonBefore,
@@ -82,6 +84,7 @@ const NInput: React.FC<NInputProps> = ({
         onKeyUp={keyUp}
         onKeyDown={handleKeyDown}
         onBlur={onBlur}
+        onFocus={onFocus}
         placeholder={placeholder}
         className={`border-stroke ${className} ${
           addonBefore ? "pl-[40px]" : ""

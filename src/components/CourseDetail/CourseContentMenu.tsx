@@ -2,7 +2,7 @@
 
 import { Button } from "antd";
 import SvgIcon from "../_commons/SvgIcon";
-import { SectionMenu } from "../Course/SectionMenu";
+import { SectionMenu } from "../CourseItem/SectionMenu";
 
 const CourseContentMenu = () => {
   return (

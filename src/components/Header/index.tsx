@@ -3,7 +3,6 @@ import Link from "next/link";
 // import DropdownMessage from "./DropdownMessage";
 // import DropdownNotification from "./DropdownNotification";
 // import DropdownUser from "./DropdownUser";
-import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import SystemSearch from "./SystemSearch";
 import { Category } from "./Category";

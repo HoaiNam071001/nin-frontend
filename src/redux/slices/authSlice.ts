@@ -1,3 +1,4 @@
+import { StorageKey } from "@/constants";
 import { AuthUserResponse, User } from "@/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -21,16 +22,16 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      localStorage.setItem("authToken", action.payload.token);
+      localStorage.setItem(StorageKey.AUTH_TOKEN, action.payload.token);
     },
     logout: (state) => {
       state.token = null;
       state.isAuthenticated = false;
       state.user = null;
-      localStorage.removeItem("authToken");
+      localStorage.removeItem(StorageKey.AUTH_TOKEN);
     },
     loadTokenFromStorage: (state) => {
-      const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem(StorageKey.AUTH_TOKEN);
       if (token) {
         state.token = token;
         state.isAuthenticated = true;

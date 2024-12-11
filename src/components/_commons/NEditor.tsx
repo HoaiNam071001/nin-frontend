@@ -31,6 +31,7 @@ const NEditor = ({ value, onChange }) => {
     <div>
       <ReactQuill
         theme="snow"
+        placeholder="Enter your text here..."
         value={value}
         onChange={onChange}
         modules={modules}

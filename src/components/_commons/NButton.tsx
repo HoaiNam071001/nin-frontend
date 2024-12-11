@@ -1,3 +1,4 @@
+import { Tooltip } from "antd";
 import React from "react";
 
 interface CustomButtonProps {
@@ -25,6 +26,7 @@ interface CustomButtonProps {
   disabled?: boolean; // If true, disable the button
   shape?: "sm" | "md" | "lg" | "xl" | "xxl"; // Border radius shape for the button
   className?: string;
+  tooltip?: string;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
@@ -35,7 +37,8 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   loading = false,
   disabled = false,
   shape = "md", // Default to medium shape
-  className
+  className,
+  tooltip = "",
 }) => {
   // Define styles for different button sizes
   const sizeClasses = {
@@ -59,9 +62,9 @@ const CustomButton: React.FC<CustomButtonProps> = ({
     "secondary-gray":
       "bg-white border border-gray-400 text-gray-400 hover:bg-gray-100",
     "primary-outline":
-      "bg-white border border-system text-system hover:bg-blue-100",
+      "bg-white border border-system text-system hover:bg-system hover:text-white",
     white: "bg-white text-gray-400 hover:bg-gray-100",
-    transparent: "bg-transparent hover:bg-transparent"
+    transparent: "bg-transparent hover:bg-transparent",
   };
 
   // Define styles for different border radius shapes
@@ -74,13 +77,17 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   };
 
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled || loading}
-      className={`${className} ${variantClasses[variant]} ${sizeClasses[size]} ${shapeClasses[shape]} ${disabled || loading ? "opacity-80" : ""}`}
-    >
-      {loading ? <span className="loader"></span> : children}
-    </button>
+    <Tooltip title={tooltip}>
+      <button
+        onClick={onClick}
+        disabled={disabled || loading}
+        className={`${className} ${variantClasses[variant]} ${
+          sizeClasses[size]
+        } ${shapeClasses[shape]} ${disabled || loading ? "opacity-80" : ""}`}
+      >
+        {loading ? <span className="loader"></span> : children}
+      </button>
+    </Tooltip>
   );
 };
 

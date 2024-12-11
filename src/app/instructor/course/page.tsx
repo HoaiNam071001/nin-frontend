@@ -1,70 +1,79 @@
 "use client";
 
-import React, { useState } from "react";
-import { CourseStepItem, CourseSteps, StepType } from "@/models";
-import CourseSetting from "@/components/CourseSetting";
-import { CourseTarget } from "@/components/CourseSetting/CourseTarget";
-import { findIndex } from "lodash";
-import { CourseOverview } from "@/components/CourseSetting/CourseOverview";
-import { CourseContent } from "@/components/CourseSetting/CourseContent";
-import { CoursePermisison } from "@/components/CourseSetting/CoursePermission";
+import FormInput from "@/components/_commons/FormInput";
+import I18n from "@/components/_commons/I18n";
+import Loader from "@/components/_commons/Loader";
+import NButton from "@/components/_commons/NButton";
+import { ROUTES } from "@/constants";
+import { courseService } from "@/services/course.service";
+import { toastService } from "@/services/toast.service";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+interface FormValues {
+  name: string;
+}
 
 const Course: React.FC = () => {
-  const [currentStep, setStep] = useState<CourseStepItem>(CourseSteps[0]);
+  const { handleSubmit, control } = useForm<FormValues>({
+    defaultValues: {},
+  });
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>();
 
-  const onChangeStep = (step: CourseStepItem) => {
-    setStep(step);
-  };
-
-  const moveToNextStep = () => {
-    const index = findIndex(CourseSteps, (e) => e.type === currentStep.type);
-    if (CourseSteps[index + 1]) {
-      onChangeStep(CourseSteps[index + 1]);
-    }
-  };
-
-  const moveToPrevStep = () => {
-    const index = findIndex(CourseSteps, (e) => e.type === currentStep.type);
-    if (CourseSteps[index - 1]) {
-      onChangeStep(CourseSteps[index - 1]);
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      const response = await courseService.create({
+        name: data?.name,
+      });
+      setLoading(false);
+      if (!response) {
+        toastService.error("Create course failed");
+        return;
+      }
+      router.push(`${ROUTES.INSTRUCTOR_COURSE}/${response.id}`);
+    } catch (error) {
+      toastService.error(error?.message || "500 Error");
+      setLoading(false);
     }
   };
 
   return (
-    <div className="m-3 h-[80vh] bg-gray-1 rounded-md grid grid-cols-1 md:grid-cols-10 gap-4 px-4 py-3">
-      <div className="md:col-span-2 h-full">
-        <CourseSetting
-          currentStep={currentStep.type}
-          setStep={onChangeStep}
-        ></CourseSetting>
-      </div>
-      <div className="md:col-span-8 bg-white h-full max-h-full p-4 rounded-lg flex flex-col">
-        <div className="text-title-sm font-semibold mb-4">
-          {currentStep?.label}
+    <div className="m-3 h-[80vh] bg-gray-1 rounded-md px-4 py-3 flex">
+      <div className="w-[600px] mx-auto my-auto">
+        <div className="mb-[40px]">
+          <label className="text-title-md">
+            What is the name of your course?
+          </label>
+          <div className="mt-[40px]">
+            <FormInput
+              name={`name`}
+              control={control}
+              defaultValue={""}
+              rules={{
+                required: "Name is required",
+              }}
+              placeholder="Enter Name"
+            />
+          </div>
         </div>
-        {currentStep.type === StepType.Target && (
-          <CourseTarget moveToNextStep={() => moveToNextStep()} />
-        )}
 
-        {currentStep.type === StepType.OverView && (
-          <CourseOverview
-            moveToNextStep={() => moveToNextStep()}
-            moveToPrevStep={() => moveToPrevStep()}
-          />
-        )}
-        {currentStep.type === StepType.Content && (
-          <CourseContent
-            moveToNextStep={() => moveToNextStep()}
-            moveToPrevStep={() => moveToPrevStep()}
-          />
-        )}
-
-        {currentStep.type === StepType.RolePermission && (
-          <CoursePermisison
-            moveToNextStep={() => moveToNextStep()}
-            moveToPrevStep={() => moveToPrevStep()}
-          />
-        )}
+        <div className="flex justify-end">
+          <NButton
+            shape="xxl"
+            variant="primary"
+            size="md"
+            onClick={() => handleSubmit((data) => onSubmit(data))()}
+            className="w-[100px]"
+          >
+            <div className="flex items-center justify-center space-x-2">
+              {loading && <Loader color="white" size="sm" />}
+              <I18n i18key="Next"></I18n>
+            </div>
+          </NButton>
+        </div>
       </div>
     </div>
   );

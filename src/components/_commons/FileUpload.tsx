@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import CustomImage from './CustomImage';
+import React, { useRef, useState } from "react";
+import CustomImage from "./CustomImage";
+import NButton from "./NButton";
+import SvgIcon from "./SvgIcon";
 
-const FileUpload = () => {
+const FileUpload = ({
+  label = "Upload File",
+  upload,
+  showPreview = false,
+  accept = "",
+}) => {
   const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState('');
-  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [fileName, setFileName] = useState("");
+  const [previewUrl, setPreviewUrl] = useState<string>("");
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+    const selectedFile: File = e.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
       setFileName(selectedFile.name);
@@ -16,58 +23,63 @@ const FileUpload = () => {
 
       // Generate a URL from the Blob
       const blobUrl = URL.createObjectURL(blob);
-
+      upload?.(selectedFile);
       // Save the Blob URL to the previewUrl state
       setPreviewUrl(blobUrl);
     }
   };
 
-
   const handleRemoveFile = () => {
     setFile(null);
-    setFileName('');
-    setPreviewUrl('');
+    setFileName("");
+    setPreviewUrl("");
+  };
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleMenuClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Programmatically click the file input
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8">
-      <div className="flex flex-col items-center">
-        {/* File Input */}
-        <label
-          htmlFor="file-upload"
-          className="cursor-pointer flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          Upload File
-          <input
-            type="file"
-            id="file-upload"
-            className="hidden"
-            onChange={handleFileChange}
-          />
-        </label>
+    <div className="flex items-center">
+      <NButton variant="primary-outline" onClick={handleMenuClick}>
+        <div className="flex items-center space-x-2">
+          <SvgIcon icon="upload" className="icon icon-sm" />
+          <span>{label}</span>
+        </div>
+      </NButton>
 
-        {/* File name and preview */}
-        {file && (
-          <div className="mt-4 text-center">
-            <p className="text-sm text-gray-700">{fileName}</p>
-            {previewUrl && (
-              <div className="mt-2">
-                <CustomImage
-                  src={previewUrl}
-                  alt="preview"
-                  className="w-32 h-32 object-cover rounded-lg"
-                />
-              </div>
-            )}
-            <button
-              onClick={handleRemoveFile}
-              className="mt-2 text-sm text-red-500 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-            >
-              Remove File
-            </button>
-          </div>
-        )}
-      </div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept={accept}
+        className="hidden"
+        onChange={handleFileChange}
+      />
+
+      {/* File name and preview */}
+      {showPreview && file && (
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-700">{fileName}</p>
+          {previewUrl && (
+            <div className="mt-2">
+              <CustomImage
+                src={previewUrl}
+                alt="preview"
+                className="w-32 h-32 object-cover rounded-lg"
+              />
+            </div>
+          )}
+          <button
+            onClick={handleRemoveFile}
+            className="mt-2 text-sm text-red-500 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Remove File
+          </button>
+        </div>
+      )}
     </div>
   );
 };

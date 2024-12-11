@@ -1,9 +1,56 @@
+import { User } from "../user.model";
+
+export enum CourseStatus {
+  DRAFT = 'draft',
+  PENDING = 'pending',
+  READY = 'ready',
+  CLOSED = 'closed',
+  DELETED = 'deleted',
+}
+
+export interface Level {
+  id: number;
+  name: string;
+}
+
+export interface Topic {
+  id: number;
+  name: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  parent?: Category;
+}
+
+export interface CoursePayload {
+  name: string;
+  thumbnail?: string;
+  description?: string;
+  price?: number;
+  estimatedTime?: number;
+  status?: CourseStatus;
+  categoryId?: number;
+  subCategoryId?: number;
+  levelId?: number;
+  topicIds?: number[];
+}
+
 export interface Course {
-  id: string; // ID duy nhất của khóa học
-  title: string; // Tiêu đề của khóa học
-  description: string; // Mô tả chi tiết về khóa học
-  createdAt: string; // Thời gian tạo khóa học
-  updatedAt: string; // Thời gian cập nhật khóa học
+  id: number;
+  name: string;
+  slug?: string;
+  thumbnail?: string;
+  description?: string;
+  price?: number;
+  estimatedTime?: number;
+  status: CourseStatus;
+  owner: User;
+  category?: Category;
+  subCategory?: Category;
+  level?: Level;
+  topics?: Topic[];
 }
 
 export interface CourseFile {
@@ -12,13 +59,6 @@ export interface CourseFile {
   time: string;
   url: string;
   type: CourseFileType;
-};
-
-export interface CourseSectionItem {
-  name: string;
-  description: string;
-  children: CourseSectionItem[];
-  files: CourseFile[];
 };
 
 export enum StepType {

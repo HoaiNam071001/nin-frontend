@@ -3,7 +3,7 @@
 import React from "react";
 import { TopCourses } from "./TopCourses";
 import { CategoryTab } from "./CategoryTab";
-import { SectionList } from "../Course/SectionList";
+import { SectionList } from "../CourseItem/SectionList";
 import I18n from "../_commons/I18n";
 
 const Education: React.FC = () => {

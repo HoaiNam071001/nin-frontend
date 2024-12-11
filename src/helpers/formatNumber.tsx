@@ -10,6 +10,6 @@ export function formatFileSize(bytes: number): string {
   const k = 1024; // 1 KB = 1024 Bytes
   const i = Math.floor(Math.log(bytes) / Math.log(k)); // Tính chỉ số của đơn vị
 
-  const size = parseFloat((bytes / Math.pow(k, i)).toFixed(2)); // Chuyển đổi và giới hạn 2 chữ số thập phân
+  const size = parseFloat((bytes / Math.pow(k, i)).toFixed(1)); // Chuyển đổi và giới hạn 2 chữ số thập phân
   return `${size} ${units[i]}`;
 }
