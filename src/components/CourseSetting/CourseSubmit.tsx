@@ -16,17 +16,17 @@ export const CourseSubmit: React.FC<CourseSubmitProps> = ({
   cancel,
   nextLabel = "Next",
   prevLabel = "Prev",
-  loading
+  loading,
 }) => {
   return (
-    <div className="mt-auto flex justify-end gap-4 pt-3">
-      {loading && <Loader/>}
-      <NButton shape="xxl" variant="secondary-black" size="md" onClick={cancel}>
+    <div className="sticky bottom-0 bg-white pt-4 flex justify-end gap-4 mt-auto">
+      {loading && <Loader />}
+      {cancel && <NButton shape="md" variant="secondary-black" size="md" onClick={cancel}>
         <I18n i18key="Cancel"></I18n>
-      </NButton>
+      </NButton>}
       {moveToPrevStep && (
         <NButton
-          shape="xxl"
+          shape="md"
           variant="primary-outline"
           size="md"
           onClick={moveToPrevStep}
@@ -37,7 +37,7 @@ export const CourseSubmit: React.FC<CourseSubmitProps> = ({
       )}
       {moveToNextStep && (
         <NButton
-          shape="xxl"
+          shape="md"
           variant="primary"
           size="md"
           onClick={moveToNextStep}

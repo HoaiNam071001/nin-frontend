@@ -1,60 +1,70 @@
-import { useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import I18n from "../_commons/I18n";
 import SvgIcon from "../_commons/SvgIcon";
 import Link from "next/link";
-import { ROUTES } from "@/constants";
-
-const categoryList = [
-  {
-    name: "Development",
-  },
-  {
-    name: "Development 2",
-  },
-  {
-    name: "Development 3",
-  },
-  {
-    name: "Development 4",
-  },
-  {
-    name: "Development 4",
-  },
-  {
-    name: "Development 4",
-  },
-  {
-    name: "Development 4",
-  },
-  {
-    name: "Development 4",
-  },
-  {
-    name: "Development 4",
-  },  
-];
+import { categoryService } from "@/services/category.service";
 
 export function Category() {
-  const [categories] = useState(categoryList);
+    const [categories, setCategories] = useState([]);
+  const getCategory = async () => {
+    try {
+      const response = await categoryService.getAllParent();
+      setCategories(response);
+    } catch (error) {
+      setCategories([]);
+    }
+  };
+
+  useEffect(() => {
+    getCategory();
+  }, []);
 
   return (
-    <div className="group relative cursor-pointer">
-      <div className="flex items-center justify-between space-x-2 px-4 py-4">
-        <a className="menu-hover text-base font-medium text-system">
-          <I18n i18key="Category"></I18n>
-        </a>
-        <span className="group-hover:rotate-0 rotate-180 transition-all">
-          <SvgIcon icon="arrow" className="icon icon-md text-system"></SvgIcon>
-        </span>
-      </div> 
+    <div className="relative">
+      {/* Nút Categories */}
+      <div className="group cursor-pointer">
+        <div className="flex items-center justify-between space-x-2 px-4 py-4">
+          <a className="menu-hover text-base font-medium text-system">
+            <I18n i18key="Category"></I18n>
+          </a>
+          <span className="group-hover:rotate-0 rotate-180 transition-all">
+            <SvgIcon
+              icon="arrow"
+              className="icon icon-md text-system"
+            ></SvgIcon>
+          </span>
+        </div>
 
-      <div className="invisible absolute z-50 flex w-[300px] flex-col rounded-md max-h-[300px] overflow-auto
-        space-y-3 bg-gray-100 py-3 px-4 text-gray-800 shadow-xl group-hover:visible">
-        {categories.map((category, index) => (
-          <Link href={ROUTES.HOME} key={index} className="bg-gray-3 rounded-md border border-stroke px-3 py-1">
-            {category.name}
-          </Link>
-        ))}
+        {/* Danh mục cấp 1 */}
+        <div className="invisible absolute left-0 mt-2 flex w-[300px] flex-col rounded-md bg-white shadow-xl group-hover:visible group-hover:opacity-100 opacity-0 transition-all h-[60vh]">
+          {categories.map((category, index) => (
+            <div key={index} className="hover-parent">
+              {/* Mục cấp 1 */}
+              <div className="flex items-center justify-between px-4 py-2 hover:bg-gray-100">
+                <span className="text-gray-800">{category.name}</span>
+              </div>
+
+              {/* Danh mục cấp 2 */}
+              {category.subcategories && (
+                <div className="hover-child absolute left-full top-0 pl-2 w-[250px]">
+                  <div className="rounded-md bg-white flex-col shadow-xl flex h-[60vh]">
+                    {category.subcategories.map((subcategory, subIndex) => (
+                      <Link
+                        key={subIndex}
+                        href="#"
+                        className="px-4 py-2 hover:bg-gray-100 text-gray-800"
+                      >
+                        {subcategory.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

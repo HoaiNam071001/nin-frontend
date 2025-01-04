@@ -11,5 +11,5 @@ export const ROUTES = {
     COURSE: '/course',
     
     // utils
-    INSTRUCTOR_PREVIEW: '/teach/preview',
+    INSTRUCTOR_PREVIEW: '/w/preview',
 }

@@ -65,6 +65,7 @@ const MyCourse = () => {
 
       <Pagination
           align="end"
+          className="mt-4"
           defaultCurrent={1}
           total={pageInfo?.totalElements}
           current={pageInfo?.page}

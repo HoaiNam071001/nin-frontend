@@ -11,8 +11,11 @@ const CourseSetting = (props: {
       <div className="text-title-md font-semibold">
         <I18n i18key="Create Course"></I18n>
       </div>
-      <div className="text-[12px]">
-        <I18n i18key="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. "></I18n>
+      <div className="text-[14px] mb-3 space-y-2">
+        <div>
+        <I18n i18key="The course creation function helps you build and organize entire course content from start to finish."></I18n>
+        </div>
+        <I18n i18key="The purpose of this feature is to help you easily create a clearly structured course that provides complete and accessible information for students."></I18n>
       </div>
 
       <div className="text-title-sm font-semibold">

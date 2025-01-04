@@ -1,7 +1,4 @@
-import { formatNumber } from "@/helpers";
 import CustomImage from "../_commons/CustomImage";
-import I18n from "../_commons/I18n";
-import SvgIcon from "../_commons/SvgIcon";
 import { Tooltip } from "antd";
 import { Course } from "@/models";
 
@@ -17,7 +14,7 @@ const item = {
 };
 
 type CourseProps = {
-  course: Course;
+  course?: Course;
   onView?: () => void;
 };
 
@@ -37,11 +34,15 @@ export const CourseItem: React.FC<CourseProps> = ({ course, onView }) => {
         ></CustomImage>
       </div>
       <div className="line-clamp-2 text-title-xsm font-semibold my-2">
-        <Tooltip title={<div className="max-w-[300px]">{course?.name || item.name}</div>}>
-          {course?.name ||item.name}
+        <Tooltip
+          title={
+            <div className="max-w-[300px]">{course?.name || item.name}</div>
+          }
+        >
+          {course?.name || item.name}
         </Tooltip>
       </div>
-      <div className="line-clamp-1">{course?.description || "Description"}</div>
+      <div className="line-clamp-1">{course?.summary}</div>
       {/* <div className="my-2 flex items-center">
         <div className="flex items-center space-x-1">
           <div className="">

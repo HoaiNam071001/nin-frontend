@@ -4,15 +4,21 @@ import 'react-quill/dist/quill.snow.css';
 // Dynamic import to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-const NEditor = ({ value, onChange }) => {
+const NEditor = ({ value, onChange, readOnly = false }: {
+  value: string;
+  onChange?: (value: string) => void;
+  readOnly?: boolean; // Default to false for editable mode (default)
+}) => {
   const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      ['link', 'image'],
-      ['clean'], // Remove formatting
-    ],
+    toolbar: readOnly
+      ? false // Disable toolbar in read-only mode
+      : [
+          [{ header: [1, 2, 3, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['link', 'image'],
+          ['clean'], // Remove formatting
+        ],
   };
 
   const formats = [
@@ -30,12 +36,14 @@ const NEditor = ({ value, onChange }) => {
   return (
     <div>
       <ReactQuill
-        theme="snow"
-        placeholder="Enter your text here..."
+        theme={readOnly ? null : 'snow'} // Remove theme for cleaner view mode
+        placeholder={readOnly ? '' : 'Enter your text here...'}
         value={value}
-        onChange={onChange}
+        onChange={readOnly || !onChange ? undefined : onChange} // Disable onChange in read-only mode
         modules={modules}
         formats={formats}
+        className='p-0'
+        readOnly={readOnly} // Enable Quill's built-in read-only mode
       />
     </div>
   );

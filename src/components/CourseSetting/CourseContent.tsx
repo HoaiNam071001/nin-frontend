@@ -50,8 +50,7 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
     if (parent) {
       if (parent.childrens) {
         parent.childrens.push(section);
-      }
-      else {
+      } else {
         parent.childrens = [section];
       }
       setSections([...sections]);
@@ -77,6 +76,26 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
   return (
     <>
       <div className="overflow-auto">
+        <div>
+          <span className="px-2 rounded-sm py-1 bg-blue-200 inline-block">
+            Build your course content!
+          </span>
+
+          <div className="p-2 bg-gray-50 my-2">
+            <div>
+              <b>Lecture video:</b> Upload or link a video tutorial for
+              students.
+            </div>
+            <div>
+              <b>Post:</b> Create post content with text, images, or links
+            </div>
+            <div>
+              <b>Useful.</b> Use the Add Section button to organize the course
+              into sections.
+            </div>
+          </div>
+        </div>
+
         {sections?.map((e, index) => (
           <div key={index} className="mb-4">
             <SectionItem
@@ -96,8 +115,6 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
 
       <CourseSubmit
         moveToNextStep={onNext}
-        moveToPrevStep={onPrev}
-        cancel={moveToNextStep}
       ></CourseSubmit>
     </>
   );

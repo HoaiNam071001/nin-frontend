@@ -29,6 +29,7 @@ export interface CoursePayload {
   thumbnail?: string;
   description?: string;
   price?: number;
+  summary?: string;
   estimatedTime?: number;
   status?: CourseStatus;
   categoryId?: number;
@@ -51,6 +52,7 @@ export interface Course {
   subCategory?: Category;
   level?: Level;
   topics?: Topic[];
+  summary?: string;
 }
 
 export interface CourseFile {
@@ -106,4 +108,22 @@ export const CourseSteps: CourseStepItem[] = [
 export enum CourseFileType {
   VIDEO = "video",
   FILE = "file",
+}
+
+export enum CourseTargetType {
+  object= 'object',
+  requirement = 'requirement',
+  achieved = 'achieved',
+}
+
+export interface CourseTarget {
+  id?: number;
+  content: string;
+  type: CourseTargetType;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CourseTargetPayload {
+  payload: CourseTarget[];
 }

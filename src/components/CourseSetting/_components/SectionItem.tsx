@@ -83,9 +83,9 @@ export function SectionItem({
     <div
       className={`${
         !parent ? "bg-slate-100" : "bg-white"
-      } border p-4 rounded border-stroke relative shadow-md`}
+      } border p-3 rounded border-stroke relative shadow-md`}
     >
-      <div className="border bg-slate-200 border-stroke p-4">
+      <div className="border bg-white border-stroke p-2 rounded ">
         {!editing && (
           <div className="flex items-center">
             <NButton
@@ -102,7 +102,10 @@ export function SectionItem({
                 }`}
               ></SvgIcon>
             </NButton>
-            <div className="text-title-sm mr-2">
+            <div
+              className="text-title-sm mr-2 cursor-pointer"
+              onClick={onToggle}
+            >
               <span className="font-semibold">{indexes.join(".")}. </span>{" "}
               {getValues("name")}
             </div>
@@ -162,7 +165,11 @@ export function SectionItem({
 
       {parent && expanded && (
         <div className="pt-2">
-          <SectionFileContent section={item} content={content} setContent={(value) => setContent(value)}/>
+          <SectionFileContent
+            section={item}
+            content={content}
+            setContent={(value) => setContent(value)}
+          />
         </div>
       )}
 

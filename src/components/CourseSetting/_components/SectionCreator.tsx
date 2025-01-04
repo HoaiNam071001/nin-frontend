@@ -40,7 +40,7 @@ export function SectionCreator({
       parentId: parent?.id,
     });
     onCreate(section);
-    setCreating(false);
+    onCancel();
   };
 
   const onCancel = () => {
@@ -111,7 +111,7 @@ export function SectionCreator({
 
       {!creating && (
         <NButton
-          shape="xxl"
+          shape="md"
           variant="primary"
           onClick={() => setCreating(true)}
         >

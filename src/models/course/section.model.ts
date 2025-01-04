@@ -35,6 +35,13 @@ export interface Post {
   id: number;
   content?: string;
   estimatedTime?: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface PostPayload {
+  content?: string;
+  estimatedTime?: number;
 }
 
 

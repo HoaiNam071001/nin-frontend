@@ -15,4 +15,18 @@ export const categoryService = {
     );
     return response.data;
   },
+
+  getAllParent: async () => {
+    const response = await apiClient.get<Category[]>(
+      `/category/all`
+    );
+    return response.data;
+  },
+
+  getAllChildren: async (parentId: number) => {
+    const response = await apiClient.get<Category[]>(
+      `/category/all/${parentId}`
+    );
+    return response.data;
+  },
 };

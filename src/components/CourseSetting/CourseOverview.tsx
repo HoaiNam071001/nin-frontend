@@ -37,6 +37,7 @@ interface OverviewFormValues {
   subCategory: Category;
   topics: Topic[];
   thumbnail: string;
+  summary: string;
 }
 
 export const CourseOverview: React.FC<SettingSubmitProps> = ({
@@ -55,6 +56,7 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
         subCategory: course?.subCategory,
         topics: course?.topics || [],
         thumbnail: course?.thumbnail,
+        summary: course?.summary
       },
     });
   const [loading, setLoading] = useState<boolean>(false);
@@ -77,6 +79,7 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
         categoryId: data.category?.id,
         subCategoryId: data.subCategory?.id,
         topicIds: map(data.topics, (e) => e.id),
+        summary: data.summary,
       };
       setLoading(true);
       const response: Course = await courseService.update(course.id, payload);
@@ -101,7 +104,20 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
             rules={{
               required: "Name is required",
             }}
-            placeholder="Enter your target"
+            placeholder="Enter the name of the course"
+          />
+        </div>
+
+        <Thumbnail control={control} setValue={setValue} />
+
+
+        <div className="form-group">
+          <label htmlFor="overview-summary">Summary</label>
+          <FormInput
+            name={`summary`}
+            control={control}
+            defaultValue={""}
+            placeholder="Enter brief description of the course"
           />
         </div>
 
@@ -124,12 +140,12 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
           setValue={setValue}
         />
 
-        <Thumbnail control={control} setValue={setValue} />
       </div>
       {/* Submit Button */}
       <CourseSubmit
         moveToNextStep={onNext}
-        moveToPrevStep={onPrev}
+        nextLabel={'Save'}
+        // moveToPrevStep={onPrev}
         cancel={moveToNextStep}
         loading={loading}
       ></CourseSubmit>
@@ -310,7 +326,7 @@ const Thumbnail = ({ control, setValue }) => {
           <CustomImage
             src={field.value || "/images/course.jpg"}
             alt="preview"
-            className="w-[300px] h-[160px] rounded-lg ml-4 border-stroke border "
+            className="w-[250px] h-[140px] rounded-lg border-stroke border ml-auto"
           />
         )}
       />

@@ -1,3 +1,4 @@
+import CustomImage from "@/components/_commons/CustomImage";
 import FileUpload from "@/components/_commons/FileUpload";
 import NButton from "@/components/_commons/NButton";
 import NEditor from "@/components/_commons/NEditor";
@@ -6,12 +7,14 @@ import { formatFileSize } from "@/helpers";
 import { formatDate } from "@/helpers/date";
 import {
   Post,
+  PostPayload,
   Section,
   SectionContent,
   SectionType,
   Video,
 } from "@/models/course/section.model";
 import { NFile, SystemFileType } from "@/models/file.model";
+import { postService } from "@/services/post.service";
 import { sectionService } from "@/services/section.service";
 import { toastService } from "@/services/toast.service";
 import { videoService } from "@/services/video.service";
@@ -52,18 +55,22 @@ export function SectionFileContent({
     setContent(_content);
   };
 
+  const updatePost = (post: Post) => {
+    const _content = { ...content };
+    _content.post = post;
+    setContent(_content);
+  };
+
   const removeVideo = (video: Video) => {
     const _content = { ...content };
     _content.video = video;
     setContent(_content);
   };
 
-  const updatePost = (post: Post) => {};
-
   return (
     <div className="space-y-4 border border-stroke p-3 rounded-lg bg-slate-100">
-      <div className="space-y-2 overflow-y-auto relative p-2 bg-white rounded-lg">
-        <div className="border border-stroke rounded-md p-2">
+      <div className="space-y-2 overflow-y-auto relative">
+        <div className="border bg-white border-stroke rounded-md p-3">
           {content?.type === SectionType.Video && (
             <VideoContent
               section={section}
@@ -107,23 +114,54 @@ const PostContent = ({
     setText(content?.post?.content || "");
   }, [content?.post?.content]);
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
+    const payload: PostPayload = {
+      content: text,
+    };
+    const data: Post = await postService.addPostSection(section?.id, payload);
+    updatePost(data);
+    setEditing(false);
+  };
 
-    // setEditing(false);
+  const onCancel = () => {
+    setText(content?.post?.content || "");
+    setEditing(false);
   }
 
   return (
     <div className="max-h-[300px] overflow-auto">
       {editing && (
-        <div className="relative p-3">
-          <NEditor value={content.post?.content} onChange={(e) => setText(e)} />
+        <div className="relative p-3 flex flex-col gap-4">
+          <NEditor value={text} onChange={(e) => setText(e)} />
+          <div className="gap-4 flex">
+            <NButton
+              className="ml-auto w-[100px]"
+              variant={"secondary-gray"}
+              onClick={onCancel}
+            >
+              Cancel
+            </NButton>
+            <NButton className="w-[100px]" onClick={onUpdate}>
+              Save
+            </NButton>
+          </div>
         </div>
       )}
       {!editing && (
         <>
-          <NEditor value={text} onChange={(e) => setText(e)} />
-          <div className="flex justify-end items-center mt-3">
-            <NButton onClick={onUpdate}>Save</NButton>
+          <div className="flex items-center gap-4">
+            <CustomImage
+              src={"/images/post.png"}
+              alt="video"
+              width={100}
+              height={80}
+              className="rounded-md w-[100px] h-[80px]"
+            ></CustomImage>
+            <div className="ml-auto">
+              <span className="font-semibold mr-2">Last updated:</span>
+              {formatDate(content.post?.createdAt)}
+            </div>
+            <NButton onClick={() => setEditing(true)}>Edit</NButton>
           </div>
         </>
       )}
@@ -162,12 +200,12 @@ const VideoContent = ({
   };
 
   return (
-    <div className="max-h-[300px] overflow-auto">
+    <div className="min-h-[40px] overflow-auto">
       {(!file || editing) && (
-        <div className="relative p-3">
+        <div className="relative">
           {file && (
             <NButton
-              className="absolute top-3 right-3 p-0"
+              className="absolute top-2 right-1 p-0 bg-transparent"
               size="sm-circle"
               variant="transparent"
               onClick={() => setEditing(false)}
@@ -179,40 +217,46 @@ const VideoContent = ({
             <FileUpload
               upload={handleVideoUpload}
               accept={"video/*"}
-              label={"Upload"}
+              label={"Upload Video"}
             />
           </div>
         </div>
       )}
       {!(!file || editing) && (
         <>
-          <div className="mb-2">
-            {file && (
-              <div className="flex items-center overflow-hidden py-1">
-                <div className="mr-4">
-                  {/* <video className="h-[200px]" src={file.url} controls/> */}
-                  <div className="min-h-[200px] min-w-[300px] bg-gray-200"></div>
-                </div>
-                <div className="w-[80px]">{formatFileSize(file.size)}</div>
-                <div className="w-[120px]">{formatDate(file.createdAt)}</div>
-                <div className=" flex items-center space-x-4">
-                  <NButton onClick={() => setEditing(true)}>Edit</NButton>
-                  <Popconfirm
-                    placement="left"
-                    title={"Delete Video"}
-                    description={"Do you want to delete this Video?"}
-                    okText="Yes"
-                    cancelText="No"
-                    onConfirm={() => onRemoveVideo()}
-                  >
-                    <Button className="p-0 border-0 hover:!text-red">
-                      <SvgIcon className="icon icon-sm" icon="close" />
-                    </Button>
-                  </Popconfirm>
-                </div>
+          {file && (
+            <div className="flex items-center overflow-hidden">
+              <div className="mr-4">
+                {/* <video className="h-[200px]" src={file.url} controls/> */}
+                <CustomImage
+                  src={"/images/course.png"}
+                  alt="video"
+                  width={100}
+                  height={50}
+                  className="rounded-md w-[100px] h-[50px]"
+                ></CustomImage>
               </div>
-            )}
-          </div>
+              <div className="w-[80px] ml-auto">
+                {formatFileSize(file.size)}
+              </div>
+              <div className="w-[120px]">{formatDate(file.createdAt)}</div>
+              <div className=" flex items-center space-x-4">
+                <NButton onClick={() => setEditing(true)}>Edit</NButton>
+                <Popconfirm
+                  placement="left"
+                  title={"Delete Video"}
+                  description={"Do you want to delete this Video?"}
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => onRemoveVideo()}
+                >
+                  <Button className="p-0 border-0 hover:!text-red bg-transparent">
+                    <SvgIcon className="icon icon-sm" icon="close" />
+                  </Button>
+                </Popconfirm>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>
@@ -253,7 +297,7 @@ const FileList = ({
   return (
     <div className="max-h-[300px] overflow-auto">
       {editing && (
-        <div className="relative border border-stroke p-3">
+        <div className="relative border border-stroke p-3 bg-white rounded">
           <NButton
             className="absolute top-3 right-3 p-0"
             size="sm-circle"
@@ -263,7 +307,7 @@ const FileList = ({
             <SvgIcon className="icon icon-sm" icon="close" />
           </NButton>
           <div className="flex justify-center">
-            <FileUpload upload={handleFileUpload} label={"Upload"} />
+            <FileUpload upload={handleFileUpload} label={"Upload Resources"} />
           </div>
           {/* <div className="flex justify-end items-center">
             <NButton onClick={() => setEditing(false)}>Save</NButton>
@@ -272,23 +316,25 @@ const FileList = ({
       )}
       {!editing && (
         <>
-          <div className="mb-2">
-            {files?.map((file, index) => (
+          <div className="mb-2 px-2">
+            {files?.map((file) => (
               <>
                 {!file.deleted &&
                   file.systemType !== SystemFileType.VIDEO_CONTENT && (
                     <div
-                      key={index}
+                      key={file.id}
                       className="flex items-center overflow-hidden py-1"
                     >
-                      <div className="flex-1 text-ellipsis">{file.name}</div>
-                      <div className="w-[80px]">
+                      <div className="flex-1 text-ellipsis mr-4 overflow-hidden text-nowrap">
+                        {file.name}
+                      </div>
+                      <div className="w-[80px] min-w-[80px]">
                         {formatFileSize(file.size)}
                       </div>
-                      <div className="w-[120px]">
+                      <div className="w-[120px] min-w-[120px]">
                         {formatDate(file.createdAt)}
                       </div>
-                      <div className="w-[20px]">
+                      <div className="w-[20px] min-w-[20px]">
                         <Popconfirm
                           placement="left"
                           title={"Delete File"}
@@ -297,7 +343,7 @@ const FileList = ({
                           cancelText="No"
                           onConfirm={() => onRemoveFile(file)}
                         >
-                          <Button className="p-0 border-0 hover:!text-red">
+                          <Button className="p-0 border-0 hover:!text-red bg-transparent">
                             <SvgIcon className="icon icon-sm" icon="close" />
                           </Button>
                         </Popconfirm>
