@@ -1,7 +1,7 @@
-import { Course, CoursePayload } from "@/models";
+import { Course, CoursePayload, CourseStatusPayload } from "@/models";
 import apiClient from "./config";
-import { List2Res, stringifyPageable } from "@/models/utils.model";
-import { Pageable } from "../models/utils.model";
+import { List2Res, stringifyPageAble } from "@/models/utils.model";
+import { PageAble } from "../models/utils.model";
 
 export const courseService = {
   create: async (data: CoursePayload) => {
@@ -9,9 +9,9 @@ export const courseService = {
     return response.data;
   },
 
-  getMyCourses: async (pageable: Pageable) => {
+  getMyCourses: async (pageable?: PageAble) => {
     const response = await apiClient.get<List2Res<Course>>(
-      `/course?${stringifyPageable(pageable)}`
+      `/course?${pageable ? stringifyPageAble(pageable) : ''}`
     );
     return response.data;
   },
@@ -23,6 +23,11 @@ export const courseService = {
 
   update: async (id: number, data: CoursePayload) => {
     const response = await apiClient.put<Course>(`/course/${id}`, data);
+    return response.data;
+  },
+
+  updateStatus: async (id: number, data: CourseStatusPayload) => {
+    const response = await apiClient.put<Course>(`/course/${id}/status`, data);
     return response.data;
   },
 };

@@ -3,7 +3,11 @@ import queryString from "query-string";
 
 export interface List2Res<T> extends PageInfo {
   content: T[];
+}
 
+export interface DropdownOption<T> {
+  name: string;
+  value: T;
 }
 
 export interface PageInfo {
@@ -15,29 +19,34 @@ export interface PageInfo {
   first: boolean;
 }
 
-export interface Pageable {
+export interface PageAble {
   size?: number; // Số phần tử mỗi trang
   page?: number; // Số trang hiện tại
   keyword?: string; //
   sort?: Array<OrderBy>;
 }
 
-export class PageableModel {
-  stringify = stringifyPageable
+export class PageAbleModel {
+  stringify = stringifyPageAble
+}
+
+export enum SortOrder {
+  ASC = 'ASC',
+  DESC = 'DESC',
 }
 
 export interface OrderBy {
   property?: string; // Thuộc tính cần sắp xếp
-  direction: "ASC" | "DESC"; // Hướng sắp xếp
+  direction: SortOrder; // Hướng sắp xếp
 }  
 
-export const stringifyPageable  = (pageable: Pageable): string => {
+export const stringifyPageAble  = (pageAble: PageAble): string => {
   const query = queryString.stringify(
     {
-      size: pageable?.size || DEFAULT_PAGESIZE,
-      page: pageable?.page || FIRST_PAGE,
-      keyword: pageable.keyword,
-      order: pageable?.sort?.map((o) => `${o.property}:${o.direction}`),
+      size: pageAble?.size || DEFAULT_PAGESIZE,
+      page: pageAble?.page || FIRST_PAGE,
+      keyword: pageAble.keyword,
+      sort: pageAble?.sort?.map((o) => `${o.property}:${o.direction}`),
     },
     { arrayFormat: "comma" } // Hoặc 'bracket' nếu cần [order=id:ASC, name:ASC]
   );

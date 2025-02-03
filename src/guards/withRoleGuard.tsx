@@ -1,10 +1,9 @@
 
 "use client"
 
-import { ROUTES } from "@/constants";
-import { Role } from "@/models";
+import { Role, ROUTES } from "@/constants";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { RootState } from "@/redux";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -14,7 +13,7 @@ const withRoleGuard = <P extends object>(
   path = ROUTES.HOME
 ) => {
   return function RoleGuardedComponent(props: P) {
-    const router = useRouter();
+    const router = useI18nRouter();
     const { user } = useSelector((state: RootState) => state.auth);
 
     useEffect(() => {

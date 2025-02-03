@@ -1,8 +1,9 @@
 import React, { FocusEventHandler, useState } from "react";
 import { Input } from "antd";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
+import { useTranslate } from "@/hooks/useTranslate";
 
-interface NInputProps {
+export interface NInputProps {
   id?: string;
   type?: "text" | "password" | "email" | "number" | "tel"; // Common input types
   value?: string | number; // Input value
@@ -12,6 +13,7 @@ interface NInputProps {
   keyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void; // Handler for onKeyDown event
   onBlur?: FocusEventHandler<HTMLInputElement>; // Handler for
   onFocus?: FocusEventHandler<HTMLInputElement>; // Handler
+  onSearch?: (value: string) => void;
   placeholder?: string; // Placeholder text
   className?: string; // Optional CSS class for styling
   addonBefore?: React.ReactNode; // Addon content before the input
@@ -29,17 +31,23 @@ const NInput: React.FC<NInputProps> = ({
   keyDown,
   onBlur,
   onFocus,
+  onSearch,
   placeholder = "",
   className = "",
   addonBefore,
   addonAfter,
   size = "large", // Default size is middle
+  ...rest
 }) => {
+  const translate = useTranslate();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.repeat) return; // Prevent repeated key events
-
+    if (event.key === "Enter") {
+      onSearch?.(value as string);
+    }
     if (keyDown) {
       keyDown(event); // Trigger the custom keyDown handler
     }
@@ -53,7 +61,10 @@ const NInput: React.FC<NInputProps> = ({
 
   const passwordAddonAfter =
     type === "password" ? (
-      <span onClick={handleTogglePasswordVisibility} className="cursor-pointer">
+      <span
+        onClick={handleTogglePasswordVisibility}
+        className="cursor-pointer pr-3"
+      >
         {showPassword ? (
           <EyeOutlined style={{ fontSize: 16 }} />
         ) : (
@@ -70,7 +81,7 @@ const NInput: React.FC<NInputProps> = ({
         </div>
       )}
       {(addonAfter || passwordAddonAfter) && (
-        <div className="absolute right-3 z-10 h-full flex items-center">
+        <div className="absolute right-0 z-10 h-full flex items-center">
           {addonAfter || passwordAddonAfter}
         </div>
       )}
@@ -85,11 +96,12 @@ const NInput: React.FC<NInputProps> = ({
         onKeyDown={handleKeyDown}
         onBlur={onBlur}
         onFocus={onFocus}
-        placeholder={placeholder}
+        placeholder={translate(placeholder)}
         className={`border-stroke ${className} ${
           addonBefore ? "pl-[40px]" : ""
         } ${addonAfter || passwordAddonAfter ? "pr-[50px]" : ""}`}
         addonBefore={addonBefore}
+        {...rest}
       />
     </div>
   );

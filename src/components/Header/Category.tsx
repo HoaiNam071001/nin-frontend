@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import I18n from "../_commons/I18n";
 import SvgIcon from "../_commons/SvgIcon";
-import Link from "next/link";
 import { categoryService } from "@/services/category.service";
+import { PARAMS, ROUTES } from "@/constants";
+import { I18nLink } from "../_commons/I18nLink";
 
 export function Category() {
-    const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
   const getCategory = async () => {
     try {
       const response = await categoryService.getAllParent();
@@ -43,7 +44,12 @@ export function Category() {
             <div key={index} className="hover-parent">
               {/* Mục cấp 1 */}
               <div className="flex items-center justify-between px-4 py-2 hover:bg-gray-100">
-                <span className="text-gray-800">{category.name}</span>
+                <I18nLink
+                  href={`${ROUTES.SEARCH}?${PARAMS.SEARCH.CATEGORY}=${category.id}`}
+                  className="text-gray-800"
+                >
+                  {category.name}
+                </I18nLink>
               </div>
 
               {/* Danh mục cấp 2 */}
@@ -51,13 +57,13 @@ export function Category() {
                 <div className="hover-child absolute left-full top-0 pl-2 w-[250px]">
                   <div className="rounded-md bg-white flex-col shadow-xl flex h-[60vh]">
                     {category.subcategories.map((subcategory, subIndex) => (
-                      <Link
+                      <I18nLink
                         key={subIndex}
-                        href="#"
+                        href={`${ROUTES.SEARCH}?${PARAMS.SEARCH.SUB_CATEGORY}=${subcategory.id}`}
                         className="px-4 py-2 hover:bg-gray-100 text-gray-800"
                       >
                         {subcategory.name}
-                      </Link>
+                      </I18nLink>
                     ))}
                   </div>
                 </div>

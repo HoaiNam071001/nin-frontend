@@ -4,13 +4,14 @@ import { formatNumber } from "@/helpers";
 import CustomImage from "../_commons/CustomImage";
 import NButton from "../_commons/NButton";
 import SvgIcon from "../_commons/SvgIcon";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
 
 const item = {
   name: "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing ",
   description:
     "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 196",
 
-  thumnail: "/images/course.jpg",
+  thumnail: DEFAULT_COURSE_THUMBNAIL,
   price: 10000,
   originPrice: 20000,
 };
@@ -37,11 +38,11 @@ export const CourseCard = () => {
         </span>
       </div>
       <div className="flex space-x-2">
-        <NButton variant="primary" size="lg" className="flex-1">
+        <NButton size="lg" className="flex-1">
           Buy Now
         </NButton>
         <NButton
-          variant="primary-outline"
+          variant="outlined"
           size="lg-circle"
           className=""
         >
@@ -49,7 +50,7 @@ export const CourseCard = () => {
         </NButton>
 
         <NButton
-          variant="secondary-gray"
+          color="secondary"
           size="lg-circle"
           className=""
         >

@@ -1,23 +1,83 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SvgIcon from "../_commons/SvgIcon";
+import { sectionService } from "@/services/section.service";
+import { Section } from "@/models/course/section.model";
+import { toastService } from "@/services/toast.service";
+import { useModal } from "@/providers/ModalProvider";
+import { SectionResource } from "./SectionResourse";
+import I18n from "../_commons/I18n";
 
-export const SectionMenu = () => {
+export const SectionMenu = ({
+  courseId,
+  viewContent = false,
+}: {
+  courseId: number;
+  viewContent?: boolean;
+}) => {
+  const [sections, setSections] = useState<Section[]>([]);
+
+  useEffect(() => {
+    const getCourse = async () => {
+      try {
+        const sections: Section[] = await sectionService.getByCourse(courseId);
+        setSections(sections);
+      } catch (error) {
+        toastService.error(error?.message);
+      }
+    };
+    if (!courseId) {
+      return;
+    }
+    getCourse();
+  }, [courseId]);
+
   return (
-    <div className="space-y-2 border border-stroke rounded-md overflow-hidden">
-      {[0, 0, 0, 0, 0].map((e, index) => (
-        <SectionTree key={index} />
+    <div className="space-y-2 border border-stroke rounded-md">
+      {sections?.map((e, index) => (
+        <SectionTree key={index} item={e} viewContent={viewContent} />
       ))}
     </div>
   );
 };
 
-const SectionTree = () => {
+const SectionTree = ({
+  item,
+  viewContent,
+}: {
+  item: Section;
+  viewContent: boolean;
+}) => {
   const [isExpand, setExpand] = useState(false);
+  const { openModal } = useModal();
 
   const onToggle = () => {
     setExpand(!isExpand);
+  };
+
+  const onViewContent = (item: Section) => {
+    if (!viewContent) {
+      return;
+    }
+    openModal({
+      content: (
+        <>
+          <SectionResource section={item} />
+        </>
+      ),
+      header: (
+        <>
+          <div><I18n i18key={'View Content'}/></div>
+        </>
+      ),
+      onClose: () => {
+        console.log(`Modal  has been closed`);
+      },
+      config: {
+        width: "800px",
+      },
+    });
   };
 
   return (
@@ -34,20 +94,20 @@ const SectionTree = () => {
         ></SvgIcon>
 
         <span className="font-semibold line-clamp-2 mr-4 ml-2">
-          Section Name Section NameSection NameSection NameSection NameSection
-          NameSection NameSection NameSection Name
+          {item.name}
         </span>
         <span className="ml-auto whitespace-nowrap">30 minutes</span>
       </div>
 
       {isExpand &&
-        [0, 0, 0, 0, 0].map((e, index) => (
+        item.childrens?.map((e, index) => (
           <div
             key={index}
+            onClick={() => onViewContent(e)}
             className="flex items-center gap-4 pl-4 pr-3 py-2 rounded bg-white hover:bg-slate-50 cursor-pointer"
           >
             <SvgIcon icon="video-file" className="icon icon-md"></SvgIcon>
-            <span className="">Section Name</span>
+            <span className="">{e.name}</span>
             <span className="ml-auto">30:10</span>
           </div>
         ))}

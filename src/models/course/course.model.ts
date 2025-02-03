@@ -1,12 +1,5 @@
+import { CourseStatus } from "@/constants";
 import { User } from "../user.model";
-
-export enum CourseStatus {
-  DRAFT = 'draft',
-  PENDING = 'pending',
-  READY = 'ready',
-  CLOSED = 'closed',
-  DELETED = 'deleted',
-}
 
 export interface Level {
   id: number;
@@ -53,6 +46,8 @@ export interface Course {
   level?: Level;
   topics?: Topic[];
   summary?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface CourseFile {
@@ -126,4 +121,8 @@ export interface CourseTarget {
 
 export interface CourseTargetPayload {
   payload: CourseTarget[];
+}
+
+export interface CourseStatusPayload {
+  status?: CourseStatus;
 }

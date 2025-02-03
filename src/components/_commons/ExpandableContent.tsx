@@ -41,7 +41,7 @@ const ExpandableContent: React.FC<ExpandableContentProps> = ({
           className={`overflow-hidden duration-300`}
           style={{
             'maxHeight':  isExpanded ? '100%' : `${height}px`,
-            ...(isExpanded ? {} : maskImageStyle)
+            ...((isExpanded || !isOverflowing) ? {} : maskImageStyle)
           }}
         >
           <div dangerouslySetInnerHTML={{ __html: content }} />

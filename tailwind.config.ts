@@ -2,10 +2,7 @@ import defaultTheme from "tailwindcss/defaultTheme";
 
 const config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/style/**/*.{js,ts,jsx,tsx,mdx, scss}",
+    './src/**/*.{html,js,ts,jsx,tsx,scss,mdx}', 
   ],
   darkMode: "class",
   theme: {
@@ -21,6 +18,7 @@ const config = {
     extend: {
       colors: {
         system: "#1F75FF",
+        orange: "#FF9500",
         stroke: "#DDE8F1",
         whiten: "#F1F5F9",
         whiter: "#F5F7FD",

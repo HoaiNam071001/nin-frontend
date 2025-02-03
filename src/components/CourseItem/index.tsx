@@ -1,13 +1,14 @@
 import CustomImage from "../_commons/CustomImage";
 import { Tooltip } from "antd";
 import { Course } from "@/models";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
 
 const item = {
   name: "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing ",
   description:
     "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 196",
 
-  thumnail: "/images/course.jpg",
+  thumnail: DEFAULT_COURSE_THUMBNAIL,
   rating: 4.7,
   review: 200000,
   time: 10,
@@ -26,7 +27,7 @@ export const CourseItem: React.FC<CourseProps> = ({ course, onView }) => {
     >
       <div className="h-[170px] w-0 px-[50%] relative">
         <CustomImage
-          src={course?.thumbnail || "/images/course.png"}
+          src={course?.thumbnail || DEFAULT_COURSE_THUMBNAIL}
           alt="Course Thumbnail"
           width={300}
           height={150}

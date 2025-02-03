@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Link from "next/link";
 import ClickOutside from "@/components/_commons/ClickOutside";
+import { I18nLink } from "../_commons/I18nLink";
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -9,7 +9,7 @@ const DropdownNotification = () => {
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <li>
-        <Link
+        <I18nLink
           onClick={() => {
             setNotifying(false);
             setDropdownOpen(!dropdownOpen);
@@ -38,7 +38,7 @@ const DropdownNotification = () => {
               fill=""
             />
           </svg>
-        </Link>
+        </I18nLink>
 
         {/* {dropdownOpen && (
           <div

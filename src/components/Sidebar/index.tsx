@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";import Link from "next/link";
+import React from "react";
 import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/_commons/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { ROUTES } from "@/constants";
+import { I18nLink } from "../_commons/I18nLink";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -321,7 +322,7 @@ const menuGroups = [
   },
 ];
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+const MobileSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
 
   return (
@@ -333,7 +334,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       >
         {/* <!-- SIDEBAR HEADER --> */}
         <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-          <Link href={ROUTES.HOME}>
+          <I18nLink href={ROUTES.HOME}>
             <Image
               width={176}
               height={32}
@@ -341,7 +342,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               alt="Logo"
               priority
             />
-          </Link>
+          </I18nLink>
 
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -394,4 +395,4 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   );
 };
 
-export default Sidebar;
+export default MobileSidebar;

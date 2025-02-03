@@ -1,3 +1,4 @@
+import { Role } from "@/constants";
 
 export interface User {
   id: number;
@@ -12,13 +13,6 @@ export interface User {
   roles: UserRole[];
   createAt: string;
   updatedAt: string;
-}
-
-export enum Role {
-  STUDENT = 'student',
-  TEACHER = 'teacher',
-  EDUCATION_MANAGER = 'education-manager',
-  ADMIN = 'admin',
 }
 
 export interface UserRole {

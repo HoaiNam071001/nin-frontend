@@ -44,7 +44,7 @@ const FileUpload = ({
 
   return (
     <div className="flex items-center">
-      <NButton variant="primary-outline" onClick={handleMenuClick}>
+      <NButton variant="outlined" onClick={handleMenuClick}>
         <div className="flex items-center space-x-2">
           <SvgIcon icon="upload" className="icon icon-sm" />
           <span>{label}</span>

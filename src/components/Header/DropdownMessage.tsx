@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/_commons/ClickOutside";
+import { I18nLink } from "../_commons/I18nLink";
 
 const DropdownMessage = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -11,7 +11,7 @@ const DropdownMessage = () => {
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <li className="relative">
-        <Link
+        <I18nLink
           onClick={() => {
             setNotifying(false);
             setDropdownOpen(!dropdownOpen);
@@ -52,7 +52,7 @@ const DropdownMessage = () => {
               fill=""
             />
           </svg>
-        </Link>
+        </I18nLink>
 
         {/* <!-- Dropdown Start --> */}
         {dropdownOpen && (
@@ -65,7 +65,7 @@ const DropdownMessage = () => {
 
             <ul className="flex h-auto flex-col overflow-y-auto">
               <li>
-                <Link
+                <I18nLink
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   href="/messages"
                 >
@@ -89,10 +89,10 @@ const DropdownMessage = () => {
                     <p className="text-sm">I like your confidence 💪</p>
                     <p className="text-xs">2min ago</p>
                   </div>
-                </Link>
+                </I18nLink>
               </li>
               <li>
-                <Link
+                <I18nLink
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   href="/messages"
                 >
@@ -116,10 +116,10 @@ const DropdownMessage = () => {
                     <p className="text-sm">Can you share your offer?</p>
                     <p className="text-xs">10min ago</p>
                   </div>
-                </Link>
+                </I18nLink>
               </li>
               <li>
-                <Link
+                <I18nLink
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   href="/messages"
                 >
@@ -143,10 +143,10 @@ const DropdownMessage = () => {
                     <p className="text-sm">I cam across your profile and...</p>
                     <p className="text-xs">1day ago</p>
                   </div>
-                </Link>
+                </I18nLink>
               </li>
               <li>
-                <Link
+                <I18nLink
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   href="/messages"
                 >
@@ -170,10 +170,10 @@ const DropdownMessage = () => {
                     <p className="text-sm">I’m waiting for you response!</p>
                     <p className="text-xs">5days ago</p>
                   </div>
-                </Link>
+                </I18nLink>
               </li>
               <li>
-                <Link
+                <I18nLink
                   className="flex gap-4.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                   href="/messages"
                 >
@@ -197,7 +197,7 @@ const DropdownMessage = () => {
                     <p className="text-sm">I like your confidence 💪</p>
                     <p className="text-xs">2min ago</p>
                   </div>
-                </Link>
+                </I18nLink>
               </li>
             </ul>
           </div>

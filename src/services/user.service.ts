@@ -1,4 +1,4 @@
-import { Role, RoleRequest, User } from "@/models";
+import { RoleRequest, User } from "@/models";
 import apiClient from "./config";
 
 export const userService = {

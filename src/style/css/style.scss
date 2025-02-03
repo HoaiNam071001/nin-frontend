@@ -1,3 +1,14 @@
+:root {
+
+  --n-primary: #1F75FF;
+  --n-border: #DDE8F1;
+  --n-row-hover: #f3f4f6;
+  --n-row-selected: #ebf3ff;
+  --n-secondary: #a1a8cc;
+  --n-orange: #FF9500;
+}
+
+
 .icon {
   &.icon-sm {
     @apply w-[16px] h-[16px] min-w-[16px] min-h-[16px];
@@ -40,4 +51,22 @@
     visibility: visible;
     opacity: 1;
   }
+}
+
+.custom-checkbox-input {
+  @apply w-[14px] h-[14px] relative bg-white border border-secondary rounded-sm; 
+  &::before {
+    @apply content-[''];
+  }
+  &.checked, &:checked {
+    @apply bg-primary border-primary;
+    &::before {
+      @apply rotate-45 w-[5px] h-[9px] border-r border-b block translate-x-1;
+      transition: transform 0.1s ease-in-out;
+    }
+  }
+}
+
+.text-ellipsis {
+  @apply overflow-ellipsis whitespace-nowrap overflow-hidden;
 }

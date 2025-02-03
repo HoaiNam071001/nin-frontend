@@ -9,6 +9,7 @@ import { userService } from "@/services/user.service";
 import { authAction } from "@/redux";
 import Loader from "@/components/_commons/Loader";
 import { StorageKey } from "@/constants";
+import { ModalProvider } from "@/providers/ModalProvider";
 
 const AppInitializer = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const AppInitializer = ({ children }: { children: React.ReactNode }) => {
       try {
         const profile = await userService.getProfile();
         dispatch(authAction.setUser(profile));
+        dispatch(authAction.setRole());
       } catch (error) {
         dispatch(authAction.logout());
       }
@@ -55,7 +57,9 @@ export const AppInitializerWithProvider = ({
 }) => {
   return (
     <Provider store={store}>
-      <AppInitializer>{children}</AppInitializer>
+      <AppInitializer>
+        <ModalProvider>{children}</ModalProvider>
+      </AppInitializer>
     </Provider>
   );
 };

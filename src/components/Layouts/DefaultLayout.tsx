@@ -1,7 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import SideBar from "../Sidebar/SideBar";
+import useAuth from "@/hooks/useAuth";
+import { NavbarMenu } from "@/constants";
+import { NavItem } from "@/models";
 
 export default function DefaultLayout({
   children,
@@ -10,30 +14,32 @@ export default function DefaultLayout({
 }) {
   return (
     <>
-      {/* <!-- ===== Page Wrapper Start ===== --> */}
-      <div className="flex">
-        {/* <!-- ===== Sidebar Start ===== --> */}
-        {/* <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} /> */}
-        {/* <!-- ===== Sidebar End ===== --> */}
+      <div className="relative">
+        <Header />
 
-        {/* <!-- ===== Content Area Start ===== --> */}
-        <div className="relative flex flex-1 flex-col">
-          {/* <!-- ===== Header Start ===== --> */}
-          <Header />
+        {/* <!-- ===== Header End ===== --> */}
 
-          {/* <!-- ===== Header End ===== --> */}
-
-          {/* <!-- ===== Main Content Start ===== --> */}
-          <main>
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-              {children}
-            </div>
-          </main>
-          {/* <!-- ===== Main Content End ===== --> */}
-        </div>
-        {/* <!-- ===== Content Area End ===== --> */}
+        {/* <!-- ===== Main Content Start ===== --> */}
+        <main>
+          <div className="flex">
+            <Nav />
+            <div className="flex-1 p-4 md:p-6 2xl:p-10 overflow-hidden">{children}</div>
+          </div>
+        </main>
       </div>
-      {/* <!-- ===== Page Wrapper End ===== --> */}
     </>
   );
 }
+
+const Nav = () => {
+  const { activeRole, currentUser } = useAuth();
+  const [navItems, setNavItems] = useState<NavItem[]>([]);
+  useEffect(() => {
+    setNavItems(NavbarMenu.get({
+      role: activeRole,
+      user: currentUser,
+    }));
+  }, [activeRole, currentUser]);
+
+  return <SideBar navItems={navItems} />;
+};
