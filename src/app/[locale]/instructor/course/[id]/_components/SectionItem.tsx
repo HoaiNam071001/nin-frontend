@@ -111,6 +111,7 @@ export function SectionItem({
             </div>
             <div className="ml-auto">
               <SectionOptions
+                deleteMessage="Are you sure to delete this Section?"
                 onRemove={onRemove}
                 onEdit={() => setEdit(true)}
               />

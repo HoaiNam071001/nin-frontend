@@ -8,7 +8,7 @@ import SvgIcon from "./SvgIcon";
 import useEffectSkipFirst from "@/hooks/useEffectSkipFirst";
 
 type DropdownProps<T> = {
-  value: T;
+  value: T | T[keyof T];
   options: T[];
   bindLabel?: keyof T;
   bindValue?: keyof T;
@@ -19,7 +19,7 @@ type DropdownProps<T> = {
   clearable?: boolean;
   searchOnFirstOpen?: boolean;
   dropdownWidth?: string;
-  onChange: (value: T) => void;
+  onChange: (value: T | T[keyof T]) => void; // Sử dụng union type
   onSearch?: (key?: string) => void;
   renderLabel?: (option: T) => React.ReactNode;
   renderOption?: (option: T) => React.ReactNode;
@@ -44,7 +44,7 @@ const NSelection = <T extends object>({
 }: DropdownProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState<string>();
-  const searchTextDebounce = useDebounce<string>(searchText, 500);
+  const searchTextDebounce = useDebounce(searchText, 500);
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const isFirstOpen = useRef(true);
 

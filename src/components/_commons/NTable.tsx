@@ -10,25 +10,6 @@ import { FilterValue, SorterResult } from "antd/es/table/interface";
 export type TableColumn<T> = ColumnType<T>;
 
 export type TableColumns<T> = Array<TableColumn<T>>;
-
-// const useStyle = createStyles(({ css, token }) => {
-//   const { antCls } = token as never;
-//   return {
-//     customTable: css`
-//       ${antCls}-table {
-//         ${antCls}-table-container {
-//           ${antCls}-table-body,
-//           ${antCls}-table-content {
-//             scrollbar-width: thin;
-//             scrollbar-color: #eaeaea transparent;
-//             scrollbar-gutter: stable;
-//           }
-//         }
-//       }
-//     `,
-//   };
-// });
-
 interface NTableProps<T> extends TableProps<T> {
   columns: TableColumns<T>;
   dataSource: T[];

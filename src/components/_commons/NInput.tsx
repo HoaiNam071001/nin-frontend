@@ -5,7 +5,7 @@ import { useTranslate } from "@/hooks/useTranslate";
 
 export interface NInputProps {
   id?: string;
-  type?: "text" | "password" | "email" | "number" | "tel"; // Common input types
+  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'date' | 'time';
   value?: string | number; // Input value
   onValueChange?: (value: string | number) => void; // Handler for value changes
   input?: React.FormEventHandler<HTMLInputElement>; // Handler for onInput event

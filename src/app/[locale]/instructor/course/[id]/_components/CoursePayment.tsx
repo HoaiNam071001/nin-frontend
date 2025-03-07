@@ -4,9 +4,10 @@ import I18n from "@/components/_commons/I18n";
 import NButton from "@/components/_commons/NButton";
 import NInput from "@/components/_commons/NInput";
 import { Course, CoursePayload, SettingSubmitProps } from "@/models";
-import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 import { useEffect, useState } from "react";
+import { DiscountManager } from "./DiscountManager";
+import { courseService } from "@/services/courses/course.service";
 
 export const CoursePayment: React.FC<SettingSubmitProps> = ({
   moveToNextStep,
@@ -54,8 +55,8 @@ export const CoursePayment: React.FC<SettingSubmitProps> = ({
               <I18n i18key={"Free"}></I18n>
             </div>
           )}
-        </div>
-        <div className="sticky bottom-0 bg-white pt-4 flex justify-end gap-4 mt-auto">
+
+          <div className="ml-auto">
           <NButton
             shape="md"
             variant="solid"
@@ -66,7 +67,11 @@ export const CoursePayment: React.FC<SettingSubmitProps> = ({
           >
             <I18n i18key={"Save"}></I18n>
           </NButton>
+          </div>
+          
         </div>
+
+        <DiscountManager course={course} />
       </div>
     </>
   );

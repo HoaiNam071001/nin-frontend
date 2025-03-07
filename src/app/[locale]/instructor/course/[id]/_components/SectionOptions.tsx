@@ -6,9 +6,11 @@ import { useState } from "react";
 export const SectionOptions = ({
   onRemove,
   onEdit,
+  deleteMessage
 }: {
   onRemove: () => void;
   onEdit: () => void;
+  deleteMessage?: string;
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -40,8 +42,8 @@ export const SectionOptions = ({
       <NDropdown items={items} />
 
       <NModal
-        title="Title"
-        content={"Are you sure to delete this Section?"}
+        title="Delete"
+        content={deleteMessage}
         onOk={() => {
           onRemove?.(), setOpen(false);
         }}

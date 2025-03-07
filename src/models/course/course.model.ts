@@ -212,7 +212,7 @@ export interface DiscountPayload {
   courseId: number;
   discountPercentage?: number;
   discountAmount?: number;
-  discountType: 'percent' | 'amount';
+  discountType: DiscountType;
   startDate: string;
   endDate: string;
   discountCode?: string;
@@ -221,4 +221,8 @@ export interface DiscountPayload {
 
 export interface Discount extends DiscountPayload {
   id: number;
+}
+export enum DiscountType {
+  PERCENT = 'percent',
+  AMOUNT = 'amount',
 }
