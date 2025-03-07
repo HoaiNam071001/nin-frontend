@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import SvgIcon from "../_commons/SvgIcon";
-import { sectionService } from "@/services/section.service";
-import { Section } from "@/models/course/section.model";
+import { sectionService } from "@/services/courses/section.service";
+import { Section, SectionType } from "@/models/course/section.model";
 import { toastService } from "@/services/toast.service";
 import { useModal } from "@/providers/ModalProvider";
 import { SectionResource } from "./SectionResourse";
@@ -72,7 +72,6 @@ const SectionTree = ({
         </>
       ),
       onClose: () => {
-        console.log(`Modal  has been closed`);
       },
       config: {
         width: "800px",
@@ -106,7 +105,9 @@ const SectionTree = ({
             onClick={() => onViewContent(e)}
             className="flex items-center gap-4 pl-4 pr-3 py-2 rounded bg-white hover:bg-slate-50 cursor-pointer"
           >
-            <SvgIcon icon="video-file" className="icon icon-md"></SvgIcon>
+            {e.type === SectionType.Post && <SvgIcon icon="file" className="icon icon-md"></SvgIcon>}
+            {e.type === SectionType.Video && <SvgIcon icon="video-file" className="icon icon-md"></SvgIcon>}
+
             <span className="">{e.name}</span>
             <span className="ml-auto">30:10</span>
           </div>

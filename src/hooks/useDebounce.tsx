@@ -1,24 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import debounce from 'lodash/debounce';
 
-// Custom hook for debounce
-function useDebounce<T>(value: T, delay: number) {
+function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
+  // Sử dụng useMemo để tạo và ghi nhớ hàm debounce
+  const debouncedHandler = useMemo(
+    () =>
+      debounce((newValue) => {
+        setDebouncedValue(newValue);
+      }, delay),
+    [delay] // Chỉ tạo lại hàm debounce khi delay thay đổi
+  );
+
   useEffect(() => {
-    const handler = debounce(() => {
-      setDebouncedValue(value);
-    }, delay);
+    debouncedHandler(value);
 
-    handler();
-
-    // Clean up the debounce on unmount or when value changes
+    // Hủy bỏ hàm debounce khi component unmount hoặc khi value/delay thay đổi
     return () => {
-      handler.cancel();
+      debouncedHandler.cancel();
     };
-  }, [value, delay]);
+  }, [value, debouncedHandler]);
 
   return debouncedValue;
-};
+}
 
 export default useDebounce;

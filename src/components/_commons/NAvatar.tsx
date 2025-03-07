@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Tooltip } from "antd";
 import { getAbbreviatedName } from "@/helpers";
 
-interface AvatarProps {
+export interface AvatarProps {
   src: string; // URL ảnh đại diện
   name?: string;
   alt?: string; // Mô tả thay thế

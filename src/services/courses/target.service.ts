@@ -1,5 +1,5 @@
 import { CourseTarget, CourseTargetPayload } from "@/models";
-import apiClient from "./config";
+import apiClient from "../config";
 
 export const targetService = {
   getByCourse: async (id: number) => {

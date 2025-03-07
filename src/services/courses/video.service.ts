@@ -2,7 +2,7 @@ import {
   Section,
   Video,
 } from "@/models/course/section.model";
-import apiClient from "./config";
+import apiClient from "../config";
 
 export const videoService = {
   addVideoSection: async (sectionId: number, file: File) => {

@@ -2,7 +2,7 @@ import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
 import { Course } from "@/models";
 import { Section, SectionContent } from "@/models/course/section.model";
-import { sectionService } from "@/services/section.service";
+import { sectionService } from "@/services/courses/section.service";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SectionOptions } from "./SectionOptions";

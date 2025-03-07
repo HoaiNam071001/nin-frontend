@@ -18,7 +18,17 @@ const config = {
     extend: {
       colors: {
         system: "#1F75FF",
-        orange: "#FF9500",
+        orange: {
+          DEFAULT: "#FF9500",
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+        },
+        gray: {
+          DEFAULT: "#959595",
+        },
         stroke: "#DDE8F1",
         whiten: "#F1F5F9",
         whiter: "#F5F7FD",

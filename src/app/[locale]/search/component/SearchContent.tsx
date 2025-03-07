@@ -13,11 +13,11 @@ import {
   SortOrder,
 } from "@/models/utils.model";
 import { Course } from "@/models";
-import { courseSearchService } from "@/services/course-search.service";
+import { courseSearchService } from "@/services/courses/course-search.service";
 import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
 import NPagination from "@/components/_commons/NPagination";
 import { toastService } from "@/services/toast.service";
-import NDropdown from "@/components/_commons/NDropdown";
+import NSelection from "@/components/_commons/NSelection";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import I18n from "@/components/_commons/I18n";
@@ -97,7 +97,6 @@ const SearchContent: React.FC = () => {
     }
   };
   useEffect(() => {
-    console.log("keyword", keyword);
   }, [keyword]);
 
   useEffect(() => {
@@ -105,12 +104,10 @@ const SearchContent: React.FC = () => {
       firstRender.current = false; // Đánh dấu đã render lần đầu tiên
       return; // Bỏ qua lần render đầu tiên
     }
-    console.log("fetchCourses");
     fetchCourses();
   }, [context.filter, pageAble, keyword]);
 
   const setPageAbleValue = (value: PageAble) => {
-    console.log("setPageAbleValue", value);
     setPageAble({
       ...pageAble,
       ...value,
@@ -123,7 +120,7 @@ const SearchContent: React.FC = () => {
         <div className="font-semibold text-title-sm">
           <I18n i18key={"Search"}/>
         </div>
-        <NDropdown
+        <NSelection
           value={sorter}
           bindLabel="name"
           className="ml-auto"

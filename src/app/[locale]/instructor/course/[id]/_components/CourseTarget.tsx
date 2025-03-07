@@ -6,7 +6,7 @@ import Loader from "@/components/_commons/Loader";
 import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
 import { CourseTarget, CourseTargetType, SettingSubmitProps } from "@/models";
-import { targetService } from "@/services/target.service";
+import { targetService } from "@/services/courses/target.service";
 import { toastService } from "@/services/toast.service";
 import { Button } from "antd";
 import React, { useEffect, useRef, useState } from "react";
@@ -106,7 +106,6 @@ export const CourseTargetComponent: React.FC<SettingSubmitProps> = ({
 
       setLoading(false);
     } catch (error) {
-      console.error(error);
       setLoading(false);
     }
   };

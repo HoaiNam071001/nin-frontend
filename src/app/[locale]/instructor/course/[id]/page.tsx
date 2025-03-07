@@ -3,18 +3,22 @@
 import React, { useEffect, useState } from "react";
 import { CourseStepItem, CourseSteps, StepType, Course } from "@/models";
 import { findIndex } from "lodash";
-import { courseService } from "@/services/course.service";
+import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 import Loader from "@/components/_commons/Loader";
 import useAuth from "@/hooks/useAuth";
 import { useParams } from "next/navigation";
-import { ROUTES } from "@/constants";
+import { CourseStatus, ROUTES } from "@/constants";
 import CourseSetting from "./_components";
 import { CoursePermisison } from "./_components/CoursePermission";
 import { CourseTargetComponent } from "./_components/CourseTarget";
 import { CourseOverview } from "./_components/CourseOverview";
 import { CourseContent } from "./_components/CourseContent";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { CoursePayment } from "./_components/CoursePayment";
+import NButton from "@/components/_commons/NButton";
+import I18n from "@/components/_commons/I18n";
+import StatusBadge from "@/components/CourseItem/StatusBadge";
 
 const CourseEdit: React.FC = () => {
   const { id } = useParams();
@@ -77,11 +81,15 @@ const CourseEdit: React.FC = () => {
         <CourseSetting
           currentStep={currentStep.type}
           setStep={onChangeStep}
+          course={course}
+          setCourse={setCourse}
         ></CourseSetting>
       </div>
       <div className="md:col-span-8 bg-white h-full max-h-full rounded-sm flex flex-col overflow-hidden">
-        <div className="text-title-sm font-semibold px-4 py-2 z-10 bg-white">
-          {currentStep?.label}
+        <div className="flex items-center px-4 pt-4">
+          <div className="text-title-sm font-semibold z-10 bg-white">
+            {currentStep?.label}
+          </div>
         </div>
         <div className="m-4 relative flex-1 overflow-auto flex flex-col">
           {currentStep.type === StepType.Target && (
@@ -111,6 +119,16 @@ const CourseEdit: React.FC = () => {
             <CoursePermisison
               moveToNextStep={() => moveToNextStep()}
               moveToPrevStep={() => moveToPrevStep()}
+              course={course}
+            />
+          )}
+
+          {currentStep.type === StepType.Payment && (
+            <CoursePayment
+              moveToNextStep={() => moveToNextStep()}
+              moveToPrevStep={() => moveToPrevStep()}
+              course={course}
+              setCourse={setCourse}
             />
           )}
         </div>

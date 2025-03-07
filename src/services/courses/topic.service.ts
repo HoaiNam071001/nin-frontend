@@ -1,5 +1,5 @@
 import { Topic } from "@/models";
-import apiClient from "./config";
+import apiClient from "../config";
 import { List2Res, PageAble, stringifyPageAble } from "@/models/utils.model";
 
 export const topicService = {

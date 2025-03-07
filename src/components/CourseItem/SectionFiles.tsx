@@ -1,6 +1,6 @@
 import { Section } from "@/models/course/section.model";
 import { NFile, SystemFileType } from "@/models/file.model";
-import { sectionService } from "@/services/section.service";
+import { sectionService } from "@/services/courses/section.service";
 import { toastService } from "@/services/toast.service";
 import { useState } from "react";
 import NButton from "../_commons/NButton";

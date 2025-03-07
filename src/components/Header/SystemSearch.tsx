@@ -15,7 +15,7 @@ import { Course } from "@/models";
 import { List2Res } from "@/models/utils.model";
 import CustomImage from "../_commons/CustomImage";
 import HighlightedText from "../_commons/HighlightedText";
-import { courseSearchService } from "@/services/course-search.service";
+import { courseSearchService } from "@/services/courses/course-search.service";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { useTranslate } from "@/hooks/useTranslate";

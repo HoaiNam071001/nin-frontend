@@ -11,11 +11,11 @@ import {
 } from "@/models";
 import { upsertItem } from "@/helpers";
 import { map } from "lodash";
-import { levelService } from "@/services/level.service";
-import { categoryService } from "@/services/category.service";
-import { courseService } from "@/services/course.service";
+import { levelService } from "@/services/courses/level.service";
+import { categoryService } from "@/services/courses/category.service";
+import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
-import { topicService } from "@/services/topic.service";
+import { topicService } from "@/services/courses/topic.service";
 import {
   NFile,
   SystemFileType,
@@ -24,7 +24,7 @@ import {
 import { fileService } from "@/services/file.service";
 import FormInput from "@/components/Form/FormInput";
 import NEditor from "@/components/_commons/NEditor";
-import FormDropdown from "@/components/Form/FormDropdown";
+import FormSelection from "@/components/Form/FormSelection";
 import SearchWithDropdown from "@/components/_commons/SearchWidthDropdown";
 import CustomImage from "@/components/_commons/CustomImage";
 import FileUpload from "@/components/_commons/FileUpload";
@@ -82,11 +82,11 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
       const response: Course = await courseService.update(course.id, payload);
       setCourse(response);
       setLoading(false);
+      toastService.success('Updated successfully');
     } catch (error) {
       toastService.error(error?.message);
       setLoading(false);
     }
-    callback();
   };
 
   return (
@@ -214,14 +214,14 @@ const BasicInfo = ({ control, watch }) => {
       <div className="form-group">
         <label>Basic Info</label>
         <div className="flex space-x-3">
-          <FormDropdown
+          <FormSelection
             control={control}
             name={"level"}
             options={levels}
             className="flex-1"
             placeholder="Select Level"
-          ></FormDropdown>
-          <FormDropdown
+          ></FormSelection>
+          <FormSelection
             control={control}
             name={"category"}
             options={categories}
@@ -229,8 +229,8 @@ const BasicInfo = ({ control, watch }) => {
             onSearch={(value) => setCategorySearch(value)}
             placeholder="Select Category"
             searchable={true}
-          ></FormDropdown>
-          <FormDropdown
+          ></FormSelection>
+          <FormSelection
             control={control}
             name={"subCategory"}
             searchable={true}
@@ -238,7 +238,7 @@ const BasicInfo = ({ control, watch }) => {
             className="flex-1"
             onSearch={(value) => setSubCategorySearch(value)}
             placeholder="Select SubCategory"
-          ></FormDropdown>
+          ></FormSelection>
         </div>
       </div>
     </>

@@ -3,10 +3,16 @@
 import { Button } from "antd";
 import SvgIcon from "../_commons/SvgIcon";
 import { SectionMenu } from "../CourseItem/SectionMenu";
+import { Course, FullCourse } from "@/models";
 
-const CourseContentMenu = () => {
+const CourseContentMenu = ({
+  course,
+}: {
+  course: Course | FullCourse; 
+}) => {
   return (
     <div className="space-y-3">
+      
       <div className="font-semibold text-title-sm">Course Content</div>
       <div className="flex items-center text-gray-400">
         <span>20 sections </span>
@@ -15,7 +21,7 @@ const CourseContentMenu = () => {
 
         <Button type="link">Link</Button>
       </div>
-      <SectionMenu />
+      <SectionMenu courseId={course.id}/>
     </div>
   );
 };

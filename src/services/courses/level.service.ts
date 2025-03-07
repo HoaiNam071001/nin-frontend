@@ -1,5 +1,5 @@
 import { Level } from '@/models';
-import apiClient from './config';
+import apiClient from '../config';
 
 export const levelService = {
   get: async () => {

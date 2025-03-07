@@ -15,6 +15,17 @@ export interface User {
   updatedAt: string;
 }
 
+export interface ShortUser {
+  id: number;
+  email: string;
+  avatar: string;
+  fullName: string;
+}
+
+export interface UserSearchPayload {
+
+}
+
 export interface UserRole {
   id: number;
   roleName: Role;

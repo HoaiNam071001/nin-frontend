@@ -4,7 +4,7 @@ import {
   UpdateSectionPayload,
   SectionContent,
 } from "@/models/course/section.model";
-import apiClient from "./config";
+import apiClient from "../config";
 import { NFile } from "@/models/file.model";
 
 export const sectionService = {

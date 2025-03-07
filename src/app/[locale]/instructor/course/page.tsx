@@ -6,7 +6,7 @@ import Loader from "@/components/_commons/Loader";
 import NButton from "@/components/_commons/NButton";
 import { ROUTES } from "@/constants";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
-import { courseService } from "@/services/course.service";
+import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

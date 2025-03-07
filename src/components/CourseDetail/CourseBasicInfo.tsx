@@ -3,13 +3,14 @@
 import NAvatar from "../_commons/NAvatar";
 import SvgIcon from "../_commons/SvgIcon";
 import ExpandableContent from "../_commons/ExpandableContent";
-import { Course } from "@/models";
+import { FullCourse } from "@/models";
+import CourseTopics from "./CourseTopics";
 
 export const CourseBasicInfo = ({
   course,
   showView = false,
 }: {
-  course?: Course;
+  course: FullCourse;
   showView?: boolean;
 }) => {
   return (
@@ -56,6 +57,8 @@ export const CourseBasicInfo = ({
           </div>
         )}
       </div>
+
+        <CourseTopics course={course}/>
 
       <div>
         <ExpandableContent content={course?.description} height={200} />

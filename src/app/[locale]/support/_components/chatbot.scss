@@ -1,0 +1,10 @@
+.message-container {
+  a {
+    @apply text-system opacity-80 transition-colors duration-300;
+  }
+
+  a:hover {
+    @apply text-system opacity-100 underline;
+  }
+
+}

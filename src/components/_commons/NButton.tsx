@@ -1,4 +1,5 @@
 import { Tooltip } from "antd";
+import { TooltipPlacement } from "antd/es/tooltip";
 import React from "react";
 
 interface CustomButtonProps {
@@ -33,12 +34,14 @@ interface CustomButtonProps {
     | "green"
     | "yellow"
     | "purple";
-  onClick?: () => void; // Function to call when button is clicked
+  onClick?: (event) => void; // Function to call when button is clicked
   loading?: boolean; // If true, show loading spinner
   disabled?: boolean; // If true, disable the button
   shape?: "none" | "sm" | "md" | "lg" | "xl" | "xxl" | "full"; // Border radius shape for the button
   className?: string;
   tooltip?: string;
+  canClick?: boolean; //
+  tooltipPlacement?: TooltipPlacement;
 }
 
 const NButton: React.FC<CustomButtonProps> = ({
@@ -52,6 +55,8 @@ const NButton: React.FC<CustomButtonProps> = ({
   shape = "md", // Default to medium shape
   className,
   tooltip = "",
+  tooltipPlacement = 'top',
+  canClick = true,
 }) => {
   // Define styles for different button sizes
   const sizeClasses = {
@@ -77,6 +82,7 @@ const NButton: React.FC<CustomButtonProps> = ({
     green: "green",
     yellow: "yellow",
     purple: "purple",
+    gray: "gray",
   };
 
   // Define styles for different button variants
@@ -116,13 +122,13 @@ const NButton: React.FC<CustomButtonProps> = ({
     disabled || loading ? "opacity-80 cursor-not-allowed" : "cursor-pointer"
   }`;
 
-  const handleClick = () => {
-    if (onClick) onClick();
+  const handleClick = (event) => {
+    if (onClick) onClick?.(event);
   };
   return (
-    <Tooltip title={tooltip}>
+    <Tooltip title={tooltip} placement={tooltipPlacement}>
       <button
-        onClick={handleClick}
+        onClick={(event) => { canClick && handleClick(event) }}
         disabled={disabled || loading}
         className={buttonClass}
       >

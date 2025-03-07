@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 // import { TableRowSelection } from "antd/es/table/interface";
 import { CourseStatus, DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
 import CensorFilter from "./_component/filter";
-import { courseSearchService } from "@/services/course-search.service";
+import { courseSearchService } from "@/services/courses/course-search.service";
 import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
 import { Course, CourseSearchPayload } from "@/models";
 import CustomImage from "@/components/_commons/CustomImage";
@@ -17,6 +17,7 @@ import CourseConfirmDetail from "./_component/course-detail";
 import { toastService } from "@/services/toast.service";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
 import I18n from "@/components/_commons/I18n";
+import useEffectAfterMount from "@/hooks/useEffectSkipFirst";
 
 const columns: TableColumns<Course> = [
   {
@@ -90,14 +91,12 @@ const EduBoard: React.FC = () => {
     page: FIRST_PAGE,
     size: DEFAULT_PAGESIZE,
   });
-  const isFirstRender = useRef(true);
 
   const [filter, setFilter] = useState<CourseSearchPayload>({
     status: [CourseStatus.PENDING],
   });
 
   // const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-  //   console.log("selectedRowKeys changed: ", newSelectedRowKeys);
   //   setSelectedRowKeys(newSelectedRowKeys);
   // };
   // const rowSelection: TableRowSelection<Course> = {
@@ -120,12 +119,7 @@ const EduBoard: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false; // Đánh dấu là đã render lần đầu tiên
-      return;
-    }
-
+  useEffectAfterMount(() => {
     getCourses();
   }, [filter, pageAble]); // Theo dõi pageAble thay đổi
 
@@ -159,7 +153,6 @@ const EduBoard: React.FC = () => {
         </>
       ),
       onClose: () => {
-        console.log(`Modal  has been closed`);
       },
       config: {
         width: "1000px",
@@ -187,7 +180,6 @@ const EduBoard: React.FC = () => {
         onRow={(record, index) => {
           return {
             onClick: () => {
-              console.log(index);
               openDetail(record);
             },
           };

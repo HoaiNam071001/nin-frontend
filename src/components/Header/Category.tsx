@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import I18n from "../_commons/I18n";
 import SvgIcon from "../_commons/SvgIcon";
-import { categoryService } from "@/services/category.service";
+import { categoryService } from "@/services/courses/category.service";
 import { PARAMS, ROUTES } from "@/constants";
 import { I18nLink } from "../_commons/I18nLink";
 

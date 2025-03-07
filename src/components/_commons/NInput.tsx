@@ -19,6 +19,8 @@ export interface NInputProps {
   addonBefore?: React.ReactNode; // Addon content before the input
   addonAfter?: React.ReactNode; // Addon content after the input
   size?: "small" | "middle" | "large"; // Size of the input field
+  min?: number;
+  max?: number;
 }
 
 const NInput: React.FC<NInputProps> = ({

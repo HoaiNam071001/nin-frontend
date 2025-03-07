@@ -1,6 +1,6 @@
 "use client";
 
-import FormDropdown from "@/components/Form/FormDropdown";
+import FormSelection from "@/components/Form/FormSelection";
 import FormInput from "@/components/Form/FormInput";
 import NButton from "@/components/_commons/NButton";
 import StatusBadge from "@/components/CourseItem/StatusBadge";
@@ -58,7 +58,7 @@ const CensorFilter = ({ onSearchText, changeFilter }) => {
       </div>
       <div className="w-[600px] form-group">
         <label><I18n i18key={"Status"}/> </label>
-        <FormDropdown
+        <FormSelection
           control={control}
           name={"status"}
           bindValue={"value"}
@@ -69,7 +69,7 @@ const CensorFilter = ({ onSearchText, changeFilter }) => {
           clearable={true}
           options={COURSE_STATUS_OPTIONS}
           placeholder="Select Status"
-        ></FormDropdown>
+        ></FormSelection>
       </div>
     </div>
   );

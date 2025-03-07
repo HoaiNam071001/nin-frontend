@@ -15,10 +15,10 @@ import {
   Video,
 } from "@/models/course/section.model";
 import { NFile, SystemFileType } from "@/models/file.model";
-import { postService } from "@/services/post.service";
-import { sectionService } from "@/services/section.service";
+import { postService } from "@/services/courses/post.service";
+import { sectionService } from "@/services/courses/section.service";
 import { toastService } from "@/services/toast.service";
-import { videoService } from "@/services/video.service";
+import { videoService } from "@/services/courses/video.service";
 import { Button, Empty, Popconfirm } from "antd";
 import { useEffect, useState } from "react";
 

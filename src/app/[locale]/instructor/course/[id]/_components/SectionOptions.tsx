@@ -1,6 +1,6 @@
+import NDropdown from "@/components/_commons/NDropdown";
 import NModal from "@/components/_commons/NModal";
 import SvgIcon from "@/components/_commons/SvgIcon";
-import { Dropdown, MenuProps } from "antd";
 import { useState } from "react";
 
 export const SectionOptions = ({
@@ -12,7 +12,7 @@ export const SectionOptions = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const items: MenuProps["items"] = [
+  const items = [
     {
       key: 'edit',
       label: (
@@ -37,11 +37,7 @@ export const SectionOptions = ({
 
   return (
     <>
-      <Dropdown menu={{ items }} placement="bottomRight" trigger={["click"]}>
-        <div className="cursor-pointer hover:bg-slate-300 py-1 rounded-sm">
-          <SvgIcon className="icon icon-sm" icon="3dot_vert"></SvgIcon>
-        </div>
-      </Dropdown>
+      <NDropdown items={items} />
 
       <NModal
         title="Title"

@@ -7,7 +7,7 @@ import { SectionMenu } from "@/components/CourseItem/SectionMenu";
 import { CourseStatus } from "@/constants";
 import { Course, CourseStatusPayload } from "@/models";
 import { useModal } from "@/providers/ModalProvider";
-import { courseService } from "@/services/course.service";
+import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 
 const CourseConfirmDetail = ({

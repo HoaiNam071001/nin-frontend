@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SettingSubmitProps } from "@/models";
 import { Section } from "@/models/course/section.model";
-import { sectionService } from "@/services/section.service";
+import { sectionService } from "@/services/courses/section.service";
 import { toastService } from "@/services/toast.service";
 import { CourseSubmit } from "./CourseSubmit";
 import Loader from "@/components/_commons/Loader";
@@ -107,10 +107,6 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
           <SectionCreator course={course} onCreate={onAddSection} />
         </div>
       </div>
-
-      <CourseSubmit
-        moveToNextStep={onNext}
-      ></CourseSubmit>
     </>
   );
 };

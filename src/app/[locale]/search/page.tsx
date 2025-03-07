@@ -6,11 +6,12 @@ import { createContext } from "react";
 import { CourseSearchPayload } from "@/models";
 import { ReactNode, useState } from "react";
 import { CourseStatus } from "@/constants";
+import SearchSuggest from "./component/Suggest";
 // import { useState } from "react";
 export const SearchContext = createContext<{
   filter: CourseSearchPayload;
   setFilter: (c: CourseSearchPayload) => void;
-}>(null);
+} | null>(null);
 
 const SearchProvider = ({ children }: { children: ReactNode }) => {
   const [filter, setFilter] = useState<CourseSearchPayload>({
@@ -36,6 +37,9 @@ const CourseBoard: React.FC = () => {
         <div className="flex-1 bg-white h-full max-h-full rounded-sm overflow-hidden flex flex-col">
           <SearchContent />
         </div>
+      </div>
+      <div className="mt-4">
+      <SearchSuggest></SearchSuggest>
       </div>
     </SearchProvider>
   );

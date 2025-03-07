@@ -1,5 +1,6 @@
 import { CourseStatus } from "@/constants";
-import { User } from "../user.model";
+import { ShortUser, User } from "../user.model";
+import { DropdownOption } from "../utils.model";
 
 export interface Level {
   id: number;
@@ -18,13 +19,13 @@ export interface Category {
 }
 
 export interface CoursePayload {
-  name: string;
+  name?: string;
   thumbnail?: string;
   description?: string;
   price?: number;
   summary?: string;
   estimatedTime?: number;
-  status?: CourseStatus;
+  status?: CourseStatus[];
   categoryId?: number;
   subCategoryId?: number;
   levelId?: number;
@@ -50,13 +51,35 @@ export interface Course {
   updatedAt?: string;
 }
 
+export interface FullCourse {
+  id: number;
+  name: string;
+  slug: string;
+  thumbnail: string;
+  description: string;
+  summary: string;
+  price: number;
+  estimatedTime: number;
+  status: CourseStatus;
+  owner: ShortUser;
+  category: Category;
+  subCategory: Category;
+  level: Level;
+  topics: Topic[];
+  instructors: Instructor[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+
+
 export interface CourseFile {
   name: string;
   size: number;
   time: string;
   url: string;
   type: CourseFileType;
-};
+}
 
 export enum StepType {
   Target,
@@ -106,10 +129,52 @@ export enum CourseFileType {
 }
 
 export enum CourseTargetType {
-  object= 'object',
-  requirement = 'requirement',
-  achieved = 'achieved',
+  object = "object",
+  requirement = "requirement",
+  achieved = "achieved",
 }
+
+export enum CourseAccessType {
+  VIEW = "view",
+  EDIT = "edit",
+}
+
+export const CourseAccess: DropdownOption<CourseAccessType>[] = [
+  {
+    name: "View",
+    value: CourseAccessType.VIEW,
+  },
+  {
+    name: "Edit",
+    value: CourseAccessType.EDIT,
+  }
+];
+
+export enum InstructorType {
+  PRIMARY = "primary",
+  CO_INSTRUCTOR = "co-instructor",
+  ASSISTANT = "assistant",
+  CONTENT_CREATOR = "content_creator",
+}
+
+export const InstructorTypes: DropdownOption<InstructorType>[] = [
+  {
+    name: "Primary Instructor",
+    value: InstructorType.PRIMARY,
+  },
+  {
+    name: "Co-Instructor",
+    value: InstructorType.CO_INSTRUCTOR,
+  },
+  {
+    name: "Assistant Instructor",
+    value: InstructorType.ASSISTANT,
+  },
+  {
+    name: "Content Creator",
+    value: InstructorType.CONTENT_CREATOR,
+  }
+]
 
 export interface CourseTarget {
   id?: number;
@@ -125,4 +190,35 @@ export interface CourseTargetPayload {
 
 export interface CourseStatusPayload {
   status?: CourseStatus;
+}
+
+export class Instructor {
+  id: number;
+  user: ShortUser;
+  accessType: CourseAccessType;
+  type: InstructorType;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export class InstructorPayload {
+  userId: number;
+  accessType: CourseAccessType;
+  type: InstructorType;
+}
+
+
+export interface DiscountPayload {
+  courseId: number;
+  discountPercentage?: number;
+  discountAmount?: number;
+  discountType: 'percent' | 'amount';
+  startDate: string;
+  endDate: string;
+  discountCode?: string;
+  description?: string;
+}
+
+export interface Discount extends DiscountPayload {
+  id: number;
 }

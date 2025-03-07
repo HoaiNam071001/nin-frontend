@@ -5,7 +5,7 @@ import {
   SectionContent,
   SectionType,
 } from "@/models/course/section.model";
-import { sectionService } from "@/services/section.service";
+import { sectionService } from "@/services/courses/section.service";
 import NEditor from "../_commons/NEditor";
 import { SectionFiles } from "./SectionFiles";
 import I18n from "../_commons/I18n";

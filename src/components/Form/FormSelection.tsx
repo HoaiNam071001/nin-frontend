@@ -9,9 +9,9 @@ import {
   RegisterOptions,
 } from "react-hook-form";
 import FormError from "./FormError";
-import NDropdown from "../_commons/NDropdown";
+import NSelection from "../_commons/NSelection";
 
-interface FormDropdownProps<T, F> {
+interface FormSelectionProps<T, F> {
   control: Control<F>;
   name: Path<F>;
   defaultValue?: F;
@@ -25,6 +25,8 @@ interface FormDropdownProps<T, F> {
   placeholder?: string;
   searchable?: boolean;
   clearable?: boolean;
+  dropdownWidth?: string;
+  searchOnFirstOpen?: boolean;
   rules?: Omit<
     RegisterOptions<F>,
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
@@ -32,7 +34,7 @@ interface FormDropdownProps<T, F> {
   onSearch?: (key?: string) => void;
 }
 
-const FormDropdown = <T extends object, F extends object>({
+const FormSelection = <T extends object, F extends object>({
   control,
   name,
   defaultValue,
@@ -45,10 +47,12 @@ const FormDropdown = <T extends object, F extends object>({
   rules,
   searchable = false,
   clearable = false,
+  searchOnFirstOpen,
+  dropdownWidth,
   onSearch,
   renderLabel,
   renderOption,
-}: FormDropdownProps<T, F>) => {
+}: FormSelectionProps<T, F>) => {
   return (
     <Controller
       control={control}
@@ -57,7 +61,7 @@ const FormDropdown = <T extends object, F extends object>({
       defaultValue={defaultValue as PathValue<F, Path<F>>}
       render={({ field, fieldState }) => (
         <>
-          <NDropdown
+          <NSelection
             value={field.value}
             bindLabel={bindLabel}
             bindValue={bindValue}
@@ -67,6 +71,8 @@ const FormDropdown = <T extends object, F extends object>({
             className={className}
             clearable={clearable}
             options={options}
+            searchOnFirstOpen={searchOnFirstOpen}
+            dropdownWidth={dropdownWidth}
             onSearch={onSearch}
             renderLabel={renderLabel}
             renderOption={renderOption}
@@ -80,4 +86,4 @@ const FormDropdown = <T extends object, F extends object>({
   );
 };
 
-export default FormDropdown;
+export default FormSelection;

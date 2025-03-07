@@ -1,11 +1,11 @@
 "use client";
 
-import FormDropdown from "@/components/Form/FormDropdown";
+import FormSelection from "@/components/Form/FormSelection";
 import FormInput from "@/components/Form/FormInput";
 import NButton from "@/components/_commons/NButton";
 import { Course } from "@/models";
 import { Section, SectionType } from "@/models/course/section.model";
-import { sectionService } from "@/services/section.service";
+import { sectionService } from "@/services/courses/section.service";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -72,7 +72,7 @@ export function SectionCreator({
               <div className="form-group">
                 <label>Type</label>
                 <div className="w-[200px]">
-                  <FormDropdown
+                  <FormSelection
                     control={control}
                     name={"type"}
                     rules={{
@@ -84,7 +84,7 @@ export function SectionCreator({
                       { value: SectionType.Post, name: "Post" },
                     ]}
                     placeholder="Select Type"
-                  ></FormDropdown>
+                  ></FormSelection>
                 </div>
               </div>
             </>

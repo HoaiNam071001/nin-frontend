@@ -2,7 +2,7 @@ import {
   Post,
   PostPayload,
 } from "@/models/course/section.model";
-import apiClient from "./config";
+import apiClient from "../config";
 
 export const postService = {
   addPostSection: async (sectionId: number, payload: PostPayload) => {

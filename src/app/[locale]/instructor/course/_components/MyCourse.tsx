@@ -1,5 +1,5 @@
 import { Course } from "@/models";
-import { courseService } from "@/services/course.service";
+import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 import React, { useEffect, useState } from "react";
 import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
