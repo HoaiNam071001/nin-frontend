@@ -14,13 +14,16 @@ import {
 } from "@/models/utils.model";
 import { Course } from "@/models";
 import { courseSearchService } from "@/services/courses/course-search.service";
-import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
+import { DEFAULT_PAGESIZE, FIRST_PAGE, ROUTES } from "@/constants";
 import NPagination from "@/components/_commons/NPagination";
 import { toastService } from "@/services/toast.service";
 import NSelection from "@/components/_commons/NSelection";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
 import I18n from "@/components/_commons/I18n";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
+import CourseContainer from "@/components/_commons/ContainerGrid";
+import NEmpty from "@/components/_commons/NEmpty";
 
 const sortItems: DropdownOption<OrderBy>[] = [
   {
@@ -80,7 +83,7 @@ const SearchContent: React.FC = () => {
 
   const [rows, setRows] = useState<Course[]>([]);
   const keyword = useSelector((state: RootState) => state.utils.keyword);
-
+  const router = useI18nRouter();
   const fetchCourses = async () => {
     try {
       const { content, ...res }: List2Res<Course> =
@@ -96,8 +99,7 @@ const SearchContent: React.FC = () => {
       setPageInfo(null);
     }
   };
-  useEffect(() => {
-  }, [keyword]);
+  useEffect(() => {}, [keyword]);
 
   useEffect(() => {
     if (firstRender.current) {
@@ -115,16 +117,16 @@ const SearchContent: React.FC = () => {
   };
 
   return (
-    <div className="overflow-auto px-3 rounded-md relative">
+    <div className="overflow-auto px-3 rounded-md relative flex-1">
       <div className="flex sticky top-0 z-10 bg-white py-3">
         <div className="font-semibold text-title-sm">
-          <I18n i18key={"Search"}/>
+          <I18n i18key={"Search"} />
         </div>
         <NSelection
           value={sorter}
           bindLabel="name"
           className="ml-auto"
-          onChange={(value) => {
+          onChange={(value: DropdownOption<OrderBy>) => {
             setSorter(value);
             setPageAbleValue({
               sort: value?.value ? [value.value] : undefined,
@@ -134,11 +136,18 @@ const SearchContent: React.FC = () => {
         />
       </div>
 
-      <div className="mb-3 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 overflow-auto flex-1">
-        {rows?.map((course, index) => (
-          <CourseItem key={index} course={course} />
-        ))}
-      </div>
+      {rows?.length > 0 && (
+        <CourseContainer className="mb-3 flex-1">
+          {rows?.map((course, index) => (
+            <CourseItem key={index} course={course} viewDetail={true} />
+          ))}
+        </CourseContainer>
+      )}
+      {!rows?.length && (
+        <div className="flex items-center justify-center h-[80%]">
+          <NEmpty />
+        </div>
+      )}
       <div className="p-4 pt-0">
         <NPagination
           pageInfo={pageInfo}

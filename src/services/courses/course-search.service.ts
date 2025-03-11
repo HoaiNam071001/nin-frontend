@@ -30,4 +30,5 @@ export const courseSearchService = {
     const response = await apiClient.get<FullCourse>(`/course-search/full/${slug}`);
     return response.data;
   },
+  
 };

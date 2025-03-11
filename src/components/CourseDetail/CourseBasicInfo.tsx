@@ -14,10 +14,16 @@ export const CourseBasicInfo = ({
   showView?: boolean;
 }) => {
   return (
-    <div className="space-y-4">
-      <div className="line-clamp-2 text-title-md font-semibold">
-        {course?.name}
+    <div className="space-y-2">
+      <div>
+        <div className="line-clamp-2 text-title-md font-semibold">
+          {course?.name}
+        </div>
+        {course?.summary && (
+          <div className="text-slate-400">{course?.summary}</div>
+        )}
       </div>
+
       {course?.owner && (
         <div className="flex items-center space-x-2">
           <NAvatar
@@ -58,7 +64,7 @@ export const CourseBasicInfo = ({
         )}
       </div>
 
-        <CourseTopics course={course}/>
+      <CourseTopics course={course} />
 
       <div>
         <ExpandableContent content={course?.description} height={200} />

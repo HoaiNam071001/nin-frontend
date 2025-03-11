@@ -1,6 +1,6 @@
 import CourseDetail from "./_components/course-detail";
 interface PageProps {
-  params: { slug: string }; // Next.js tự động cung cấp params
+  params: { slug: string };
 }
 const CourseOverviewPage = ({ params }: PageProps) => {
   return (

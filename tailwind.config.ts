@@ -105,24 +105,6 @@ const config = {
           "50%": { transform: "translateY(0)" },
         },
       },
-      animation: {
-        linspin: "linspin 1568.2353ms linear infinite",
-        easespin: "easespin 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both",
-        "left-spin":
-          "left-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both",
-        "right-spin":
-          "right-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite both",
-        "ping-once": "ping 5s cubic-bezier(0, 0, 0.2, 1)",
-        rotating: "rotating 30s linear infinite",
-        topbottom: "topbottom 60s infinite alternate linear",
-        bottomtop: "bottomtop 60s infinite alternate linear",
-        "spin-1.5": "spin 1.5s linear infinite",
-        "spin-2": "spin 2s linear infinite",
-        "spin-3": "spin 3s linear infinite",
-        line1: "line 10s infinite linear",
-        line2: "line-revert 8s infinite linear",
-        line3: "line 7s infinite linear",
-      },
       gridAutoColumns: {
         // Tùy chỉnh grid auto columns cho 5 cột, 4 cột, 3 cột, 2 cột và 1 cột
         '5': 'calc((100% - (5 - 1) * 1rem) / 5)',  // 5 cột
@@ -134,6 +116,8 @@ const config = {
 
     },
   },
-  plugins: [],
+  plugins: [
+    
+  ],
 };
 export default config;

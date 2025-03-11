@@ -9,7 +9,7 @@ import useAuth from "@/hooks/useAuth";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { authAction } from "@/redux";
 import { toastService } from "@/services/toast.service";
-import { userService } from "@/services/user.service";
+import { userService } from "@/services/user/user.service";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 

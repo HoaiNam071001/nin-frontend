@@ -32,7 +32,7 @@ const SearchSuggest: React.FC = () => {
       <div className="font-semibold text-title-sm">
         <I18n i18key={"Suggestion"} />
       </div>
-      <ItemList courses={rows}></ItemList>
+      <ItemList courses={rows} viewDetail={true}></ItemList>
     </div>
   );
 };

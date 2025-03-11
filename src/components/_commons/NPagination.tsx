@@ -20,7 +20,7 @@ const NPagination = ({ pageInfo, updated, ...rest }: NPaginationProps) => {
 
   return (
     <>
-      {pageInfo?.totalElements && (
+      {pageInfo?.totalElements > 0 && (
         <Pagination
           defaultCurrent={1}
           total={pageInfo?.totalElements}

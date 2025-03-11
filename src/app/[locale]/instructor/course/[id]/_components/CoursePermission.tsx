@@ -20,7 +20,7 @@ import SvgIcon from "@/components/_commons/SvgIcon";
 import { useModal } from "@/providers/ModalProvider";
 import NUser from "@/components/_commons/NUser";
 import { List2Res } from "@/models/utils.model";
-import { userService } from "@/services/user.service";
+import { userService } from "@/services/user/user.service";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 import FormSelection from "@/components/Form/FormSelection";

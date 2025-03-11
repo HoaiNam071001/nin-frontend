@@ -1,5 +1,5 @@
 import { CourseStatus } from "@/constants";
-import { ShortUser, User } from "../user.model";
+import { ShortUser, User } from "../user/user.model";
 import { DropdownOption } from "../utils.model";
 
 export interface Level {
@@ -44,8 +44,10 @@ export interface Course {
   owner: User;
   category?: Category;
   subCategory?: Category;
+  currency?: string;
   level?: Level;
   topics?: Topic[];
+  discounts?: Discount[];
   summary?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -59,6 +61,7 @@ export interface FullCourse {
   description: string;
   summary: string;
   price: number;
+  currency?: string;
   estimatedTime: number;
   status: CourseStatus;
   owner: ShortUser;
@@ -67,11 +70,12 @@ export interface FullCourse {
   level: Level;
   topics: Topic[];
   instructors: Instructor[];
+  discounts: Discount[];
+  totalSection: number;
+  totalFile: number;
   createdAt: Date;
   updatedAt: Date;
 }
-
-
 
 export interface CourseFile {
   name: string;
@@ -147,7 +151,7 @@ export const CourseAccess: DropdownOption<CourseAccessType>[] = [
   {
     name: "Edit",
     value: CourseAccessType.EDIT,
-  }
+  },
 ];
 
 export enum InstructorType {
@@ -173,8 +177,8 @@ export const InstructorTypes: DropdownOption<InstructorType>[] = [
   {
     name: "Content Creator",
     value: InstructorType.CONTENT_CREATOR,
-  }
-]
+  },
+];
 
 export interface CourseTarget {
   id?: number;
@@ -207,11 +211,9 @@ export class InstructorPayload {
   type: InstructorType;
 }
 
-
 export interface DiscountPayload {
   courseId: number;
-  discountPercentage?: number;
-  discountAmount?: number;
+  amount?: number;
   discountType: DiscountType;
   startDate: string;
   endDate: string;
@@ -223,6 +225,6 @@ export interface Discount extends DiscountPayload {
   id: number;
 }
 export enum DiscountType {
-  PERCENT = 'percent',
-  AMOUNT = 'amount',
+  PERCENT = "percent",
+  AMOUNT = "amount",
 }

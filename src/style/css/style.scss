@@ -7,6 +7,7 @@
   --n-secondary: #a1a8cc;
   --n-orange: #FF9500;
 }
+@import './grid.scss';
 
 
 .icon {
@@ -59,7 +60,7 @@
     @apply content-[''];
   }
   &.checked, &:checked {
-    @apply bg-primary border-primary;
+    @apply bg-system border-system;
     &::before {
       @apply rotate-45 w-[5px] h-[9px] border-r border-b block translate-x-1;
       transition: transform 0.1s ease-in-out;
@@ -69,4 +70,15 @@
 
 .text-ellipsis {
   @apply overflow-ellipsis whitespace-nowrap overflow-hidden;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

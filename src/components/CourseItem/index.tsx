@@ -2,6 +2,8 @@ import CustomImage from "../_commons/CustomImage";
 import { Tooltip } from "antd";
 import { Course } from "@/models";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { ROUTES } from "@/constants";
 
 const item = {
   name: "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing ",
@@ -16,14 +18,28 @@ const item = {
 
 type CourseProps = {
   course?: Course;
-  onView?: () => void;
+  viewDetail?: boolean;
+  viewLecture?: boolean;
 };
 
-export const CourseItem: React.FC<CourseProps> = ({ course, onView }) => {
+export const CourseItem: React.FC<CourseProps> = ({ course, viewDetail, viewLecture }) => {
+  const router = useI18nRouter();
+
+  const onView = () => {
+    if (viewLecture) {
+      router.push(`${ROUTES.COURSE}/${course.slug}`);
+      return;
+    }
+    if (viewDetail) {
+      router.push(`${ROUTES.COURSE}/${course.slug}`);
+      return;
+    }
+  };
+  
   return (
     <div
       className="border border-stroke rounded-lg p-3 hover:shadow-default cursor-pointer"
-      onClick={() => onView?.()}
+      onClick={() => onView()}
     >
       <div className="h-[170px] w-0 px-[50%] relative">
         <CustomImage

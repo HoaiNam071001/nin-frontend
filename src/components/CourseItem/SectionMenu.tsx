@@ -92,7 +92,7 @@ const SectionTree = ({
           }`}
         ></SvgIcon>
 
-        <span className="font-semibold line-clamp-2 mr-4 ml-2">
+        <span className="font-semibold line-clamp-2 mr-4 ml-2 capitalize">
           {item.name}
         </span>
         <span className="ml-auto whitespace-nowrap">30 minutes</span>
@@ -108,7 +108,7 @@ const SectionTree = ({
             {e.type === SectionType.Post && <SvgIcon icon="file" className="icon icon-md"></SvgIcon>}
             {e.type === SectionType.Video && <SvgIcon icon="video-file" className="icon icon-md"></SvgIcon>}
 
-            <span className="">{e.name}</span>
+            <span className="capitalize">{e.name}</span>
             <span className="ml-auto">30:10</span>
           </div>
         ))}

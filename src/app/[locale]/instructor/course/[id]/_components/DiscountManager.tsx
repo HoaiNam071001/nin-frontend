@@ -19,16 +19,17 @@ import { toastService } from "@/services/toast.service";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { SectionOptions } from "./SectionOptions";
+import { useModal } from "@/providers/ModalProvider";
+import { useForm } from "react-hook-form";
+import FormInput from "@/components/Form/FormInput";
+import FormSelection from "@/components/Form/FormSelection";
+import { DATE_FORMATS } from "@/constants";
 
 export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
+  const { openModal } = useModal();
+
   const [discounts, setDiscounts] = useState<Discount[]>([]);
   const [editingDiscount, setEditingDiscount] = useState<Discount | null>(null);
-  const [discountPayload, setDiscountPayload] = useState<DiscountPayload>({
-    courseId: course.id,
-    discountType: DiscountType.PERCENT,
-    startDate: moment().toISOString(),
-    endDate: moment().add(1, "day").toISOString(),
-  });
 
   useEffect(() => {
     fetchDiscounts();
@@ -45,23 +46,18 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
     }
   };
 
-  const handleCreateOrUpdateDiscount = async () => {
+  const handleCreateOrUpdateDiscount = async (data: DiscountPayload) => {
     try {
+      data.amount = +(data.amount || 0);
       if (editingDiscount) {
-        await courseService.updateDiscount(editingDiscount.id, discountPayload);
+        await courseService.updateDiscount(editingDiscount.id, data);
         toastService.success("Discount updated successfully");
       } else {
-        await courseService.createDiscount(course.id, discountPayload);
+        await courseService.createDiscount(course.id, data);
         toastService.success("Discount created successfully");
       }
       fetchDiscounts();
       setEditingDiscount(null);
-      setDiscountPayload({
-        courseId: course.id,
-        discountType: DiscountType.PERCENT,
-        startDate: moment().toISOString(),
-        endDate: moment().add(1, "day").toISOString(),
-      });
     } catch (error) {
       toastService.error(error?.message);
     }
@@ -79,10 +75,42 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
 
   const handleEditDiscount = (discount: Discount) => {
     setEditingDiscount(discount);
-    setDiscountPayload({
-      ...discount,
-      startDate: moment(discount.startDate).toISOString(),
-      endDate: moment(discount.endDate).toISOString(),
+    openModal({
+      content: (
+        <DiscountForm
+          discountPayload={{
+            ...discount,
+            startDate: moment(discount.startDate).toISOString(),
+            endDate: moment(discount.endDate).toISOString(),
+          }}
+          onSubmit={handleCreateOrUpdateDiscount}
+          isEditing={true}
+        />
+      ),
+      header: <I18n i18key={"Edit Discount"} />,
+      onClose: () => setEditingDiscount(null),
+      config: { width: "600px" },
+    });
+  };
+
+  const handleAddDiscount = () => {
+    setEditingDiscount(null);
+    openModal({
+      content: (
+        <DiscountForm
+          discountPayload={{
+            courseId: course.id,
+            discountType: DiscountType.PERCENT,
+            startDate: moment().toISOString(),
+            endDate: moment().add(1, "day").toISOString(),
+          }}
+          onSubmit={handleCreateOrUpdateDiscount}
+          isEditing={false}
+        />
+      ),
+      header: <I18n i18key={"Add Discount"} />,
+      onClose: () => setEditingDiscount(null),
+      config: { width: "600px" },
     });
   };
 
@@ -92,8 +120,8 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
       dataIndex: "discountType",
       render: (value, record) =>
         value === DiscountType.PERCENT
-          ? `${record.discountPercentage}%`
-          : `${record.discountAmount}`,
+          ? `${record.amount}%`
+          : `${record.amount}`,
     },
     {
       title: "Discount Code",
@@ -106,12 +134,12 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
     {
       title: "Start Date",
       dataIndex: "startDate",
-      render: (value) => moment(value).format("YYYY-MM-DD"),
+      render: (value) => moment(value).format(DATE_FORMATS.SHORT_DATE_VERBOSE),
     },
     {
       title: "End Date",
       dataIndex: "endDate",
-      render: (value) => moment(value).format("YYYY-MM-DD"),
+      render: (value) => moment(value).format(DATE_FORMATS.SHORT_DATE_VERBOSE),
     },
     {
       title: "",
@@ -128,86 +156,62 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
   ];
 
   return (
-    <>
+    <div className="space-y-2">
       <div className="font-semibold mb-2">
         <I18n i18key={"Discounts"} />
       </div>
       <NTable<Discount> columns={columns} dataSource={discounts} />
-
-      <DiscountForm
-        discountPayload={discountPayload}
-        setDiscountPayload={setDiscountPayload}
-        onSubmit={handleCreateOrUpdateDiscount}
-        isEditing={!!editingDiscount}
-      />
-    </>
+      <NButton onClick={handleAddDiscount}>Create Discount</NButton>
+    </div>
   );
 };
 
 interface DiscountFormProps {
   discountPayload: DiscountPayload;
-  setDiscountPayload: (payload: DiscountPayload) => void;
-  onSubmit: () => void;
+  onSubmit: (data: DiscountPayload) => void;
   isEditing: boolean;
 }
 
 const DiscountForm: React.FC<DiscountFormProps> = ({
   discountPayload,
-  setDiscountPayload,
   onSubmit,
   isEditing,
 }) => {
+  const { closeModal } = useModal();
+  const { handleSubmit, setValue, control } = useForm<DiscountPayload>({
+    defaultValues: discountPayload,
+  });
+
+  const handleFormSubmit = (data: DiscountPayload) => {
+    onSubmit(data);
+    closeModal();
+  };
+
   return (
-    <div className="border border-stroke p-4 rounded-lg shadow-lg bg-slate-50">
-      <div className="form-group">
-        <NSelection<{ label: string; value: string }>
-          value={discountPayload.discountType}
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <div className="form-group space-y-2">
+        <FormSelection
+          control={control}
           bindLabel="label"
           bindValue="value"
+          name={"discountType"}
           options={[
             { label: "Percent", value: DiscountType.PERCENT },
             { label: "Amount", value: DiscountType.AMOUNT },
           ]}
-          onChange={(value) => {
-            setDiscountPayload({
-              ...discountPayload,
-              discountType: value as any,
-            });
+        ></FormSelection>
+
+        <FormInput
+          name={`amount`}
+          type="number"
+          control={control}
+          defaultValue={""}
+          rules={{
+            required: "Value is required",
+            min: 0,
           }}
+          placeholder="Enter value"
         />
-        {discountPayload.discountType === "percent" ? (
-          <>
-            <label>
-              <I18n i18key={"Discount Percentage"} />{" "}
-            </label>
-            <NInput
-              type="number"
-              value={discountPayload.discountPercentage}
-              onValueChange={(value) =>
-                setDiscountPayload({
-                  ...discountPayload,
-                  discountPercentage: value as number,
-                })
-              }
-            />
-          </>
-        ) : (
-          <>
-            <label>
-              <I18n i18key={"Discount Amount"} />
-            </label>
-            <NInput
-              type="number"
-              value={discountPayload.discountAmount}
-              onValueChange={(value) =>
-                setDiscountPayload({
-                  ...discountPayload,
-                  discountAmount: value as number,
-                })
-              }
-            />
-          </>
-        )}
       </div>
 
       <div className="flex">
@@ -217,12 +221,7 @@ const DiscountForm: React.FC<DiscountFormProps> = ({
           </label>
           <NDatePicker
             value={discountPayload.startDate}
-            onChange={(value) =>
-              setDiscountPayload({
-                ...discountPayload,
-                startDate: value as string,
-              })
-            }
+            onChange={(value) => setValue("startDate", value)}
           />
         </div>
         <div className="form-group flex-1">
@@ -231,12 +230,7 @@ const DiscountForm: React.FC<DiscountFormProps> = ({
           </label>
           <NDatePicker
             value={discountPayload.endDate}
-            onChange={(value) =>
-              setDiscountPayload({
-                ...discountPayload,
-                endDate: value as string,
-              })
-            }
+            onChange={(value) => setValue("endDate", value)}
           />
         </div>
       </div>
@@ -245,35 +239,30 @@ const DiscountForm: React.FC<DiscountFormProps> = ({
         <label>
           <I18n i18key={"Discount Code"} />
         </label>
-        <NInput
-          value={discountPayload.discountCode}
-          onValueChange={(value) =>
-            setDiscountPayload({
-              ...discountPayload,
-              discountCode: value as string,
-            })
-          }
+        <FormInput
+          name={`discountCode`}
+          control={control}
+          defaultValue={""}
+          placeholder="Enter value"
         />
       </div>
       <div className="form-group">
         <label>
           <I18n i18key={"Description"} />
         </label>
-        <NInput
-          value={discountPayload.description}
-          onValueChange={(value) =>
-            setDiscountPayload({
-              ...discountPayload,
-              description: value as string,
-            })
-          }
+        <FormInput
+          name={`description`}
+          control={control}
+          defaultValue={""}
+          placeholder="Enter value"
         />
       </div>
-      <NButton onClick={onSubmit}>
-        {isEditing ? "Update Discount" : "Create Discount"}
-      </NButton>
-    </div>
+      <div className="flex justify-end gap-2">
+        <NButton variant="outlined" onClick={closeModal}>
+          Cancel
+        </NButton>
+        <NButton>{isEditing ? "Update" : "Create"}</NButton>
+      </div>
+    </form>
   );
 };
-
-export default DiscountForm;

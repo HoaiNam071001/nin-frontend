@@ -53,6 +53,13 @@ export const courseService = {
     return response.data;
   },
 
+  getRegisteredCourses: async (pageAble?: PageAble) => {
+    const response = await apiClient.get<List2Res<Course>>(
+      `/course/registered?${pageAble ? stringifyPageAble(pageAble) : ""}`
+    );
+    return response.data;
+  },
+
   getCourseById: async (id: number) => {
     const response = await apiClient.get<Course>(`/course/${id}`);
     return response.data;

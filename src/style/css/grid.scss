@@ -1,0 +1,31 @@
+/* grid.scss */
+.course-container {
+  container-type: inline-size;
+  .course-grid {
+    @apply grid grid-cols-1 gap-4;
+  }
+
+  @container (min-width: 640px) {
+    .course-grid {
+      @apply grid-cols-2;
+    }
+  }
+
+  @container (min-width: 768px) {
+    .course-grid {
+      @apply grid-cols-3;
+    }
+  }
+
+  @container (min-width: 1024px) {
+    .course-grid {
+      @apply grid-cols-4;
+    }
+  }
+
+  @container (min-width: 1280px) {
+    .course-grid {
+      @apply grid-cols-5;
+    }
+  }
+}

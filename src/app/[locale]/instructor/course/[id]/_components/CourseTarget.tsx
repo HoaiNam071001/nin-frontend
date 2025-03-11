@@ -192,7 +192,7 @@ export const CourseTargetComponent: React.FC<SettingSubmitProps> = ({
                         {fields.fields.length > 1 && (
                           <Button
                             onClick={() => fields.remove(index)}
-                            className="p-0 bg-transparent border-0 hover:!text-red absolute right-3 top-1 hidden group-hover:block"
+                            className="p-0 bg-transparent border-0 hover:!text-red absolute right-3 hidden group-hover:block"
                           >
                             <SvgIcon className="icon icon-sm" icon="close" />
                           </Button>

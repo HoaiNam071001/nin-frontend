@@ -5,7 +5,7 @@ import "./globals.scss";
 import { useEffect, useState } from "react";
 import { Provider, useDispatch } from "react-redux";
 import store from "@/redux/store";
-import { userService } from "@/services/user.service";
+import { userService } from "@/services/user/user.service";
 import { authAction } from "@/redux";
 import Loader from "@/components/_commons/Loader";
 import { StorageKey } from "@/constants";

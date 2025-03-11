@@ -9,11 +9,21 @@ import { courseSearchService } from "@/services/courses/course-search.service";
 import { toastService } from "@/services/toast.service";
 import { useEffect, useState } from "react";
 import CourseBreadcrumb from "./course-breadcrumb";
+import { CourseComment } from "@/components/CourseDetail/CourseComment";
+import { cartService } from "@/services/user/cart.service";
 
 const CourseDetail = ({ slug }) => {
-  const { currentUser } = useAuth();
   const [course, setCourse] = useState<FullCourse>();
   const [loading, setLoading] = useState<boolean>(true);
+
+  const addToCart = async () => {
+    try {
+      await cartService.addItem(course?.id);
+      toastService.success("Course added to cart successfully.");
+    } catch (err: any) {
+      toastService.error("Failed to update quantity.");
+    }
+  };
 
   const getBySlug = async () => {
     try {
@@ -29,18 +39,24 @@ const CourseDetail = ({ slug }) => {
   useEffect(() => {
     getBySlug();
   }, [slug]);
-
   return (
-    <div className="mx-auto bg-white shadow-lg border space-x-4 border-stroke rounded-lg flex p-4">
+    <div className="mx-auto bg-white space-x-4  flex p-4">
       {course && (
-        <div className="h-full flex-1 overflow-x-auto space-y-2">
-          <CourseBreadcrumb course={course} />
-          <CourseBasicInfo course={course} />
-          <CourseContentMenu course={course} />
+        <div className="h-full flex-1 overflow-x-auto">
+          <div className="mb-3">
+            <CourseBreadcrumb course={course} />
+          </div>
+          <div className="mb-3">
+            <CourseBasicInfo course={course} />
+          </div>
+          <div className="mb-5">
+            <CourseContentMenu course={course} />
+          </div>
+          <CourseComment course={course} />
         </div>
       )}
       <div className="md:col-span-3 sticky top-[200px] min-w-[350px] w-[350px]">
-        <CourseCard />
+        {course && <CourseCard course={course} addToCart={addToCart}  />}
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants";
 import Image from "next/image";
 
 interface CustomImageProps {
-  src?: string;
-  alt: string;
+  src: string;
+  alt?: string;
   width?: number;
   height?: number;
   className?: string;
@@ -21,7 +22,7 @@ const CustomImage: React.FC<CustomImageProps> = ({
   
   return (
     <Image
-      src={src || svg}
+      src={src || svg || DEFAULT_COURSE_THUMBNAIL}
       alt={alt}
       width={width}
       height={height}

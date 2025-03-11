@@ -29,7 +29,7 @@ const SystemSearch = () => {
   const router = useI18nRouter();
   const pathname = usePathname();
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
-  const searchTextDebounce = useDebounce<string>(keyword, 500);
+  const searchTextDebounce = useDebounce(keyword, 500);
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const translate = useTranslate();
@@ -146,7 +146,7 @@ const SystemSearch = () => {
               </div>
 
               <div>
-                <div
+                {/* <div
                   className={`p-2 cursor-pointer flex items-center hover:bg-[var(--n-row-hover)] gap-3`}
                 >
                   <div>
@@ -171,7 +171,7 @@ const SystemSearch = () => {
                   <div className="">
                     <div>Công nghệ</div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           )}

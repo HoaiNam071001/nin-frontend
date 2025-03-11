@@ -12,8 +12,9 @@ export const ROUTES = {
 
     // course
     COURSE: '/course',
-    MY_COURSE: '/course/my-course',
-    
+    MY_COURSE: '/course/registered',
+    PAYMENT: '/course/payment',
+
     // utils
     INSTRUCTOR_PREVIEW: '/w/preview',
 

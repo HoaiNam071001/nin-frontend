@@ -11,16 +11,16 @@ const CourseContentMenu = ({
   course: Course | FullCourse; 
 }) => {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 pt-2">
       
       <div className="font-semibold text-title-sm">Course Content</div>
-      <div className="flex items-center text-gray-400">
+      {/* <div className="flex items-center text-gray-400">
         <span>20 sections </span>
         <SvgIcon icon="dot" className="icon icon-sm"></SvgIcon>
         <span>30h 20m total length</span>
 
         <Button type="link">Link</Button>
-      </div>
+      </div> */}
       <SectionMenu courseId={course.id}/>
     </div>
   );

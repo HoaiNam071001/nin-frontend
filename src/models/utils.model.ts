@@ -27,20 +27,20 @@ export interface PageAble {
 }
 
 export class PageAbleModel {
-  stringify = stringifyPageAble
+  stringify = stringifyPageAble;
 }
 
 export enum SortOrder {
-  ASC = 'ASC',
-  DESC = 'DESC',
+  ASC = "ASC",
+  DESC = "DESC",
 }
 
 export interface OrderBy {
   property?: string; // Thuộc tính cần sắp xếp
   direction: SortOrder; // Hướng sắp xếp
-}  
+}
 
-export const stringifyPageAble  = (pageAble: PageAble): string => {
+export const stringifyPageAble = (pageAble: PageAble): string => {
   const query = queryString.stringify(
     {
       size: pageAble?.size || DEFAULT_PAGESIZE,
@@ -51,4 +51,12 @@ export const stringifyPageAble  = (pageAble: PageAble): string => {
     { arrayFormat: "comma" } // Hoặc 'bracket' nếu cần [order=id:ASC, name:ASC]
   );
   return query;
-}
+};
+
+export enum Currency {
+  USD = 'USD',
+  EUR = 'EUR',
+  GBP=  'GBP',
+  JPY = 'JPY',
+  VND = 'VND',
+};

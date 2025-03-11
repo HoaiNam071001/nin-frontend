@@ -9,4 +9,4 @@ export const COURSE_STATUS_OPTIONS: DropdownOption<CourseStatus>[] = Object.entr
 );
 
 
-export const DEFAULT_COURSE_THUMBNAIL = '/images/course-2.png';
+export const DEFAULT_COURSE_THUMBNAIL = '/images/course.png';
