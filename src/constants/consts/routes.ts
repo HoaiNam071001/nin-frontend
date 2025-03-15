@@ -1,3 +1,5 @@
+
+
 export const ROUTES = {
     HOME: '/',
     SIGN_IN: '/signin',
@@ -12,6 +14,7 @@ export const ROUTES = {
 
     // course
     COURSE: '/course',
+    COURSE_DETAIL: (slug: string) => `/course/${slug}/detail`,
     MY_COURSE: '/course/registered',
     PAYMENT: '/course/payment',
 

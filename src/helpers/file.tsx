@@ -13,7 +13,7 @@ export function getVideoDuration(file: File): Promise<number> {
 
     // Khi metadata video được load
     videoElement.onloadedmetadata = () => {
-      const duration = videoElement.duration; // Thời lượng tính bằng giây
+      const duration = videoElement.duration;
       URL.revokeObjectURL(fileURL); // Giải phóng bộ nhớ
       resolve(duration);
     };

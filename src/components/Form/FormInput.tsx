@@ -23,7 +23,7 @@ type ControlledInputProps<TFieldValues extends FieldValues> = {
   id?: string;
   addonBefore?: React.ReactNode; // Addon content before the input
   addonAfter?: React.ReactNode; 
-  type?: "text" | "password" | "email" | "number" | "tel"; // Common input types
+  type?: "text" | "password" | "email" | "number" | "tel" | "time"; // Common input types
   onSearch?: (value: string) => void;
 };
 

@@ -3,13 +3,15 @@ import SvgIcon from "@/components/_commons/SvgIcon";
 import { Course } from "@/models";
 import { Section, SectionContent } from "@/models/course/section.model";
 import { sectionService } from "@/services/courses/section.service";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SectionOptions } from "./SectionOptions";
 import FormInput from "@/components/Form/FormInput";
 import Loader from "@/components/_commons/Loader";
 import { SectionFileContent } from "./SectionFileContent";
 import { SectionCreator } from "./SectionCreator";
+import HMSDisplay from "@/components/_commons/HMSDisplay";
+import FormTimeInput from "@/components/Form/FormTimeInput";
 
 export function SectionItem({
   item,
@@ -32,14 +34,19 @@ export function SectionItem({
   const [loading, setLoading] = useState<boolean>(false);
   const [editing, setEdit] = useState<boolean>(false);
   const [content, setContent] = useState<SectionContent>(null);
-  const { control, getValues, handleSubmit } = useForm<Section>({
+  const { control, getValues, handleSubmit, setValue } = useForm<Section>({
     defaultValues: {
+      id: item.id,
       name: item?.name || "",
       description: item?.description || "",
-      estimatedTime: item?.estimatedTime || 0,
+      estimatedTime: item?.estimatedTime,
       type: item?.type,
     },
   });
+
+  useEffect(() => {
+    setContent({ ...content, ...item });
+  }, [item]);
 
   const getContent = async () => {
     if (content) {
@@ -52,18 +59,39 @@ export function SectionItem({
   const onEdit = () => {
     handleSubmit(async (data: Section) => {
       setLoading(true);
-      const section: Section = await sectionService.update(item.id, {
+      const newSection: Section = await sectionService.update(item.id, {
         name: data.name,
         description: data.description,
         estimatedTime: data.estimatedTime,
         type: data.type,
       });
-      onEditSection(item, section);
+      onEditSection(item, newSection);
       setLoading(false);
-      setEdit(false);
+      switchModeEdit(false);
     })();
   };
 
+  const onResetSectionContent = (content: SectionContent) => {
+    setContent(content);
+    onEditSection(item, content);
+  };
+
+  const switchModeEdit = (isEdit: boolean) => {
+    setEdit(isEdit);
+    if (isEdit) {
+      const newValues: Section = {
+        id: item.id,
+        name: item.name,
+        description: item.description,
+        estimatedTime: item.estimatedTime,
+        type: item.type,
+      };
+
+      Object.keys(newValues).forEach((key) => {
+        setValue(key as keyof Section, newValues[key as keyof Section]);
+      });
+    }
+  };
   const onRemove = async () => {
     setLoading(true);
     await sectionService.remove(item.id);
@@ -107,13 +135,18 @@ export function SectionItem({
               onClick={onToggle}
             >
               <span className="font-semibold">{indexes.join(".")}. </span>{" "}
-              {getValues("name")}
+              {getValues("name")}{" "}
+              {item?.estimatedTime && (
+                <span className="text-secondary">
+                  (<HMSDisplay seconds={item?.estimatedTime} />)
+                </span>
+              )}
             </div>
             <div className="ml-auto">
               <SectionOptions
                 deleteMessage="Are you sure to delete this Section?"
                 onRemove={onRemove}
-                onEdit={() => setEdit(true)}
+                onEdit={() => switchModeEdit(true)}
               />
             </div>
           </div>
@@ -139,18 +172,22 @@ export function SectionItem({
                 placeholder="Enter Description"
               />
             </div>
+            {parent && (
+              <div className="form-group">
+                <label>Estimated Time</label>
+                <FormTimeInput name={`estimatedTime`} control={control} />
+              </div>
+            )}
+
             <div className="space-x-3 flex justify-end">
               <NButton
                 className="min-w-[80px]"
                 variant="outlined"
-                onClick={() => setEdit(false)}
+                onClick={() => switchModeEdit(false)}
               >
                 Cancel
               </NButton>
-              <NButton
-                className="min-w-[80px] relative"
-                onClick={onEdit}
-              >
+              <NButton className="min-w-[80px] relative" onClick={onEdit}>
                 {loading && (
                   <span className="absolute left-0">
                     <Loader color="white" size="xs" />
@@ -168,7 +205,7 @@ export function SectionItem({
           <SectionFileContent
             section={item}
             content={content}
-            setContent={(value) => setContent(value)}
+            setContent={(value) => onResetSectionContent(value)}
           />
         </div>
       )}

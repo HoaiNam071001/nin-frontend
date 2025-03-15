@@ -41,7 +41,7 @@ export const SectionResource = ({ section }: { section: Section }) => {
             </div>
             <div>
               <I18n className={"font-semibold"} i18key={"Type"} />:
-              <span className="ml-2">{content?.type}</span>
+              <span className="ml-2">{section?.type}</span>
             </div>
           </div>
           <div className="overflow-auto h-[60vh]">

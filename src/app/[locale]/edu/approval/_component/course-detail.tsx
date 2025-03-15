@@ -5,10 +5,12 @@ import NButton from "@/components/_commons/NButton";
 import { CourseBasicInfo } from "@/components/CourseDetail/CourseBasicInfo";
 import { SectionMenu } from "@/components/CourseItem/SectionMenu";
 import { CourseStatus } from "@/constants";
-import { Course, CourseStatusPayload } from "@/models";
+import { Course, CourseStatusPayload, FullCourse } from "@/models";
 import { useModal } from "@/providers/ModalProvider";
+import { courseSearchService } from "@/services/courses/course-search.service";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
+import { useEffect, useState } from "react";
 
 const CourseConfirmDetail = ({
   course,
@@ -18,6 +20,19 @@ const CourseConfirmDetail = ({
   update?: (course: Course) => void;
 }) => {
   const { closeModal } = useModal();
+  const [fullCourse, setFullCourse] = useState<FullCourse>(null);
+  const getBySlug = async () => {
+    try {
+      const response: FullCourse = await courseSearchService.getBySlug(course.slug);
+      setFullCourse(response);
+    } catch (error) {
+      toastService.error(error?.message);
+    }
+  };
+  useEffect(() => {
+    getBySlug();
+  }, [course]);
+  
 
   const onSubmit = async () => {
     try {
@@ -37,8 +52,8 @@ const CourseConfirmDetail = ({
   };
   return (
     <div className="flex flex-col rounded-sm gap-3 h-[70vh] overflow-auto relative">
-      <CourseBasicInfo course={course} />
-      {course && <SectionMenu courseId={course.id} viewContent={true} />}
+      {fullCourse && <CourseBasicInfo course={fullCourse} /> }
+      {fullCourse && <SectionMenu courseId={course.id} viewContent={true} />}
 
       {course.status === CourseStatus.PENDING && (
         <div className="flex items-center sticky bottom-0 pt-3 bg-white">

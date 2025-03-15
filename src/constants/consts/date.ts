@@ -2,7 +2,7 @@ export const DATE_FORMATS = {
     // Các định dạng đã có
     FULL_WITH_DAY_NAME: 'dddd, MMMM Do YYYY, HH:mm:ss',
     ISO_8601: 'YYYY-MM-DDTHH:mm:ssZ',
-    SHORT_DATE_TIME: 'YYYY/MM/DD HH:mm',
+    SHORT_DATE_TIME: 'DD/MM/yyyy HH:mm',
     AM_PM_FORMAT: 'YYYY-MM-DD h:mm:ss A',
     TIME_ONLY: 'HH:mm:ss',
     MONTH_DAY_YEAR: 'MMMM Do, YYYY',

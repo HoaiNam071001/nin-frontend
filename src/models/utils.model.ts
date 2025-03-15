@@ -45,7 +45,7 @@ export const stringifyPageAble = (pageAble: PageAble): string => {
     {
       size: pageAble?.size || DEFAULT_PAGESIZE,
       page: pageAble?.page || FIRST_PAGE,
-      keyword: pageAble.keyword,
+      keyword: pageAble?.keyword,
       sort: pageAble?.sort?.map((o) => `${o.property}:${o.direction}`),
     },
     { arrayFormat: "comma" } // Hoặc 'bracket' nếu cần [order=id:ASC, name:ASC]
@@ -60,3 +60,4 @@ export enum Currency {
   JPY = 'JPY',
   VND = 'VND',
 };
+export const MIN_TIME = 60; // 60seconds

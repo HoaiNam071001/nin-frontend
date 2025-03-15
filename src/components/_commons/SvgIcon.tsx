@@ -7,7 +7,7 @@ type SvgIconProps = {
   className?: string;
 };
 
-const SvgIcon: React.FC<Partial<SvgIconProps>> = (props) => {
+const SvgIcon: React.FC<SvgIconProps> = (props) => {
   const { icon, className } = props;
   // Đảm bảo src được định nghĩa
   const [svgContent, setSvgContent] = React.useState<string | null>(null);

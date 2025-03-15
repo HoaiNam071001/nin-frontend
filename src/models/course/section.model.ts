@@ -51,11 +51,8 @@ export interface Video {
   duration?: number;
 }
 
-export interface SectionContent {
-  id: number;
-  type: SectionType;
-
+export interface SectionContent extends Section {
   video?: Video;
   post?: Post;
-  files: NFile[];
+  files?: NFile[];
 }

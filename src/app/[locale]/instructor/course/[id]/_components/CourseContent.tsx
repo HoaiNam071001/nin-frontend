@@ -56,12 +56,22 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
 
   const onEditSection = (original: Section, section: Section) => {
     Object.assign(original, section);
+    sections.forEach((e) => {
+      e.estimatedTime = e.childrens?.reduce(
+        (total, child) => total + (child.estimatedTime || 0),
+        0
+      );
+    });
     setSections([...sections]);
   };
 
   const onDeleteSection = (sectionId: number, parent: Section) => {
     if (parent) {
       parent.childrens = parent.childrens?.filter((e) => e.id !== sectionId);
+      parent.estimatedTime = parent.childrens?.reduce(
+        (total, child) => total + (child.estimatedTime || 0),
+        0
+      );
       setSections([...sections]);
       return;
     }

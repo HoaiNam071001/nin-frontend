@@ -1,23 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import SvgIcon from "../_commons/SvgIcon";
+import { useContext, useEffect, useState } from "react";
 import { sectionService } from "@/services/courses/section.service";
 import { Section, SectionType } from "@/models/course/section.model";
 import { toastService } from "@/services/toast.service";
 import { useModal } from "@/providers/ModalProvider";
-import { SectionResource } from "./SectionResourse";
-import I18n from "../_commons/I18n";
-import HMSDisplay, { HMSDisplayMode } from "../_commons/HMSDisplay";
+import { SectionResource } from "@/components/CourseItem/SectionResourse";
+import I18n from "@/components/_commons/I18n";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import HMSDisplay, { HMSDisplayMode } from "@/components/_commons/HMSDisplay";
+import { CourseDetailContext } from "../page";
+import { head } from "lodash";
+import NEmpty from "@/components/_commons/NEmpty";
 
 interface SectionMenuProps {
   courseId: number;
-  viewContent?: boolean;
 }
 
-export const SectionMenu = ({ courseId, viewContent = false }: SectionMenuProps) => {
+export const CourseSectionMenu = ({ courseId }: SectionMenuProps) => {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
+  const { setSection, section: selected } = useContext(CourseDetailContext);
 
   useEffect(() => {
     if (!courseId) {
@@ -39,6 +42,20 @@ export const SectionMenu = ({ courseId, viewContent = false }: SectionMenuProps)
     fetchSections();
   }, [courseId]);
 
+  const getCurrentSection = () => {
+    setSection(head(sections).childrens[0]);
+  };
+
+  useEffect(() => {
+    if (sections?.length) {
+      getCurrentSection();
+    }
+  }, [sections]);
+
+  const selectChildSection = (section: Section, child: Section) => {
+    setSection(child);
+  };
+
   if (loading) {
     return <div>Loading sections...</div>; // Or a more sophisticated loading indicator
   }
@@ -46,34 +63,33 @@ export const SectionMenu = ({ courseId, viewContent = false }: SectionMenuProps)
   return (
     <div className="space-y-2 border border-stroke rounded-md">
       {sections?.map((section, index) => (
-        <SectionTree key={index} item={section} viewContent={viewContent} />
+        <SectionTree
+          selected={selected}
+          key={index}
+          item={section}
+          selectSection={(child) => selectChildSection(section, child)}
+        />
       ))}
+      {!sections?.length && (
+        <div className="py-10">
+          <NEmpty />
+        </div>
+      )}
     </div>
   );
 };
 
 interface SectionTreeProps {
   item: Section;
-  viewContent: boolean;
+  selected: Section;
+  selectSection: (section: Section) => void;
 }
 
-const SectionTree = ({ item, viewContent }: SectionTreeProps) => {
-  const [isExpand, setExpand] = useState(false);
-  const { openModal } = useModal();
+const SectionTree = ({ item, selected, selectSection }: SectionTreeProps) => {
+  const [isExpand, setExpand] = useState(true);
 
   const handleToggle = () => {
     setExpand(!isExpand);
-  };
-
-  const handleViewContent = (section: Section) => {
-    if (!viewContent) return;
-
-    openModal({
-      content: <SectionResource section={section} />,
-      header: <I18n i18key={"View Content"} />,
-      onClose: () => {},
-      config: { width: "800px" },
-    });
   };
 
   return (
@@ -92,7 +108,10 @@ const SectionTree = ({ item, viewContent }: SectionTreeProps) => {
           {item.name}
         </span>
         <span className="ml-auto whitespace-nowrap">
-          <HMSDisplay seconds={item.estimatedTime} mode={HMSDisplayMode.short} />
+          <HMSDisplay
+            seconds={item.estimatedTime}
+            mode={HMSDisplayMode.short}
+          />
         </span>
       </div>
 
@@ -100,8 +119,12 @@ const SectionTree = ({ item, viewContent }: SectionTreeProps) => {
         item.childrens?.map((child, index) => (
           <div
             key={index}
-            onClick={() => handleViewContent(child)}
-            className="flex items-center gap-4 pl-4 pr-3 py-2 rounded bg-white hover:bg-slate-50 cursor-pointer"
+            onClick={() => selectSection(child)}
+            className={`flex items-center gap-4 pl-4 pr-3 py-2 rounded cursor-pointer ${
+              selected?.id === child.id
+                ? "bg-system bg-opacity-10"
+                : "hover:bg-slate-50"
+            }`}
           >
             {child.type === SectionType.Post && (
               <SvgIcon icon="file" className="icon icon-md" />
@@ -111,7 +134,10 @@ const SectionTree = ({ item, viewContent }: SectionTreeProps) => {
             )}
             <span className="capitalize">{child.name}</span>
             <span className="ml-auto">
-              <HMSDisplay seconds={child.estimatedTime} mode={HMSDisplayMode.short} />
+              <HMSDisplay
+                seconds={child.estimatedTime}
+                mode={HMSDisplayMode.short}
+              />
             </span>
           </div>
         ))}

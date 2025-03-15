@@ -27,7 +27,7 @@ export const CourseItem: React.FC<CourseProps> = ({ course, viewDetail, viewLect
 
   const onView = () => {
     if (viewLecture) {
-      router.push(`${ROUTES.COURSE}/${course.slug}`);
+      router.push(ROUTES.COURSE_DETAIL(course.slug));
       return;
     }
     if (viewDetail) {

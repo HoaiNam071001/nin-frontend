@@ -61,6 +61,7 @@ export interface FullCourse {
   description: string;
   summary: string;
   price: number;
+  targets?: CourseTarget[];
   currency?: string;
   estimatedTime: number;
   status: CourseStatus;

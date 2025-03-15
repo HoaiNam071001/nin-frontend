@@ -21,6 +21,7 @@ import { toastService } from "@/services/toast.service";
 import { videoService } from "@/services/courses/video.service";
 import { Button, Empty, Popconfirm } from "antd";
 import { useEffect, useState } from "react";
+import { MIN_TIME } from "@/models/utils.model";
 
 export function SectionFileContent({
   section,
@@ -53,6 +54,7 @@ export function SectionFileContent({
   const updateVideo = (video: Video) => {
     const _content = { ...content };
     _content.video = video;
+    _content.estimatedTime = video.duration < MIN_TIME ? MIN_TIME : video.duration;
     setContent(_content);
   };
 

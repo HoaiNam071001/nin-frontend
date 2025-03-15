@@ -3,25 +3,22 @@
 import { Button } from "antd";
 import SvgIcon from "../_commons/SvgIcon";
 import { SectionMenu } from "../CourseItem/SectionMenu";
-import { Course, FullCourse } from "@/models";
+import { FullCourse } from "@/models";
+import HMSDisplay from "../_commons/HMSDisplay";
 
-const CourseContentMenu = ({
-  course,
-}: {
-  course: Course | FullCourse; 
-}) => {
+const CourseContentMenu = ({ course }: { course: FullCourse }) => {
   return (
     <div className="space-y-3 pt-2">
-      
       <div className="font-semibold text-title-sm">Course Content</div>
-      {/* <div className="flex items-center text-gray-400">
-        <span>20 sections </span>
+      <div className="flex items-center text-gray-400">
+        <span>{course.totalSection} lessons </span>
         <SvgIcon icon="dot" className="icon icon-sm"></SvgIcon>
-        <span>30h 20m total length</span>
+        <span>
+          <HMSDisplay seconds={course.estimatedTime} />
+        </span>
 
-        <Button type="link">Link</Button>
-      </div> */}
-      <SectionMenu courseId={course.id}/>
+      </div>
+      <SectionMenu courseId={course.id} />
     </div>
   );
 };

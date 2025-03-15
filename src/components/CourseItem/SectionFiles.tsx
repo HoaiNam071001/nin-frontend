@@ -14,12 +14,14 @@ export const SectionFiles = ({
   sectionId,
   files,
   canEdit = false,
+  download = false,
   addFile,
   removeFile,
 }: {
   sectionId: number;
   files: NFile[];
   canEdit?: boolean;
+  download?: boolean;
   addFile?: (file: NFile) => void;
   removeFile?: (file: NFile) => void;
 }) => {
@@ -42,6 +44,14 @@ export const SectionFiles = ({
       toastService.error(error.message);
     }
   };
+
+  const onDownload = (file: NFile) => {
+    if (!download) {
+      return;
+    }
+
+    window.open(file.url, '_blank')
+  }
 
   return (
     <div className="max-h-[300px] overflow-auto">
@@ -71,7 +81,8 @@ export const SectionFiles = ({
                 {!file.deleted &&
                   file.systemType !== SystemFileType.VIDEO_CONTENT && (
                     <div className="flex items-center overflow-hidden py-1">
-                      <div className="flex-1 text-ellipsis mr-4 overflow-hidden text-nowrap">
+                      <div className={`flex-1 text-ellipsis mr-4 overflow-hidden text-nowrap ${download ? 'cursor-pointer hover:underline hover:text-primary' : ''}`} 
+                        onClick={()=> onDownload(file)}>
                         {file.name}
                       </div>
                       <div className="w-[80px] min-w-[80px]">

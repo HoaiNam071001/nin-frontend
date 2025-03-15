@@ -79,6 +79,7 @@ export const CoursePermisison: React.FC<SettingSubmitProps> = ({
         <div className="border-t border-stroke">
           {instructors.map((instructor) => (
             <CourseInstructor
+              key={instructor.id}
               item={instructor}
               onEdit={onEdit}
               onRemove={onRemove}

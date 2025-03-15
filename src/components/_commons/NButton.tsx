@@ -1,6 +1,7 @@
 import { Tooltip } from "antd";
 import { TooltipPlacement } from "antd/es/tooltip";
 import React from "react";
+import NTooltip from "./NTooltip";
 
 interface CustomButtonProps {
   children: React.ReactNode; // Button content, like text or icons
@@ -126,7 +127,7 @@ const NButton: React.FC<CustomButtonProps> = ({
     if (onClick) onClick?.(event);
   };
   return (
-    <Tooltip title={tooltip} placement={tooltipPlacement}>
+    <NTooltip title={tooltip} placement={tooltipPlacement}>
       <button
         onClick={(event) => { canClick && handleClick(event) }}
         disabled={disabled || loading}
@@ -134,7 +135,7 @@ const NButton: React.FC<CustomButtonProps> = ({
       >
         {loading ? <span className="loader"></span> : children}
       </button>
-    </Tooltip>
+    </NTooltip>
   );
 };
 

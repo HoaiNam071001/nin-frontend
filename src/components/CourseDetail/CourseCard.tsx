@@ -18,6 +18,7 @@ import useAuth from "@/hooks/useAuth";
 import I18n from "../_commons/I18n";
 import { toastService } from "@/services/toast.service";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
+import HMSDisplay from "../_commons/HMSDisplay";
 
 export const CourseCard = ({
   course,
@@ -75,6 +76,10 @@ export const CourseCard = ({
       getBySlug();
     }
   }, [course?.id]);
+  
+  const onNavigateDetail = () => {
+    router.push(ROUTES.COURSE_DETAIL(course.slug));
+  }
 
   return (
     <>
@@ -140,7 +145,7 @@ export const CourseCard = ({
                 </>
               )}
               {subscription?.status === CourseSubType.ACTIVE && (
-                <NButton className="flex-1" size="lg-circle">
+                <NButton className="flex-1" size="lg-circle" onClick={()=> onNavigateDetail()}>
                   <I18n i18key={"Go to course"} />
                 </NButton>
               )}
@@ -155,10 +160,15 @@ export const CourseCard = ({
             <div className="font-semibold">This course includes</div>
             <div className="text-gray-500">
               <div>
-                {course.totalSection} <span>sections</span>
+                {course.totalSection} <span>Lessons</span>
               </div>
               <div>
-                {course.totalFile} <span> Files</span>
+                {course.totalFile} <span> Course materials </span>
+              </div>
+              <div>
+                <HMSDisplay seconds={course.estimatedTime} showMinute={false} showSecond={false}/> <span>
+                online learning 
+                </span>
               </div>
             </div>
           </div>

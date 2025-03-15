@@ -74,7 +74,7 @@ const columns: TableColumns<Course> = [
     dataIndex: "status",
     key: "status",
     render: (status: CourseStatus) => <StatusBadge status={status} />,
-    width: 150,
+    width: 200,
     fixed: "right",
     align: "center",
     sorter: true,

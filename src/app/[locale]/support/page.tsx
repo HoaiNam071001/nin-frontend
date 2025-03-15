@@ -28,11 +28,11 @@ const ChatbotProvider = ({ children }: { children: ReactNode }) => {
 const Support: React.FC = () => {
   return (
     <ChatbotProvider>
-      <div className="container mx-auto h-[calc(100vh-130px)] bg-slate-100 grid grid-cols-1 md:grid-cols-12 gap-4 p-2 shadow-lg border border-stroke rounded-lg">
-        <div className="md:col-span-2 h-full">
+      <div className="container mx-auto h-[calc(100vh-130px)] bg-slate-100 flex gap-4 p-2 shadow-lg border border-stroke rounded-lg">
+        <div className="h-full overflow-hidden w-[200px] max-w-[200px]">
           <ChatList></ChatList>
         </div>
-        <div className="md:col-span-10 h-full overflow-hidden relative">
+        <div className="flex-1 h-full overflow-hidden relative">
           <Chatbot></Chatbot>
         </div>
       </div>

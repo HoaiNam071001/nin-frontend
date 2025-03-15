@@ -9,8 +9,8 @@ import { courseSearchService } from "@/services/courses/course-search.service";
 import { toastService } from "@/services/toast.service";
 import { useEffect, useState } from "react";
 import CourseBreadcrumb from "./course-breadcrumb";
-import { CourseComment } from "@/components/CourseDetail/CourseComment";
 import { cartService } from "@/services/user/cart.service";
+import { CourseComment } from "./CourseComment";
 
 const CourseDetail = ({ slug }) => {
   const [course, setCourse] = useState<FullCourse>();

@@ -5,6 +5,7 @@ import SvgIcon from "../_commons/SvgIcon";
 import ExpandableContent from "../_commons/ExpandableContent";
 import { FullCourse } from "@/models";
 import CourseTopics from "./CourseTopics";
+import CourseTargetList from "./CourseTargetList";
 
 export const CourseBasicInfo = ({
   course,
@@ -65,6 +66,8 @@ export const CourseBasicInfo = ({
       </div>
 
       <CourseTopics course={course} />
+
+      <CourseTargetList items={course?.targets}/>
 
       <div>
         <ExpandableContent content={course?.description} height={200} />

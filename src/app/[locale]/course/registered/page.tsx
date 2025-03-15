@@ -122,7 +122,7 @@ const RegisteredCourses = () => {
         <div className="course-container">
           <CourseContainer>
             {rows?.map((course, index) => (
-              <CourseItem key={index} course={course} viewDetail={true} />
+              <CourseItem key={index} course={course} viewLecture={true} />
             ))}
           </CourseContainer>
         </div>

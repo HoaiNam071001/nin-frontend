@@ -3,31 +3,61 @@
 import { Conversation } from "@/models/chatbot";
 import { chatbotService } from "@/services/ai/chatbot.service";
 import { toastService } from "@/services/toast.service";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { ChatbotContext } from "../page";
 import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
 import I18n from "@/components/_commons/I18n";
 import NInput from "@/components/_commons/NInput";
-import NTooltip from "@/components/_commons/NTooltip";
+import { formatDate } from "@/helpers/date";
 
 const ChatList = () => {
-  const [rows, setRows] = useState<Conversation[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const { conversation, setConversation, add } = useContext(ChatbotContext);
 
   const fetchConversations = async () => {
     try {
       const items: Conversation[] = await chatbotService.getConversations();
-      setRows(items);
+      setConversations(items);
       setConversation(items[0] ?? null);
       if (!items?.length) {
         addNew();
       }
     } catch (error) {
       toastService.info(error?.message);
-      setRows([]);
+      setConversations([]);
     }
   };
+
+  const groupedConversations = useMemo(() => {
+    const grouped: { [date: string]: Conversation[] } = {};
+    conversations.forEach((conv) => {
+      const date = new Date(conv.updatedAt).toLocaleDateString();
+      if (!grouped[date]) {
+        grouped[date] = [];
+      }
+      grouped[date].push(conv);
+    });
+    return grouped;
+  }, [conversations]);
+
+  const addNew = useCallback(async () => {
+    try {
+      const newConversation: Conversation =
+        await chatbotService.createConversation();
+      setConversations((prev) => [newConversation, ...prev]);
+      setConversation(newConversation);
+    } catch (error) {
+      toastService.error(error?.message);
+    }
+  }, []);
+
   useEffect(() => {
     fetchConversations();
   }, []);
@@ -38,36 +68,45 @@ const ChatList = () => {
     }
   }, [add]);
 
-  const addNew = async () => {
-    try {
-      const newConversation: Conversation =
-        await chatbotService.createConversation();
-      setRows((prev) => [newConversation, ...(prev || [])]);
-      setConversation(newConversation);
-    } catch (error) {
-      toastService.error(error?.message);
-    }
-  };
+  const formattedDates = useMemo(() => {
+    const today = new Date().toLocaleDateString();
+    const formatted: { [date: string]: string } = {};
+    Object.keys(groupedConversations).forEach((date) => {
+      const formattedDate = new Date(date).toLocaleDateString();
+      formatted[date] = formattedDate === today ? 'Today' : formatDate(date);
+    });
+    return formatted;
+  }, [groupedConversations]);
+
 
   return (
-    <div className="h-full overflow-auto min-w-[100px]">
+    <div className="h-full min-w-[100px] overflow-hidden flex flex-col">
       <div className="font-semibold my-3 mx-2">Support</div>
-      <div className="flex flex-col overflow-auto gap-2">
-        <NButton
+      <NButton
           variant="filled"
           color="primary"
-          className="mb-3"
+          className="mb-3 sticky top-0"
           onClick={addNew}
         >
           <I18n i18key={"New"} />
         </NButton>
-        {rows.map((row) => (
-          <ChatItem
-            row={row}
-            setRows={setRows}
-            conversation={conversation}
-            setConversation={setConversation}
-          />
+      <div className="flex flex-col overflow-auto flex-1">
+        {Object.keys(groupedConversations).map((date) => (
+          <div key={date}>
+            <div className="font-semibold p-2 text-sm text-secondary rounded-md">
+              {formattedDates[date]}
+            </div>
+            {groupedConversations[date].map((row) => (
+              <div className="mb-2" key={row.id}>
+                <ChatItem
+                  row={row}
+                  setRows={setConversations}
+                  conversation={conversation}
+                  setConversation={setConversation}
+                />
+              </div>
+            ))}
+          </div>
         ))}
       </div>
     </div>
@@ -135,8 +174,8 @@ const ChatItem = ({ row, setRows, conversation, setConversation }) => {
               tooltipPlacement="top"
               onClick={(event) => {
                 event.preventDefault();
-                setEditing(false);
                 setDraftName(row.name);
+                setEditing(false);
               }}
             >
               <SvgIcon icon="close" className="icon icon-sm" />
@@ -159,13 +198,13 @@ const ChatItem = ({ row, setRows, conversation, setConversation }) => {
       )}
       {!editing && (
         <>
-            <div
-              className="cursor-pointer flex-1 px-2 py-3 capitalize text-ellipsis"
-              onClick={() => select(row)}
-              title={row.name}
-            >
-              {row.name}
-            </div>
+          <div
+            className="cursor-pointer flex-1 px-2 py-3 capitalize text-ellipsis"
+            onClick={() => select(row)}
+            title={row.name}
+          >
+            {row.name}
+          </div>
 
           <div className="hidden group-hover:block absolute right-0 top-0 px-1 z-10">
             <div className="flex flex-col">
@@ -176,7 +215,6 @@ const ChatItem = ({ row, setRows, conversation, setConversation }) => {
                 tooltip={"Edit"}
                 tooltipPlacement="top"
                 onClick={(event) => {
-                  console.log(editing);
                   event.preventDefault();
                   setEditing(true);
                 }}
