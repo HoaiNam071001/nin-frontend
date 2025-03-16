@@ -89,7 +89,7 @@ export const SectionFiles = ({
                         {formatFileSize(file.size)}
                       </div>
                       <div className="w-[120px] min-w-[120px]">
-                        {formatDate(file.createdAt)}
+                        {formatDate({date: file.createdAt})}
                       </div>
                       {canEdit && (
                         <div className="w-[20px] min-w-[20px]">

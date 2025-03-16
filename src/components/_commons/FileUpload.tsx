@@ -8,6 +8,15 @@ const FileUpload = ({
   upload,
   showPreview = false,
   accept = "",
+  children,
+  className,
+}: {
+  label: string;
+  upload: (file: File) => void;
+  showPreview?: boolean;
+  accept?: string;
+  className?: string;
+  children?: React.ReactNode;
 }) => {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -44,12 +53,16 @@ const FileUpload = ({
 
   return (
     <div className="flex items-center">
-      <NButton variant="outlined" onClick={handleMenuClick}>
-        <div className="flex items-center space-x-2">
-          <SvgIcon icon="upload" className="icon icon-sm" />
-          <span>{label}</span>
-        </div>
-      </NButton>
+      <div className="cursor-pointer" onClick={handleMenuClick}>
+        {children ?? (
+          <NButton variant="filled" className={className}>
+            <div className="flex items-center space-x-2">
+              <SvgIcon icon="upload" className="icon icon-sm" />
+              <span>{label}</span>
+            </div>
+          </NButton>
+        )}
+      </div>
 
       <input
         type="file"

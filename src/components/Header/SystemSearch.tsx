@@ -106,12 +106,12 @@ const SystemSearch = () => {
 
           <input
             type="text"
-            placeholder={`${translate('Type to search')} ...`}
+            placeholder={`${translate('Type to search')}...`}
             value={keyword}
             onChange={(e) => onChange(e.target.value || "")}
             onKeyDown={handleKeyDown}
             onFocus={() => setShowSuggestions(true)}
-            className={`w-full bg-transparent pl-3 pr-4 font-medium focus:outline-none min-w-[30vw] py-1 border-b transition-colors duration-200 ease-in-out
+            className={`placeholder:text-secondary w-full bg-transparent pl-3 pr-4 font-medium focus:outline-none min-w-[30vw] py-1 border-b transition-colors duration-200 ease-in-out
             ${showSuggestions ? "border-stroke" : "border-transparent"}
         `}
           />

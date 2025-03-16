@@ -8,7 +8,7 @@ import {
   Path,
   RegisterOptions,
 } from "react-hook-form";
-import NInput from "../_commons/NInput"; // Giả sử bạn có component NInput
+import NInput, { InputType } from "../_commons/NInput"; // Giả sử bạn có component NInput
 import FormError from "./FormError"; // Giả sử bạn có component FormError
 
 type ControlledInputProps<TFieldValues extends FieldValues> = {
@@ -23,8 +23,9 @@ type ControlledInputProps<TFieldValues extends FieldValues> = {
   id?: string;
   addonBefore?: React.ReactNode; // Addon content before the input
   addonAfter?: React.ReactNode; 
-  type?: "text" | "password" | "email" | "number" | "tel" | "time"; // Common input types
+  type?: InputType; // Common input types
   onSearch?: (value: string) => void;
+  disabled?: boolean;
 };
 
 const FormInput = <TFieldValues extends object>({

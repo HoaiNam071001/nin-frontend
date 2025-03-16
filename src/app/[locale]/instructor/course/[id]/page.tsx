@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { CourseStepItem, CourseSteps, StepType, Course } from "@/models";
+import {
+  CourseStepItem,
+  CourseSteps,
+  StepType,
+  Course,
+  CourseAccessType,
+} from "@/models";
 import { findIndex } from "lodash";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
@@ -36,7 +42,14 @@ const CourseEdit: React.FC = () => {
       try {
         setLoading(true);
         const response: Course = await courseService.getCourseById(+id);
-        if (response?.owner?.id !== currentUser.id) {
+
+        if (
+          response?.owner?.id !== currentUser.id &&
+          !(
+            response.instructors?.find((e) => e.user?.id === currentUser?.id)
+              ?.accessType === CourseAccessType.EDIT
+          )
+        ) {
           return router.push(ROUTES.HOME);
         }
         setCourse(response);
@@ -46,6 +59,9 @@ const CourseEdit: React.FC = () => {
         setLoading(false);
       }
     };
+    if (!currentUser) {
+      return router.push(ROUTES.SIGN_IN);
+    }
     getCourse();
   }, [id, currentUser]);
 

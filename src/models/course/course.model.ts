@@ -48,6 +48,7 @@ export interface Course {
   level?: Level;
   topics?: Topic[];
   discounts?: Discount[];
+  instructors?: Instructor[];
   summary?: string;
   createdAt?: string;
   updatedAt?: string;

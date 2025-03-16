@@ -7,7 +7,7 @@ export interface AvatarProps {
   src: string; // URL ảnh đại diện
   name?: string;
   alt?: string; // Mô tả thay thế
-  size?: "small" | "medium" | "large"; // Kích thước avatar
+  size?: "sm" | "md" | "lg" | "xl" | "xxl"; // Kích thước avatar
   className?: string; // Thêm custom class nếu cần
   tooltip?: React.ReactNode | string;
 }
@@ -16,14 +16,16 @@ const NAvatar: React.FC<AvatarProps> = ({
   src,
   name,
   alt = "Avatar",
-  size = "medium",
+  size = "md",
   className,
   tooltip = <div className="max-w-[300px]">{name}</div>,
 }) => {
   const sizeClasses = {
-    small: "w-6 h-6 max-w-6 min-w-6",
-    medium: "w-9 h-9 max-w-9 min-w-9",
-    large: "w-12 h-12 max-w-12 min-w-12",
+    sm: "w-6 h-6 max-w-6 min-w-6 text-[13px]",
+    md: "w-9 h-9 max-w-9 min-w-9 text-[13px]",
+    lg: "w-12 h-12 max-w-12 min-w-12 text-[13px]",
+    xl: "w-24 h-24 max-w-24 min-w-24 text-[30px]",
+    xxl: "w-40 h-40 max-w-40 min-w-40 text-[50px]",
   };
 
   return (
@@ -43,7 +45,7 @@ const NAvatar: React.FC<AvatarProps> = ({
         <div
           className={`${
             sizeClasses[size]
-          } rounded-full border border-white text-white bg-system flex items-center text-[13px] justify-center ${
+          } rounded-full border border-white text-white bg-system flex items-center justify-center ${
             className || ""
           }`}
         >

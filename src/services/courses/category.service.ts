@@ -18,14 +18,14 @@ export const categoryService = {
 
   getAllParent: async () => {
     const response = await apiClient.get<Category[]>(
-      `/category/all`
+      `/category/parent`
     );
     return response.data;
   },
 
-  getAllChildren: async (parentId: number) => {
+  getAll: async () => {
     const response = await apiClient.get<Category[]>(
-      `/category/all/${parentId}`
+      `/category/all`
     );
     return response.data;
   },

@@ -29,7 +29,10 @@ const ChatMessageItem: FC<ChatMessageItemProps> = ({ message, currentUser }) => 
     >
       {isBot && (
         <NAvatar
-          tooltip={formatDate(message.createdAt, DATE_FORMATS.AM_PM_FORMAT)}
+          tooltip={formatDate({
+            date: message.createdAt, 
+            format: DATE_FORMATS.AM_PM_FORMAT
+          })}
           name={'BOT'}
           src="/images/chatbot.png"
         />
@@ -40,7 +43,10 @@ const ChatMessageItem: FC<ChatMessageItemProps> = ({ message, currentUser }) => 
       </div>
       {!isBot && (
         <NAvatar
-          tooltip={formatDate(message.createdAt, DATE_FORMATS.AM_PM_FORMAT)}
+          tooltip={formatDate({
+            date: message.createdAt, 
+            format: DATE_FORMATS.AM_PM_FORMAT
+          })}
           name={`${currentUser.fullName}`}
           src={currentUser.avatar}
         />

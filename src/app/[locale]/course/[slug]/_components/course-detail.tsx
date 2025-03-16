@@ -14,7 +14,6 @@ import { CourseComment } from "./CourseComment";
 
 const CourseDetail = ({ slug }) => {
   const [course, setCourse] = useState<FullCourse>();
-  const [loading, setLoading] = useState<boolean>(true);
 
   const addToCart = async () => {
     try {
@@ -27,13 +26,10 @@ const CourseDetail = ({ slug }) => {
 
   const getBySlug = async () => {
     try {
-      setLoading(true);
       const response: FullCourse = await courseSearchService.getBySlug(slug);
       setCourse(response);
-      setLoading(false);
     } catch (error) {
       toastService.error(error?.message);
-      setLoading(false);
     }
   };
   useEffect(() => {
@@ -52,11 +48,11 @@ const CourseDetail = ({ slug }) => {
           <div className="mb-5">
             <CourseContentMenu course={course} />
           </div>
-          <CourseComment course={course} />
+          <CourseComment courseId={course.id} />
         </div>
       )}
       <div className="md:col-span-3 sticky top-[200px] min-w-[350px] w-[350px]">
-        {course && <CourseCard course={course} addToCart={addToCart}  />}
+        {course && <CourseCard course={course} addToCart={addToCart} />}
       </div>
     </div>
   );

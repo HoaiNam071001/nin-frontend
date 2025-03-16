@@ -9,13 +9,15 @@ import { NavItem } from "@/models";
 
 export default function DefaultLayout({
   children,
+  showCategory = true,
 }: {
   children?: React.ReactNode;
+  showCategory?: boolean;
 }) {
   return (
     <>
       <div className="relative">
-        <Header />
+        <Header showCategory={showCategory}/>
 
         {/* <!-- ===== Header End ===== --> */}
 
@@ -24,7 +26,7 @@ export default function DefaultLayout({
           <div className="flex">
             <Nav />
             <div
-              className="flex-1 p-4 md:p-6 2xl:p-10 overflow-auto relative"
+              className="flex-1 p-4 md:p-6 2xl:p-10 overflow-x-hidden overflow-y-auto relative"
               style={{
                 height: `calc(100vh - ${HEADER_HEIGHT})`,
               }}

@@ -59,7 +59,7 @@ export function Category() {
                     {category.subcategories.map((subcategory, subIndex) => (
                       <I18nLink
                         key={subIndex}
-                        href={`${ROUTES.SEARCH}?${PARAMS.SEARCH.SUB_CATEGORY}=${subcategory.id}`}
+                        href={`${ROUTES.SEARCH}?${PARAMS.SEARCH.CATEGORY}=${subcategory.id}`}
                         className="px-4 py-2 hover:bg-gray-100 text-gray-800"
                       >
                         {subcategory.name}

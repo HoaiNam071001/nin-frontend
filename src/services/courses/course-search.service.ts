@@ -30,5 +30,12 @@ export const courseSearchService = {
     const response = await apiClient.get<FullCourse>(`/course-search/full/${slug}`);
     return response.data;
   },
+
+  getByInstructor: async (userId: number, pageAble?: PageAble) => {
+    const response = await apiClient.get<List2Res<Course>>(
+      `/course-search/instructor/${userId}?${pageAble ? stringifyPageAble(pageAble) : ""}`
+    );
+    return response.data;
+  },
   
 };

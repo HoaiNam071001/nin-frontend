@@ -54,7 +54,8 @@ export function SectionFileContent({
   const updateVideo = (video: Video) => {
     const _content = { ...content };
     _content.video = video;
-    _content.estimatedTime = video.duration < MIN_TIME ? MIN_TIME : video.duration;
+    _content.estimatedTime =
+      video.duration < MIN_TIME ? MIN_TIME : video.duration;
     setContent(_content);
   };
 
@@ -130,7 +131,7 @@ const PostContent = ({
   const onCancel = () => {
     setText(content?.post?.content || "");
     setEditing(false);
-  }
+  };
 
   return (
     <div className="max-h-[300px] overflow-auto">
@@ -164,7 +165,7 @@ const PostContent = ({
             ></CustomImage>
             <div className="ml-auto">
               <span className="font-semibold mr-2">Last updated:</span>
-              {formatDate(content.post?.createdAt)}
+              {formatDate({ date: content.post?.createdAt })}
             </div>
             <NButton onClick={() => setEditing(true)}>Edit</NButton>
           </div>
@@ -244,7 +245,9 @@ const VideoContent = ({
               <div className="w-[80px] ml-auto">
                 {formatFileSize(file.size)}
               </div>
-              <div className="w-[120px]">{formatDate(file.createdAt)}</div>
+              <div className="w-[120px]">
+                {formatDate({ date: file.createdAt })}
+              </div>
               <div className=" flex items-center space-x-4">
                 <NButton onClick={() => setEditing(true)}>Edit</NButton>
                 <Popconfirm

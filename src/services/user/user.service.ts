@@ -1,4 +1,4 @@
-import { RoleRequest, ShortUser, User, UserSearchPayload } from "@/models";
+import { RoleRequest, ShortUser, User, UserPayload, UserSearchPayload } from "@/models";
 import apiClient from "../config";
 import { List2Res, PageAble, stringifyPageAble } from "@/models/utils.model";
 import queryString from "query-string";
@@ -19,7 +19,7 @@ export const userService = {
     return response.data;
   },
 
-  getUserById: async (id: string) => {
+  getUserById: async (id: number) => {
     const response = await apiClient.get<User>(`/users/${id}`);
     return response.data;
   },
@@ -29,8 +29,8 @@ export const userService = {
     return response.data;
   },
 
-  // updateUser: async (id: string, data: { name?: string; email?: string }) => {
-  //   const response = await apiClient.put(`/users/${id}`, data);
-  //   return response;
-  // },
+  updateUser: async (id: string, payload: UserPayload) => {
+    const response = await apiClient.put<User>(`/users/${id}`, payload);
+    return response.data;
+  },
 };

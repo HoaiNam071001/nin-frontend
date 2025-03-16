@@ -7,7 +7,7 @@ const SearchLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return <DefaultLayout>{children}</DefaultLayout>;
+  return <DefaultLayout showCategory={false}>{children}</DefaultLayout>;
 };
 
 export default SearchLayout;

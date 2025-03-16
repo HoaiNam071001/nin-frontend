@@ -34,3 +34,13 @@ export interface UserRole {
 export interface RoleRequest {
   role: Role;
 }
+
+export interface UserPayload {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  avatar?: string;
+  phoneNumber?: string;
+  birthDay?: string;
+  bio?: string;
+}

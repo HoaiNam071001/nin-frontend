@@ -77,11 +77,11 @@ const SearchFilter: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="h-full overflow-hidden flex flex-col">
       <div className="text-title-md font-semibold mb-4">
         <I18n i18key="Filter By"></I18n>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2 overflow-auto">
         <div className="gap-4">
           <LevelFilter
             levels={levels}
@@ -182,15 +182,17 @@ const CategoryFilter = ({
       return;
     }
     const categoryIds = params[PARAMS.SEARCH.CATEGORY];
-    if (isNumber(categoryIds)) {
-      setSelected({ [categoryIds]: true });
-    } else if (isArray<number>(categoryIds)) {
+    console.log(categoryIds);
+    if (isArray<string>(categoryIds)) {
       setSelected(
         categoryIds.reduce((acc, curr) => {
           acc[curr] = true;
           return acc;
         }, {})
       );
+    }
+    else if (isString(categoryIds)) {
+      setSelected({ [+categoryIds]: true });
     }
   }, [categories, params]);
 
@@ -206,11 +208,14 @@ const CategoryFilter = ({
       <div className="font-semibold">
         <I18n i18key="Category"></I18n>
       </div>
-      <div className="gap-3 ">
+      <div className="flex flex-col">
         {categories?.map((category) => (
           <label
             key={category.id}
             className="flex items-center"
+            style={{
+              order: selected[category.id] ? '-1' : 0
+            }}
             onClick={() => onChange(category)}
           >
             <div
@@ -228,7 +233,7 @@ const CategoryFilter = ({
 
 const fetchCategories = async () => {
   try {
-    const response: Category[] = await categoryService.getAllParent();
+    const response: Category[] = await categoryService.getAll();
     return response;
   } catch (error) {
     return [];

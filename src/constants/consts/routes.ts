@@ -24,6 +24,7 @@ export const ROUTES = {
     // user
     USER: '/user',
     CART: '/user/cart',
+    USER_SETTING: '/user/settings',
 
     // search 
     SEARCH: '/search',
@@ -36,7 +37,6 @@ export const PARAMS = {
     SEARCH: {
         CATEGORY: 'cat',
         LEVEL: 'lvl',
-        SUB_CATEGORY: 'scat',
         KEYWORD: 'keyword',
     }
 }

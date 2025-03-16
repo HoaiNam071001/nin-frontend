@@ -14,7 +14,7 @@ import {
 } from "@/models";
 import I18n from "@/components/_commons/I18n";
 import NButton from "@/components/_commons/NButton";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import NDropdown from "@/components/_commons/NDropdown";
 import SvgIcon from "@/components/_commons/SvgIcon";
 import { useModal } from "@/providers/ModalProvider";
@@ -128,7 +128,7 @@ const CourseInstructor = ({
 }) => {
   const [editing, setEditing] = useState(false);
   const [userList, setUserList] = useState<ShortUser[]>();
-  const { setValue, handleSubmit, control } = useForm<Instructor>({
+  const { setValue, handleSubmit, control, watch, getValues } = useForm<Instructor>({
     defaultValues: {
       user: null,
       accessType: CourseAccessType.VIEW,
@@ -154,22 +154,28 @@ const CourseInstructor = ({
 
   const onSave = () => {
     handleSubmit(async (data: Instructor) => {
-      if (item) {
-        const instructor = await courseService.updateInstructor(item.id, {
+      try {
+        if (item) {
+          const instructor = await courseService.updateInstructor(item.id, {
+            userId: data.user?.id,
+            accessType: data.accessType,
+            type: data.type,
+          });
+          onEdit?.(instructor);
+          setEditing(false);
+          return;
+        }
+        const instructor = await courseService.addInstructor(course?.id, {
           userId: data.user?.id,
           accessType: data.accessType,
           type: data.type,
         });
-        onEdit?.(instructor);
-        setEditing(false);
-        return;
+  
+        onAdd?.(instructor);
       }
-      const instructor = await courseService.addInstructor(course?.id, {
-        userId: data.user?.id,
-        accessType: data.accessType,
-        type: data.type,
-      });
-      onAdd?.(instructor);
+      catch(error) {
+        toastService.error(error.message);
+      }
     })();
   };
 
@@ -239,6 +245,18 @@ const CourseInstructor = ({
   const currentLevel = () => {
     return CourseAccess.find((e) => e.value === item.accessType)?.name;
   };
+  const type = watch("type");
+  const mainType = [InstructorType.CO_INSTRUCTOR, InstructorType.PRIMARY];
+
+  const isDisableType = useMemo(()=> {
+    return mainType.includes(type);
+  },[type])
+  const accessType = watch("accessType");
+  useEffect(() => {
+    if (editMode && mainType.includes(type)) {
+      setValue("accessType", CourseAccessType.EDIT);
+    }
+  }, [type]);
 
   return (
     <div className="flex items-center p-1 border-b border-stroke hover:bg-[var(--n-row-hover)]">
@@ -290,13 +308,14 @@ const CourseInstructor = ({
             ></FormSelection>
           </div>
           <div className="flex-[0.5]">
-            <FormSelection
+            {!isDisableType ? <FormSelection
               control={control}
               name={"accessType"}
               bindLabel="name"
-              bindValue="value"
+              bindValue="value"  
               options={CourseAccess}
-            ></FormSelection>
+            ></FormSelection> : <div className="capitalize px-3">{accessType}</div>}
+            
           </div>
           <div className="flex flex-col">
             <NButton shape="sm" variant={"text"} onClick={onSave}>

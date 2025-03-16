@@ -13,7 +13,9 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { I18nLink } from "../_commons/I18nLink";
 
-const Header = () => {
+const Header = ({
+  showCategory = true,
+}) => {
   const { isAuthenticated, currentUser } = useAuth();
   const router = useI18nRouter();
 
@@ -28,7 +30,7 @@ const Header = () => {
               alt={"logo"}
             ></CustomImage>
           </I18nLink>
-          <Category></Category>
+          {showCategory && <Category></Category>}
         </div>
 
         <div className="mx-auto flex-1 px-3 max-w-[600px]">

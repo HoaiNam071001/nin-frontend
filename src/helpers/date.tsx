@@ -1,14 +1,30 @@
 import { DATE_FORMATS } from "@/constants";
-import moment from "moment";
+import moment, { MomentInput } from "moment";
 
-export function formatDate(dateString: string, format = DATE_FORMATS.SHORT_DATE_VERBOSE): string {
-  const date = moment(dateString);
+interface FormatDateOptions {
+  date?: MomentInput | string;
+  inputFormat?: string;
+  format?: string;
+}
 
-  if (!date.isValid()) {
-    return dateString;
+export function formatDate(options: Partial<FormatDateOptions> = {}): string {
+  const { date, inputFormat, format = DATE_FORMATS.SHORT_DATE_VERBOSE } = options;
+
+  if (!date) {
+    return ''; // Hoặc giá trị mặc định khác nếu cần
   }
 
-  return date.format(format);
+  const momentDate = inputFormat ? moment(date, inputFormat) : moment(date);
+
+  if (!momentDate.isValid()) {
+    if (typeof date === 'string'){
+      return date;
+    } else {
+      return "Invalid Date";
+    }
+  }
+
+  return momentDate.format(format);
 }
 
 export function convertSecondsToHMS(seconds: number) {

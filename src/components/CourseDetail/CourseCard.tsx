@@ -45,7 +45,7 @@ export const CourseCard = ({
 
   const buyNow = () => {
     router.push(`${ROUTES.PAYMENT}/${course.id}`);
-  }
+  };
 
   const onSubscribe = async () => {
     try {
@@ -71,21 +71,36 @@ export const CourseCard = ({
     return discountedPrice;
   }, [course]);
 
+  const action = useMemo(() => {
+    const isInstructor = course.instructors.find(
+      (item) => item.user?.id === currentUser.id
+    );
+    const isOwner = course.owner?.id === currentUser.id;
+    const isSubscribed = subscription?.status === CourseSubType.ACTIVE;
+    const gotoDetail = isInstructor || isOwner || isSubscribed;
+    return {
+      register: !gotoDetail && !totalPrice && !isSubscribed,
+      buy: !gotoDetail && !!totalPrice && !isSubscribed,
+      gotoDetail: gotoDetail,
+      addCart: !gotoDetail && !isSubscribed && currentUser,
+    };
+  }, [course]);
+
   useEffect(() => {
     if (course?.id) {
       getBySlug();
     }
   }, [course?.id]);
-  
+
   const onNavigateDetail = () => {
     router.push(ROUTES.COURSE_DETAIL(course.slug));
-  }
+  };
 
   return (
     <>
       {course && (
-        <div className="border border-stroke rounded-md p-3 hover:shadow-default cursor-pointer space-y-4 w-full">
-          <div className="h-[170px] w-0 px-[50%] relative">
+        <div className="bg-white border border-stroke rounded-md p-3 shadow-lg cursor-pointer space-y-4 w-full">
+          <div className="h-[170px] w-0 px-[50%] relative border border-stroke rounded-lg">
             <CustomImage
               src={course.thumbnail || DEFAULT_COURSE_THUMBNAIL}
               alt="Course Thumbnail"
@@ -95,7 +110,7 @@ export const CourseCard = ({
             ></CustomImage>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center gap-1">
             {!totalPrice && (
               <>
                 <div className="px-2 rounded-md bg-red text-white">
@@ -109,52 +124,52 @@ export const CourseCard = ({
                   {formatNumber(totalPrice || course.price || 0)}{" "}
                   {course.currency}
                 </span>
-                {course.discounts?.length > 0 && (
-                  <span className="size-2 line-through text-gray-500">
+                {totalPrice != course.price && (
+                  <span className="line-through text-secondary translate-y-[2px]">
                     {formatNumber(course.price || 0)} {course.currency}
                   </span>
                 )}
               </>
             )}
           </div>
-          {currentUser && (
-            <div className="flex space-x-2">
-              {!totalPrice && !subscription && (
-                <>
-                  <NButton size="lg" className="flex-1" onClick={onSubscribe}>
-                    Register Now
-                  </NButton>
-                </>
-              )}
-              {!!totalPrice && !subscription && (
-                <>
-                  <NButton size="lg" className="flex-1" onClick={buyNow}>
-                    Buy Now
-                  </NButton>
-                  <NButton
-                    variant="outlined"
-                    size="lg-circle"
-                    className=""
-                    onClick={addToCart}
-                  >
-                    <SvgIcon
-                      icon="cart"
-                      className="icon icon-md text-system"
-                    ></SvgIcon>
-                  </NButton>
-                </>
-              )}
-              {subscription?.status === CourseSubType.ACTIVE && (
-                <NButton className="flex-1" size="lg-circle" onClick={()=> onNavigateDetail()}>
-                  <I18n i18key={"Go to course"} />
+          <div className="flex space-x-2">
+            {action.register && (
+              <>
+                <NButton size="lg" className="flex-1" onClick={onSubscribe}>
+                  Register Now
                 </NButton>
-              )}
+              </>
+            )}
 
-              <NButton variant="filled" size="lg-circle" className="">
-                <SvgIcon icon="bookmark" className="icon icon-md"></SvgIcon>
+            {action.buy && (
+              <NButton size="lg" className="flex-1" onClick={buyNow}>
+                Buy Now
               </NButton>
-            </div>
-          )}
+            )}
+            {action.addCart && (
+              <NButton
+                variant="outlined"
+                size="lg-circle"
+                className=""
+                onClick={addToCart}
+              >
+                <SvgIcon
+                  icon="cart"
+                  className="icon icon-md text-system"
+                ></SvgIcon>
+              </NButton>
+            )}
+
+            {action.gotoDetail && (
+              <NButton
+                className="flex-1"
+                size="lg-circle"
+                onClick={() => onNavigateDetail()}
+              >
+                <I18n i18key={"Go to course"} />
+              </NButton>
+            )}
+          </div>
 
           <div className="border-t border-t-stroke pt-2 space-y-2">
             <div className="font-semibold">This course includes</div>
@@ -166,9 +181,12 @@ export const CourseCard = ({
                 {course.totalFile} <span> Course materials </span>
               </div>
               <div>
-                <HMSDisplay seconds={course.estimatedTime} showMinute={false} showSecond={false}/> <span>
-                online learning 
-                </span>
+                <HMSDisplay
+                  seconds={course.estimatedTime}
+                  showMinute={false}
+                  showSecond={false}
+                />{" "}
+                <span>online learning</span>
               </div>
             </div>
           </div>

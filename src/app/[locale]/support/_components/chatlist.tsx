@@ -73,7 +73,7 @@ const ChatList = () => {
     const formatted: { [date: string]: string } = {};
     Object.keys(groupedConversations).forEach((date) => {
       const formattedDate = new Date(date).toLocaleDateString();
-      formatted[date] = formattedDate === today ? 'Today' : formatDate(date);
+      formatted[date] = formattedDate === today ? 'Today' : formatDate({date});
     });
     return formatted;
   }, [groupedConversations]);

@@ -3,9 +3,11 @@ import { Input } from "antd";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { useTranslate } from "@/hooks/useTranslate";
 
+export type InputType =  'text' | 'password' | 'email' | 'number' | 'tel' | 'date' | 'time';
+
 export interface NInputProps {
   id?: string;
-  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'date' | 'time';
+  type?: InputType;
   value?: string | number;
   onValueChange?: (value: string | number) => void;
   input?: React.FormEventHandler<HTMLInputElement>;
@@ -129,7 +131,7 @@ const NInput: React.FC<NInputProps> = ({
         onBlur={onBlur}
         onFocus={onFocus}
         placeholder={translate(placeholder)}
-        className={`border-stroke ${className} ${alignClasses[align]} ${sizeClasses[size]} ${shapeClasses[shape]} ${
+        className={`border-stroke placeholder:text-secondary ${className} ${alignClasses[align]} ${sizeClasses[size]} ${shapeClasses[shape]} ${
           addonBefore ? "pl-[40px]" : ""
         } ${addonAfter || passwordAddonAfter ? "pr-[50px]" : ""}`}
         addonBefore={addonBefore}

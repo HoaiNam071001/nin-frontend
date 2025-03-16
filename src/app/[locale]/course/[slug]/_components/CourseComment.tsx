@@ -126,10 +126,10 @@ export const CommentItem = ({
         <div className="rounded-lg bg-slate-50 px-3 py-1 inline-block relative group">
           <div className="flex items-center gap-2">
             <NTooltip
-              title={formatDate(
-                comment.createdAt,
-                DATE_FORMATS.SHORT_DATE_TIME
-              )}
+              title={formatDate({
+                date: comment.createdAt,
+                format: DATE_FORMATS.SHORT_DATE_TIME,
+              })}
             >
               <div className="font-semibold ">{comment.user?.fullName}</div>
             </NTooltip>
@@ -157,7 +157,7 @@ export const CommentItem = ({
           <p className="">{comment.commentText}</p>
         </div>
 
-        {!comment.parentId && (
+        {currentUser && !comment.parentId && (
           <div className="">
             <div className="flex items-center text-gray-600 mt-2">
               {!isReplying && (
@@ -166,7 +166,6 @@ export const CommentItem = ({
                     variant="link"
                     color="black"
                     className="!py-0"
-                    disabled={!currentUser}
                     onClick={() => setIsReplying(true)}
                   >
                     Reply
@@ -178,7 +177,6 @@ export const CommentItem = ({
                         variant="link"
                         color="black"
                         className="!py-0 flex items-center gap-1"
-                        disabled={!currentUser}
                         onClick={() => onSetShowReply()}
                       >
                         {comment.replyCount}{" "}
@@ -320,6 +318,7 @@ export const CourseComment = ({ courseId }: { courseId: number }) => {
     size: DEFAULT_PAGESIZE,
     sort: [sorter?.value],
   });
+  const { currentUser } = useAuth();
   const [pageInfo, setPageInfo] = useState<PageInfo>();
 
   const fetchComments = async () => {
@@ -387,10 +386,12 @@ export const CourseComment = ({ courseId }: { courseId: number }) => {
         </div>
       </div>
 
-      <CommentForm
-        courseId={courseId}
-        onCommentCreated={handleCommentCreated}
-      />
+      {currentUser && (
+        <CommentForm
+          courseId={courseId}
+          onCommentCreated={handleCommentCreated}
+        />
+      )}
 
       {comments.map((comment) => (
         <CommentItem

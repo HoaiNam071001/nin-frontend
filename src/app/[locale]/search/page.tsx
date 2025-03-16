@@ -29,12 +29,12 @@ const CourseBoard: React.FC = () => {
   // const [filter, setFilter] = useState();
   return (
     <SearchProvider>
-      <div className="h-[calc(100vh-130px)] bg-gray-1 rounded-sm flex gap-4 p-4">
+      <div className="h-[calc(100vh-130px)] bg-slate-100 flex gap-4 p-4 rounded-lg shadow-lg border border-stroke">
         <div className="min-w-[250px] h-full">
           <SearchFilter />
         </div>
 
-        <div className="flex-1 bg-white h-full max-h-full rounded-sm overflow-hidden flex flex-col">
+        <div className="flex-1 bg-white h-full max-h-full rounded-lg overflow-hidden flex flex-col">
           <SearchContent />
         </div>
       </div>

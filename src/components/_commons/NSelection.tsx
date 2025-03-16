@@ -198,7 +198,7 @@ const NSelection = <T extends object>({
               value={searchText}
               onValueChange={(value) => setSearchText(value as string)}
               placeholder="Search"
-              size="middle"
+              size="md"
               keyDown={handleKeyDown}
             />
           </div>

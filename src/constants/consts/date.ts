@@ -23,7 +23,7 @@ export const DATE_FORMATS = {
   
     // Định dạng chỉ hiển thị ngày/tháng/năm
     DAY_MONTH_YEAR_SLASH: 'DD/MM/YYYY',                      // 01/12/2024
-    DAY_MONTH_YEAR_DASH: 'DD-MM-YYYY',                       // 01-12-2024
+    DATE_FORMAT: 'MM-DD-YYYY',                       // 01-12-2024
     MONTH_DAY_YEAR_SLASH: 'MM/DD/YYYY',                      // 12/01/2024
     MONTH_DAY_YEAR_DASH: 'MM-DD-YYYY',                       // 12-01-2024
     FULL_DATE_VERBOSE: 'MMMM DD, YYYY',                      // December 01, 2024
