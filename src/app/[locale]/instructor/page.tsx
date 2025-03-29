@@ -10,7 +10,7 @@ const CourseBoard: React.FC = () => {
   const router = useI18nRouter();
 
   return (
-    <div className="h-[80vh] rounded-md container mx-auto">
+    <div className="h-[80vh] rounded-md container mx-auto bg-slate-50 border-stroke border p-[40px] shadow-lg">
       <div className="mb-4">
         <NButton
           variant="solid"

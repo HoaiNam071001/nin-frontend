@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import { Pagination } from "antd";
 import { PageAble, PageInfo } from "@/models/utils.model";
+import { Pagination } from "antd";
 
 interface NPaginationProps {
   pageInfo?: PageInfo;
@@ -12,7 +11,7 @@ interface NPaginationProps {
 const NPagination = ({ pageInfo, updated, ...rest }: NPaginationProps) => {
   const onChangePage = (page: number, pageSize: number) => {
     const pageAble: PageAble = {
-      page: page,
+      page: page - 1,
       size: pageSize,
     };
     updated?.(pageAble);
@@ -22,9 +21,8 @@ const NPagination = ({ pageInfo, updated, ...rest }: NPaginationProps) => {
     <>
       {pageInfo?.totalElements > 0 && (
         <Pagination
-          defaultCurrent={1}
           total={pageInfo?.totalElements}
-          current={pageInfo?.page}
+          current={pageInfo?.page + 1}
           pageSize={pageInfo?.size}
           onChange={onChangePage}
           align="end"

@@ -13,6 +13,7 @@ export interface User {
   roles: UserRole[];
   createAt: string;
   updatedAt: string;
+  active: boolean;
 }
 
 export interface ShortUser {

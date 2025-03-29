@@ -92,7 +92,7 @@ const UserCollaboration = ({ userId }) => {
             <CustomImage
               src={record.thumbnail || DEFAULT_COURSE_THUMBNAIL}
               alt="preview"
-              className="min-w-[100px] w-[100px] h-[60px] rounded-lg border-stroke border"
+              className="w-[50px] h-[35px] rounded-sm border-stroke border"
             />
             <span>{}</span>
             <NButton

@@ -6,6 +6,7 @@ import CourseContentFile from "./CourseContentFile";
 import { CourseComment } from "../../_components/CourseComment";
 import { CourseDetailContext } from "../page";
 import NButton from "@/components/_commons/NButton";
+import CourseReviews from "../../_components/CourseRating";
 
 const CourseTabContent = ({ course }) => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -19,18 +20,23 @@ const CourseTabContent = ({ course }) => {
         label: "Tổng quan",
         component: <CourseOverviewTab course={course} />,
       },
+      section
+        ? {
+            id: "curriculum",
+            label: "Tài Liệu",
+            component: <CourseContentFile course={course} />,
+          }
+        : null,
+      {
+        id: "Q/A",
+        label: "Hỏi đáp",
+        component: <CourseComment courseId={course.id} />,
+      },
       {
         id: "reviews",
         label: "Đánh giá",
-        component: <CourseComment courseId={course.id} />,
+        component: <CourseReviews course={course} />,
       },
-      section
-      ? {
-          id: "curriculum",
-          label: "Tài Liệu",
-          component: <CourseContentFile course={course} />,
-        }
-      : null,
     ].filter(Boolean);
   }, [course, section]); // Dependencies: course và section
 

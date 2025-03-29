@@ -31,11 +31,10 @@ export const CourseBasicInfo = ({
             tooltip=""
             src={course?.owner?.avatar}
             name={course?.owner?.fullName}
+            userId={course?.owner?.id}
+            email={course?.owner?.email}
+            showName={true}
           />
-          <div className="flex flex-col justify-between space-y-1 leading-[1rem]">
-            <div className="font-semibold ">{course.owner.fullName}</div>
-            <div className="text-black ">{course.owner.email}</div>
-          </div>
         </div>
       )}
 

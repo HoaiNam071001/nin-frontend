@@ -25,7 +25,7 @@ const UseTab = ({ user }) => {
 
   return (
     <div className="w-full">
-      <div className="flex border-b border-stroke w-full">
+      <div className="flex border-b border-stroke w-full bg-slate-50">
         {tabs.map((tab) => (
           <NButton
             key={tab.id}

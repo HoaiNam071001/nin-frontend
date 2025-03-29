@@ -1,3 +1,4 @@
+import { User } from "../user/user.model";
 import { Currency } from "../utils.model";
 import { Course } from "./course.model";
 
@@ -39,7 +40,7 @@ export interface PaymentTransaction {
 export interface PaymentDetail {
   id: number;
   amount: number;
-  currency: string;
+  currency: Currency;
   course: Course;
   transactionId: number;
   createdAt: Date;
@@ -59,10 +60,38 @@ export interface CourseSubscription {
   subscriptionDate: Date;
   expirationDate: Date;
   status: CourseSubType;
-  transactionId: number;
+  payment: PaymentDetail;
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface CourseSubscriptionFull {
+  id: number;
+  user: User;
+  course: Course;
+  subscriptionDate: string;
+  expirationDate: string;
+  status: CourseSubType;
+  payment: PaymentDetail;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ChartCoursePayload {
+  startDate: string;
+  endDate: string;
+}
+
+export interface ChartCourseResponse {
+  data: {
+    date: string;
+    value: number;
+    currency: Currency;
+    subscriptionCount: number;
+    courseCount: number;
+  }[];
+}
+
 
 export enum PaymentStatus {
   PENDING = "PENDING",

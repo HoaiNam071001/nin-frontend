@@ -50,6 +50,7 @@ export interface Course {
   discounts?: Discount[];
   instructors?: Instructor[];
   summary?: string;
+  rating?: number;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -67,6 +68,7 @@ export interface FullCourse {
   estimatedTime: number;
   status: CourseStatus;
   owner: ShortUser;
+  rating?: number;
   category: Category;
   subCategory: Category;
   level: Level;
@@ -196,6 +198,7 @@ export interface CourseTargetPayload {
 
 export interface CourseStatusPayload {
   status?: CourseStatus;
+  content?: string;
 }
 
 export class Instructor {

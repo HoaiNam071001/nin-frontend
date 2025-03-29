@@ -1,9 +1,7 @@
 import defaultTheme from "tailwindcss/defaultTheme";
 
 const config = {
-  content: [
-    './src/**/*.{html,js,ts,jsx,tsx,scss,mdx}', 
-  ],
+  content: ["./src/**/*.{html,js,ts,jsx,tsx,scss,mdx}"],
   darkMode: "class",
   theme: {
     fontFamily: {
@@ -17,17 +15,27 @@ const config = {
     },
     extend: {
       colors: {
-        system: "#1F75FF",
+        system: {
+          DEFAULT: "#1F75FF",
+          50: "#E6F0FF", // Rất nhạt
+          100: "#CCE1FF", // Nhạt hơn
+          200: "#99C3FF", // Nhạt
+          300: "#66A4FF", // Trung bình nhạt
+          400: "#3386FF", // Trung bình
+          500: "#1F75FF", // Màu gốc (DEFAULT)
+          600: "#195ECC", // Đậm hơn
+          700: "#134799", // Đậm
+          800: "#0D3066", // Rất đậm
+          900: "#071933", // Gần đen
+        },
         orange: {
           DEFAULT: "#FF9500",
-          50: '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
         },
         gray: {
           DEFAULT: "#959595",
+        },
+        green: {
+          DEFAULT: "#39B88A",
         },
         stroke: "#DDE8F1",
         whiten: "#F1F5F9",
@@ -42,7 +50,9 @@ const config = {
         primary: "#3C50E0",
         current: "currentColor",
         transparent: "transparent",
-        red: "#FB5454",
+        red: {
+          DEFAULT: "#FB5454",
+        },
         "black-2": "#010101",
         body: "#64748B",
       },
@@ -71,53 +81,24 @@ const config = {
         default: "0px 8px 13px -3px rgba(0, 0, 0, 0.07)",
       },
       keyframes: {
-        linspin: {
-          "100%": { transform: "rotate(360deg)" },
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        "left-spin": {
-          "0%": { transform: "rotate(130deg)" },
-          "50%": { transform: "rotate(-5deg)" },
-          "100%": { transform: "rotate(130deg)" },
-        },
-        "right-spin": {
-          "0%": { transform: "rotate(-130deg)" },
-          "50%": { transform: "rotate(5deg)" },
-          "100%": { transform: "rotate(-130deg)" },
-        },
-        rotating: {
-          "0%, 100%": { transform: "rotate(360deg)" },
-          "50%": { transform: "rotate(0deg)" },
-        },
-        topbottom: {
-          "0%, 100%": { transform: "translate3d(0, -100%, 0)" },
-          "50%": { transform: "translate3d(0, 0, 0)" },
-        },
-        bottomtop: {
-          "0%, 100%": { transform: "translate3d(0, 0, 0)" },
-          "50%": { transform: "translate3d(0, -100%, 0)" },
-        },
-        line: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(100%)" },
-        },
-        "line-revert": {
-          "0%, 100%": { transform: "translateY(100%)" },
-          "50%": { transform: "translateY(0)" },
-        },
+      },
+      animation: {
+        fadeIn: "fadeIn 0.5s ease-out forwards",
       },
       gridAutoColumns: {
         // Tùy chỉnh grid auto columns cho 5 cột, 4 cột, 3 cột, 2 cột và 1 cột
-        '5': 'calc((100% - (5 - 1) * 1rem) / 5)',  // 5 cột
-        '4': 'calc((100% - (4 - 1) * 1rem) / 4)',  // 4 cột
-        '3': 'calc((100% - (3 - 1) * 1rem) / 3)',  // 3 cột
-        '2': 'calc((100% - (2 - 1) * 1rem) / 2)',  // 2 cột
-        '1': '100%',  // 1 cột
+        "5": "calc((100% - (5 - 1) * 1rem) / 5)", // 5 cột
+        "4": "calc((100% - (4 - 1) * 1rem) / 4)", // 4 cột
+        "3": "calc((100% - (3 - 1) * 1rem) / 3)", // 3 cột
+        "2": "calc((100% - (2 - 1) * 1rem) / 2)", // 2 cột
+        "1": "100%", // 1 cột
       },
-
     },
   },
-  plugins: [
-    
-  ],
+  plugins: [],
 };
 export default config;

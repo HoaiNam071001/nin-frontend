@@ -1,10 +1,9 @@
 "use client";
 
-import React from "react";
-import { Table } from "antd";
-import type { TableProps } from "antd";
-import type { ColumnType, TablePaginationConfig } from "antd/es/table";
 import { PageAble, PageInfo, SortOrder } from "@/models/utils.model";
+import type { TableProps } from "antd";
+import { Table } from "antd";
+import type { ColumnType, TablePaginationConfig } from "antd/es/table";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 
 export type TableColumn<T> = ColumnType<T>;
@@ -31,7 +30,7 @@ const NTable = <T extends object>({
     sorter: SorterResult<T>
   ) => {
     const pageAble: PageAble = {
-      page: pagination.current,
+      page: pagination.current - 1,
       size: pagination.pageSize,
       sort: sorter?.field
         ? [
@@ -58,7 +57,7 @@ const NTable = <T extends object>({
       pagination={
         pageInfo
           ? {
-              current: pageInfo?.page,
+              current: pageInfo?.page + 1,
               pageSize: pageInfo?.size,
               total: pageInfo?.totalElements,
               showSizeChanger: true,

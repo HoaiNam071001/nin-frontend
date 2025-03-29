@@ -5,8 +5,13 @@ import {
   PaymentStatus,
   CreatePaymentPayload,
   CreateSubscriptionPayload,
+  CourseSubscriptionFull,
+  ChartCoursePayload,
+  ChartCourseResponse,
 } from "@/models/course/course-subscription.model";
 import apiClient from "../config";
+import { List2Res, PageAble, stringifyPageAble } from "@/models/utils.model";
+import queryString from "query-string";
 
 export const coursePaymentService = {
   // PaymentTransaction APIs
@@ -104,25 +109,26 @@ export const coursePaymentService = {
     return response.data;
   },
 
-  // extendSubscription: async (id: number, expirationDate: Date) => {
-  //   const response = await apiClient.put<CourseSubscription>(
-  //     `/payments/subscriptions/${id}/extend`,
-  //     { expirationDate }
-  //   );
-  //   return response.data;
-  // },
+  getSubscriptionByCourseOwner: async (
+    payload: ChartCoursePayload,
+    pageAble?: PageAble
+  ) => {
+    console.log(queryString.stringify(payload));
+    const response = await apiClient.get<List2Res<CourseSubscriptionFull>>(
+      `/payments/subscriptions/owner?${
+        queryString.stringify(payload) +
+        "&" +
+        (pageAble ? stringifyPageAble(pageAble) : "")
+      }`
+    );
+    return response.data;
+  },
 
-  // cancelSubscription: async (id: number) => {
-  //   const response = await apiClient.put<CourseSubscription>(
-  //     `/payments/subscriptions/${id}/cancel`
-  //   );
-  //   return response.data;
-  // },
-
-  // createFreeSubscription: async (courseId: number, userId: number) => {
-  //   const response = await apiClient.post<CourseSubscription>(
-  //     `/payments/courses/${courseId}/free-subscriptions/${userId}`
-  //   );
-  //   return response.data;
-  // },
+  // chart
+  getSubscriptionGroupByCourseOwner: async (payload: ChartCoursePayload) => {
+    const response = await apiClient.get<ChartCourseResponse>(
+      `/payments/subscriptions/owner/chart?${queryString.stringify(payload)}`
+    );
+    return response.data;
+  },
 };

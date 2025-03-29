@@ -3,6 +3,7 @@ export enum CourseStatus {
     DRAFT = 'draft',
     PENDING = 'pending',
     READY = 'ready',
-    CLOSED = 'closed',
+    REJECT = 'reject',
     DELETED = 'deleted',
+    PRIVATE = 'private',
   }

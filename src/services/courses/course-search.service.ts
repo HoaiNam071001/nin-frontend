@@ -38,4 +38,10 @@ export const courseSearchService = {
     return response.data;
   },
   
+  getByUser: async (userId: number, pageAble?: PageAble) => {
+    const response = await apiClient.get<List2Res<Course>>(
+      `/course-search/owner/${userId}?${pageAble ? stringifyPageAble(pageAble) : ""}`
+    );
+    return response.data;
+  },
 };

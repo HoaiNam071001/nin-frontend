@@ -23,6 +23,7 @@ import I18n from "@/components/_commons/I18n";
 import SvgIcon from "@/components/_commons/SvgIcon";
 import NButton from "@/components/_commons/NButton";
 import NEmpty from "@/components/_commons/NEmpty";
+import { courseSearchService } from "@/services/courses/course-search.service";
 
 const sortItems: DropdownOption<OrderBy>[] = [
   {
@@ -56,7 +57,7 @@ const UserCourseList = ({ userId }) => {
   const getCourses = async () => {
     try {
       const { content, ...res }: List2Res<Course> =
-        await courseService.getMyCourses(pageAble);
+        await courseSearchService.getByUser(userId, pageAble);
       setRows(content);
       setPageInfo(res);
     } catch (error) {

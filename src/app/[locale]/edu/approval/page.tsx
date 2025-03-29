@@ -28,7 +28,7 @@ const columns: TableColumns<Course> = [
         <CustomImage
           src={record.thumbnail || DEFAULT_COURSE_THUMBNAIL}
           alt="preview"
-          className="min-w-[80px] w-[80px] h-[50px] rounded-lg border-stroke border"
+          className="w-[50px] h-[35px] rounded-md border-stroke border"
         />
         <span>{record.name}</span>
       </div>
@@ -44,11 +44,7 @@ const columns: TableColumns<Course> = [
     key: "owner",
     render: (user) => (
       <div className="flex gap-2 items-center">
-        <NAvatar tooltip="" name={user.fullName} src={user.avatar} />
-        <div className="flex flex-col justify-between space-y-1 leading-[1rem]">
-          <div className="font-semibold ">{user.fullName}</div>
-          <div className="text-black ">{user.email}</div>
-        </div>
+        <NAvatar tooltip="" name={user.fullName} src={user.avatar} showName={true} userId={user.id} email={user.email}/>
       </div>
     ),
     width: 300,

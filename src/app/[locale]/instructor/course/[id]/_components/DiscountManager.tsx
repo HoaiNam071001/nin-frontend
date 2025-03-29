@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import FormInput from "@/components/Form/FormInput";
 import FormSelection from "@/components/Form/FormSelection";
 import { DATE_FORMATS } from "@/constants";
+import SvgIcon from "@/components/_commons/SvgIcon";
 
 export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
   const { openModal } = useModal();
@@ -144,12 +145,22 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
     {
       title: "",
       render: (record) => (
-        <div className="flex justify-end">
-          <SectionOptions
-            deleteMessage="Are you sure to delete this Discount?"
-            onRemove={() => handleDeleteDiscount(record.id)}
-            onEdit={() => handleEditDiscount(record)}
-          />
+        <div className="flex items-center justify-center gap-2">
+          <NButton
+            size="sm"
+            variant="filled"
+            onClick={() => handleEditDiscount(record.id)}
+          >
+            <SvgIcon icon={"edit"} className="icon icon-sm" />
+          </NButton>
+          <NButton
+            size="sm"
+            variant="filled"
+            color="red"
+            onClick={() => handleDeleteDiscount(record)}
+          >
+            <SvgIcon icon={"remove"} className="icon icon-sm" />
+          </NButton>
         </div>
       ),
     },

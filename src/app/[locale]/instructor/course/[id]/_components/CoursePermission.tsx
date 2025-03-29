@@ -108,7 +108,6 @@ export const CoursePermisison: React.FC<SettingSubmitProps> = ({
           )}
         </div>
       </div>
-
     </>
   );
 };
@@ -128,13 +127,14 @@ const CourseInstructor = ({
 }) => {
   const [editing, setEditing] = useState(false);
   const [userList, setUserList] = useState<ShortUser[]>();
-  const { setValue, handleSubmit, control, watch, getValues } = useForm<Instructor>({
-    defaultValues: {
-      user: null,
-      accessType: CourseAccessType.VIEW,
-      type: InstructorType.ASSISTANT,
-    },
-  });
+  const { setValue, handleSubmit, control, watch, getValues } =
+    useForm<Instructor>({
+      defaultValues: {
+        user: null,
+        accessType: CourseAccessType.VIEW,
+        type: InstructorType.ASSISTANT,
+      },
+    });
 
   const { openConfirm } = useModal();
 
@@ -170,10 +170,9 @@ const CourseInstructor = ({
           accessType: data.accessType,
           type: data.type,
         });
-  
+
         onAdd?.(instructor);
-      }
-      catch(error) {
+      } catch (error) {
         toastService.error(error.message);
       }
     })();
@@ -209,29 +208,6 @@ const CourseInstructor = ({
     });
   };
 
-  const items = [
-    {
-      key: "edit",
-      label: (
-        <div className="flex space-x-2 items-center">
-          <SvgIcon className="icon icon-sm" icon="edit"></SvgIcon>
-          <span>Edit</span>
-        </div>
-      ),
-      onClick: () => onEditItem(),
-    },
-    {
-      key: "remove",
-      label: (
-        <div className="flex space-x-2 items-center">
-          <SvgIcon className="icon icon-sm" icon="remove"></SvgIcon>
-          <span>Delete</span>
-        </div>
-      ),
-      onClick: () => onDelete(),
-    },
-  ];
-
   const UserLabel = (val: ShortUser) => (
     <NUser src={val.avatar} name={val.fullName} />
   );
@@ -248,9 +224,9 @@ const CourseInstructor = ({
   const type = watch("type");
   const mainType = [InstructorType.CO_INSTRUCTOR, InstructorType.PRIMARY];
 
-  const isDisableType = useMemo(()=> {
+  const isDisableType = useMemo(() => {
     return mainType.includes(type);
-  },[type])
+  }, [type]);
   const accessType = watch("accessType");
   useEffect(() => {
     if (editMode && mainType.includes(type)) {
@@ -273,7 +249,19 @@ const CourseInstructor = ({
           <div className="flex-1">{currentType()}</div>
           <div className="flex-[0.5]">{currentLevel()}</div>
           <div>
-            <NDropdown items={items} />
+            <div className="flex items-center justify-center gap-2">
+              <NButton size="sm" variant="filled" onClick={() => onEditItem()}>
+                <SvgIcon icon={"edit"} className="icon icon-sm" />
+              </NButton>
+              <NButton
+                size="sm"
+                variant="filled"
+                color="red"
+                onClick={() => onDelete()}
+              >
+                <SvgIcon icon={"remove"} className="icon icon-sm" />
+              </NButton>
+            </div>
           </div>
         </>
       )}
@@ -308,14 +296,17 @@ const CourseInstructor = ({
             ></FormSelection>
           </div>
           <div className="flex-[0.5]">
-            {!isDisableType ? <FormSelection
-              control={control}
-              name={"accessType"}
-              bindLabel="name"
-              bindValue="value"  
-              options={CourseAccess}
-            ></FormSelection> : <div className="capitalize px-3">{accessType}</div>}
-            
+            {!isDisableType ? (
+              <FormSelection
+                control={control}
+                name={"accessType"}
+                bindLabel="name"
+                bindValue="value"
+                options={CourseAccess}
+              ></FormSelection>
+            ) : (
+              <div className="capitalize px-3">{accessType}</div>
+            )}
           </div>
           <div className="flex flex-col">
             <NButton shape="sm" variant={"text"} onClick={onSave}>

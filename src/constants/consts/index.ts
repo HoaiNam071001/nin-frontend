@@ -3,3 +3,4 @@ export * from './date';
 export * from './paging';
 export * from './course';
 export * from './layout';
+export * from './colors';

@@ -1,0 +1,31 @@
+.ant-table-wrapper .ant-table-cell,
+// .ant-table-wrapper .ant-table-thead > tr > th,
+.ant-table-wrapper .ant-table-tbody > tr > th,
+.ant-table-wrapper .ant-table-tbody > tr > td,
+.ant-table-wrapper tfoot > tr > th,
+.ant-table-wrapper tfoot > tr > td {
+  @apply px-[10px] py-[7px] ;
+}
+
+.ant-table-wrapper .ant-table-thead > tr > th {
+  @apply bg-system-500 hover:bg-system-400 px-[10px] py-[10px] text-white;
+  &.ant-table-column-sort,
+  &.ant-table-cell-fix-left:hover,
+  &.ant-table-cell-fix-right:hover,
+  &.ant-table-column-has-sorters:hover {
+    @apply bg-system-600 hover:bg-system-500;
+  }
+}
+
+.ant-table-wrapper {
+  .ant-table-row {
+    &.selected {
+      td {
+        @apply bg-orange-100;
+      }
+      .ant-table-cell-row-hover {
+        @apply bg-orange-200;
+      }
+    }
+  }
+}

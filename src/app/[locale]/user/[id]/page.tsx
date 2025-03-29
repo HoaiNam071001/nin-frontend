@@ -43,8 +43,8 @@ const UserDetail: React.FC = ({ params }: PageProps) => {
 
   return (
     <div className="">
-      <div className=" rounded-lg shadow-lg">
-        <div className="relative flex gap-4 p-4 border border-stroke rounded-md">
+      <div className="rounded-lg shadow-lg bg-blue-50">
+        <div className="relative flex gap-4 p-4 rounded-md">
             <NAvatar size="xxl" src={user.avatar} name={user.fullName} />
           <div className=" p-2">
             <div className="text-title-lg capitalize font-semibold flex">

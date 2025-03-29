@@ -14,8 +14,9 @@ import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 
 const statuses = {
-  [CourseStatus.READY]: CourseStatus.CLOSED,
-  [CourseStatus.CLOSED]: CourseStatus.READY,
+  [CourseStatus.READY]: CourseStatus.PRIVATE,
+  [CourseStatus.PRIVATE]: CourseStatus.READY,
+  [CourseStatus.REJECT]: CourseStatus.PENDING,
   [CourseStatus.DRAFT]: CourseStatus.PENDING,
   [CourseStatus.PENDING]: CourseStatus.DRAFT,
 };
@@ -30,10 +31,10 @@ const CourseSetting = ({
   setStep: (step: CourseStepItem) => void;
   setCourse: (course: Course) => void;
 }) => {
-  const onSubmit = async () => {
+  const onSubmit = async (status: CourseStatus) => {
     try {
       const payload: CourseStatusPayload = {
-        status: statuses[course.status],
+        status,
       };
       const response: Course = await courseService.updateStatus(
         course.id,
@@ -55,23 +56,33 @@ const CourseSetting = ({
         <StatusBadge status={course.status} />
         <div>
           {course?.status === CourseStatus.DRAFT && (
-            <NButton color="orange" onClick={onSubmit}>
+            <NButton onClick={() => onSubmit(CourseStatus.PENDING)}>
+              <I18n i18key={"Publish"} />
+            </NButton>
+          )}
+          {course?.status === CourseStatus.REJECT && (
+            <NButton onClick={() => onSubmit(CourseStatus.PENDING)}>
               <I18n i18key={"Publish"} />
             </NButton>
           )}
           {course?.status === CourseStatus.READY && (
-            <NButton color="gray" onClick={onSubmit}>
+            <NButton onClick={() => onSubmit(CourseStatus.PRIVATE)}>
               <I18n i18key={"Close"} />
             </NButton>
           )}
           {course?.status === CourseStatus.PENDING && (
-            <NButton color="gray" onClick={onSubmit}>
+            <NButton onClick={() => onSubmit(CourseStatus.DRAFT)}>
               <I18n i18key={"Cancel"} />
             </NButton>
           )}
-          {course?.status === CourseStatus.CLOSED && (
-            <NButton onClick={onSubmit}>
-              <I18n i18key={"Publish"} />
+          {course?.status === CourseStatus.DELETED && (
+            <NButton onClick={() => onSubmit(CourseStatus.DRAFT)}>
+              <I18n i18key={"Restore"} />
+            </NButton>
+          )}
+          {course?.status === CourseStatus.PRIVATE && (
+            <NButton onClick={() => onSubmit(CourseStatus.READY)}>
+              <I18n i18key={"Republished"} />
             </NButton>
           )}
         </div>
@@ -80,7 +91,6 @@ const CourseSetting = ({
         <div>
           <I18n i18key="The course creation function helps you build and organize entire course content from start to finish."></I18n>
         </div>
-        {/* <I18n i18key="The purpose of this feature is to help you easily create a clearly structured course that provides complete and accessible information for students."></I18n> */}
       </div>
 
       <div className="text-title-sm font-semibold">

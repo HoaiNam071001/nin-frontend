@@ -17,6 +17,7 @@ import NButton from "@/components/_commons/NButton";
 import I18n from "@/components/_commons/I18n";
 import { formatDate } from "@/helpers/date";
 import { DATE_FORMATS } from "@/constants";
+import NAvatar from "@/components/_commons/NAvatar";
 
 export const UserSetting = ({ userId }) => {
   const [user, setUser] = useState<User>();
@@ -90,7 +91,7 @@ export const UserSetting = ({ userId }) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-12">
           <div className="col-span-12 md:col-span-4">
-            <Thumbnail control={control} setValue={setValue} />
+            <Thumbnail control={control} setValue={setValue} user={user}/>
           </div>
           <div className="col-span-12 md:col-span-8 p-4">
             <div className="form-group">
@@ -168,7 +169,7 @@ export const UserSetting = ({ userId }) => {
   );
 };
 
-const Thumbnail = ({ control, setValue }) => {
+const Thumbnail = ({ control, setValue, user }) => {
   const uploadFile = async (file: File) => {
     const payload: UploadFilePayload = {
       file: file,
@@ -199,10 +200,11 @@ const Thumbnail = ({ control, setValue }) => {
           name="avatar"
           control={control}
           render={({ field }) => (
-            <CustomImage
-              src={field.value || DEFAULT_COURSE_THUMBNAIL}
+            <NAvatar
+              src={field.value}
+              name={user?.fullName}
               alt="preview"
-              className="w-[200px] h-[200px] "
+              size="xxl"
             />
           )}
         />

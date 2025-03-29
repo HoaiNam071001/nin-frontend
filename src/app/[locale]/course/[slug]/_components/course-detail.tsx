@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import CourseBreadcrumb from "./course-breadcrumb";
 import { cartService } from "@/services/user/cart.service";
 import { CourseComment } from "./CourseComment";
+import CourseReviews from "./CourseRating";
 
 const CourseDetail = ({ slug }) => {
   const [course, setCourse] = useState<FullCourse>();
@@ -48,7 +49,7 @@ const CourseDetail = ({ slug }) => {
           <div className="mb-5">
             <CourseContentMenu course={course} />
           </div>
-          <CourseComment courseId={course.id} />
+          <CourseReviews course={course} />
         </div>
       )}
       <div className="md:col-span-3 sticky top-[200px] min-w-[350px] w-[350px]">

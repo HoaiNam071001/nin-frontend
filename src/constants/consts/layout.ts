@@ -1,6 +1,6 @@
 import { MenuType, NavItem, User } from "@/models";
-import { ROUTES } from "./routes";
 import { Role } from "../enums";
+import { ROUTES } from "./routes";
 
 export const HEADER_HEIGHT = "72px";
 
@@ -22,28 +22,47 @@ export const CartNavItem: NavItem = {
   path: ROUTES.CART,
 };
 
+export const AdminNavItems: NavItem[] = [
+  {
+    icon: "teamwork-icon",
+    name: "User List",
+    path: ROUTES.ADMIN_USER,
+  },
+];
+
 export const StudentNavItems: NavItem[] = [
   {
-    icon: "cheque",
+    icon: "learning-icon",
     name: "Registered Courses",
     path: ROUTES.MY_COURSE,
   },
   CartNavItem,
+  ...AdminNavItems,
 ];
 
 export const TeacherNavItems: NavItem[] = [
   {
-    icon: "cheque",
+    icon: "list",
     name: "My Courses",
     path: ROUTES.INSTRUCTOR,
+  },
+  {
+    icon: "report",
+    name: "Course Report",
+    path: ROUTES.INSTRUCTOR_COURSE_REPORT,
   },
 ];
 
 export const EduMgNavItems: NavItem[] = [
   {
-    icon: "cheque",
+    icon: "inspection",
     name: "Course Approval",
     path: ROUTES.MANAGE_APPROVAL,
+  },
+  {
+    icon: "dashboard-report",
+    name: "Course Report",
+    path: ROUTES.MANAGE_COURSE_REPORT,
   },
 ];
 
@@ -63,7 +82,7 @@ export class NavbarMenu {
       return [HomeNavItems, SupportNavItems];
     }
     const profile = {
-      icon: "personal",
+      icon: "profile",
       name: "My Profile",
       path: `${ROUTES.USER}/${user.id}`,
     };
@@ -72,7 +91,7 @@ export class NavbarMenu {
       [Role.STUDENT]: StudentNavItems,
       [Role.TEACHER]: TeacherNavItems,
       [Role.EDUCATION_MANAGER]: EduMgNavItems,
-      [Role.ADMIN]: [HomeNavItems, SupportNavItems],
+      [Role.ADMIN]: AdminNavItems,
     };
     const items = roles[role];
 

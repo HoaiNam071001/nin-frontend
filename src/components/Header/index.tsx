@@ -12,6 +12,7 @@ import { HEADER_HEIGHT, ROUTES } from "@/constants";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { I18nLink } from "../_commons/I18nLink";
+import NotificationDropdown from "./NotificationDropdown";
 
 const Header = ({
   showCategory = true,
@@ -38,6 +39,7 @@ const Header = ({
         </div>
 
         <div className="flex items-center gap-3 ml-auto">
+          <NotificationDropdown/>
         <LanguageSwitcher />
 
           {isAuthenticated && currentUser ? (

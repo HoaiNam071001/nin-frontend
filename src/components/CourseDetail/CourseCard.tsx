@@ -73,9 +73,9 @@ export const CourseCard = ({
 
   const action = useMemo(() => {
     const isInstructor = course.instructors.find(
-      (item) => item.user?.id === currentUser.id
+      (item) => item.user?.id === currentUser?.id
     );
-    const isOwner = course.owner?.id === currentUser.id;
+    const isOwner = course?.owner?.id === currentUser?.id;
     const isSubscribed = subscription?.status === CourseSubType.ACTIVE;
     const gotoDetail = isInstructor || isOwner || isSubscribed;
     return {
@@ -84,7 +84,7 @@ export const CourseCard = ({
       gotoDetail: gotoDetail,
       addCart: !gotoDetail && !isSubscribed && currentUser,
     };
-  }, [course]);
+  }, [course, subscription]);
 
   useEffect(() => {
     if (course?.id) {
@@ -99,94 +99,96 @@ export const CourseCard = ({
   return (
     <>
       {course && (
-        <div className="bg-white border border-stroke rounded-md p-3 shadow-lg cursor-pointer space-y-4 w-full">
-          <div className="h-[170px] w-0 px-[50%] relative border border-stroke rounded-lg">
+        <div className="bg-white border-[0.5px] border-stroke rounded-lg overflow-hidden shadow-lg cursor-pointer w-full">
+          <div className="h-[190px] w-0 px-[50%] relative border-b-[0.5px] border-stroke">
             <CustomImage
               src={course.thumbnail || DEFAULT_COURSE_THUMBNAIL}
               alt="Course Thumbnail"
               width={300}
-              height={150}
-              className="rounded-md w-[100%] h-[100%] absolute left-0 top-0"
+              height={180}
+              className="w-[100%] h-[100%] absolute left-0 top-0"
             ></CustomImage>
           </div>
 
-          <div className="flex items-center gap-1">
-            {!totalPrice && (
-              <>
-                <div className="px-2 rounded-md bg-red text-white">
-                  <I18n i18key={"Free"}></I18n>
-                </div>
-              </>
-            )}
-            {!!totalPrice && (
-              <>
-                <span className="text-title-md leading-[1rem] font-semibold">
-                  {formatNumber(totalPrice || course.price || 0)}{" "}
-                  {course.currency}
-                </span>
-                {totalPrice != course.price && (
-                  <span className="line-through text-secondary translate-y-[2px]">
-                    {formatNumber(course.price || 0)} {course.currency}
+          <div className="p-4 space-y-4">
+            <div className="flex items-center gap-1">
+              {!totalPrice && (
+                <>
+                  <div className="px-2 rounded-md bg-red text-white">
+                    <I18n i18key={"Free"}></I18n>
+                  </div>
+                </>
+              )}
+              {!!totalPrice && (
+                <>
+                  <span className="text-title-md leading-[1rem] font-semibold">
+                    {formatNumber(totalPrice || course.price || 0)}{" "}
+                    {course.currency}
                   </span>
-                )}
-              </>
-            )}
-          </div>
-          <div className="flex space-x-2">
-            {action.register && (
-              <>
-                <NButton size="lg" className="flex-1" onClick={onSubscribe}>
-                  Register Now
+                  {totalPrice != course.price && (
+                    <span className="line-through text-secondary translate-y-[2px]">
+                      {formatNumber(course.price || 0)} {course.currency}
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+            <div className="flex space-x-2">
+              {action.register && (
+                <>
+                  <NButton size="lg" className="flex-1" onClick={onSubscribe}>
+                    Register Now
+                  </NButton>
+                </>
+              )}
+
+              {action.buy && (
+                <NButton size="lg" className="flex-1" onClick={buyNow}>
+                  Buy Now
                 </NButton>
-              </>
-            )}
+              )}
+              {action.addCart && (
+                <NButton
+                  variant="outlined"
+                  size="lg-circle"
+                  className=""
+                  onClick={addToCart}
+                >
+                  <SvgIcon
+                    icon="cart"
+                    className="icon icon-md text-system"
+                  ></SvgIcon>
+                </NButton>
+              )}
 
-            {action.buy && (
-              <NButton size="lg" className="flex-1" onClick={buyNow}>
-                Buy Now
-              </NButton>
-            )}
-            {action.addCart && (
-              <NButton
-                variant="outlined"
-                size="lg-circle"
-                className=""
-                onClick={addToCart}
-              >
-                <SvgIcon
-                  icon="cart"
-                  className="icon icon-md text-system"
-                ></SvgIcon>
-              </NButton>
-            )}
+              {action.gotoDetail && (
+                <NButton
+                  className="flex-1"
+                  size="lg-circle"
+                  onClick={() => onNavigateDetail()}
+                >
+                  <I18n i18key={"Go to course"} />
+                </NButton>
+              )}
+            </div>
 
-            {action.gotoDetail && (
-              <NButton
-                className="flex-1"
-                size="lg-circle"
-                onClick={() => onNavigateDetail()}
-              >
-                <I18n i18key={"Go to course"} />
-              </NButton>
-            )}
-          </div>
-
-          <div className="border-t border-t-stroke pt-2 space-y-2">
-            <div className="font-semibold">This course includes</div>
-            <div className="text-gray-500">
-              <div>
-                {course.totalSection} <span>Lessons</span>
-              </div>
-              <div>
-                {course.totalFile} <span> Course materials </span>
-              </div>
-              <div>
-                <HMSDisplay
-                  seconds={course.estimatedTime}
-                  showMinute={false}
-                  showSecond={false}
-                />{" "}
-                <span>online learning</span>
+            <div className="border-t border-t-stroke pt-2 space-y-2">
+              <div className="font-semibold">This course includes</div>
+              <div className="text-gray-500">
+                <div>
+                  {course.totalSection} <span>Lessons</span>
+                </div>
+                <div>
+                  {course.totalFile} <span> Course materials </span>
+                </div>
+                <div>
+                  <HMSDisplay
+                    seconds={course.estimatedTime}
+                    showMinute={false}
+                    showSecond={false}
+                  />{" "}
+                  <span>online learning</span>
+                </div>
               </div>
             </div>
           </div>

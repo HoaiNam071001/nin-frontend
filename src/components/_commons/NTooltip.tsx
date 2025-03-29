@@ -4,8 +4,10 @@ const NTooltip = ({
   title,
   placement,
   children,
+  color = 'black',
 }: {
   title: string | React.ReactNode;
+  color?: string;
   placement?:
     | "top"
     | "left"
@@ -22,7 +24,7 @@ const NTooltip = ({
   children: React.ReactNode;
 }) => {
   return (
-    <Tooltip title={title} placement={placement}>
+    <Tooltip title={title} placement={placement} color={color}>
       {children}
     </Tooltip>
   );

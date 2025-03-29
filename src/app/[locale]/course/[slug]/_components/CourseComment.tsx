@@ -1,15 +1,17 @@
 "use client";
 
 import NAvatar from "@/components/_commons/NAvatar";
+import NButton from "@/components/_commons/NButton";
+import NSelection from "@/components/_commons/NSelection";
+import { NTextarea } from "@/components/_commons/NTextarea";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import TimeAgo from "@/components/_commons/TimeAgo";
+import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
+import useAuth from "@/hooks/useAuth";
 import {
   CommentModel,
   CreateCommentPayload,
 } from "@/models/course/course-comment.model";
-import { FullCourse } from "@/models"; // Import CommentItem
-import { useEffect, useState } from "react";
-import { commentService } from "@/services/courses/course-comment.service";
-import { formatDate } from "@/helpers/date";
-import { DATE_FORMATS, DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
 import {
   DropdownOption,
   OrderBy,
@@ -17,19 +19,16 @@ import {
   PageInfo,
   SortOrder,
 } from "@/models/utils.model";
-import NSelection from "@/components/_commons/NSelection";
-import useAuth from "@/hooks/useAuth";
-import NButton from "@/components/_commons/NButton";
-import { NTextarea } from "@/components/_commons/NTextarea";
-import { uniqBy } from "lodash";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import NTooltip from "@/components/_commons/NTooltip";
 import { useModal } from "@/providers/ModalProvider";
+import { commentService } from "@/services/courses/course-comment.service";
+import { uniqBy } from "lodash";
+import { useEffect, useState } from "react";
 
 interface CommentItemProps {
   comment: CommentModel;
-  courseId?: number;
+  courseId: number;
   order?: OrderBy;
+  level?: number;
   remove?: () => void;
 }
 
@@ -37,6 +36,7 @@ export const CommentItem = ({
   comment,
   courseId,
   order,
+  level = 0,
   remove,
 }: CommentItemProps) => {
   const { openConfirm } = useModal();
@@ -97,12 +97,12 @@ export const CommentItem = ({
   };
 
   const handleCommentCreated = () => {
+    setShowReply(true);
     setIsReplying(false);
-    fetchComments(); // Gọi lại fetchComments để cập nhật danh sách comment
+    setPageAble({ ...pageAble });
   };
 
   const onRemove = async () => {
-    // Xử lý xóa comment
     try {
       await commentService.remove(comment.id);
       remove?.();
@@ -120,19 +120,17 @@ export const CommentItem = ({
           tooltip=""
           src={comment.user?.avatar}
           name={comment.user?.fullName}
+          userId={comment.user?.id}
         />
       </div>
       <div className="flex-1">
         <div className="rounded-lg bg-slate-50 px-3 py-1 inline-block relative group">
           <div className="flex items-center gap-2">
-            <NTooltip
-              title={formatDate({
-                date: comment.createdAt,
-                format: DATE_FORMATS.SHORT_DATE_TIME,
-              })}
-            >
-              <div className="font-semibold ">{comment.user?.fullName}</div>
-            </NTooltip>
+            <div className="font-semibold ">{comment.user?.fullName}</div>
+            <TimeAgo
+              date={comment.updatedAt}
+              className="text-secondary"
+            ></TimeAgo>
 
             {comment.user?.id === currentUser?.id && (
               <div className="absolute -right-[30px] top-0 h-full group-hover:visible invisible">
@@ -157,7 +155,7 @@ export const CommentItem = ({
           <p className="">{comment.commentText}</p>
         </div>
 
-        {currentUser && !comment.parentId && (
+        {currentUser && level < 2 && (
           <div className="">
             <div className="flex items-center text-gray-600 mt-2">
               {!isReplying && (
@@ -171,7 +169,7 @@ export const CommentItem = ({
                     Reply
                   </NButton>
 
-                  {!!comment.replyCount && (
+                  {!!(comment.replyCount || pageInfo?.totalElements) && (
                     <>
                       <NButton
                         variant="link"
@@ -179,8 +177,10 @@ export const CommentItem = ({
                         className="!py-0 flex items-center gap-1"
                         onClick={() => onSetShowReply()}
                       >
-                        {comment.replyCount}{" "}
-                        {comment.replyCount > 1 ? "Replies" : "Reply"}
+                        {comment.replyCount || pageInfo?.totalElements}{" "}
+                        {(comment.replyCount || pageInfo?.totalElements) > 1
+                          ? "Replies"
+                          : "Reply"}
                         <SvgIcon
                           icon="arrow"
                           className={`icon icon-sm ${
@@ -210,13 +210,16 @@ export const CommentItem = ({
                   <CommentItem
                     key={comment.id}
                     comment={comment}
+                    courseId={courseId}
+                    level={level + 1}
+                    order={order}
                     remove={() => onRemoveChild(comment)}
                   />
                 ))}
               </div>
             )}
 
-            {!!pageInfo && pageAble.page < pageInfo.totalPages && (
+            {showReply && !!pageInfo && pageAble.page < pageInfo.totalPages && (
               <NButton
                 className="w-full"
                 variant="filled"
@@ -403,7 +406,7 @@ export const CourseComment = ({ courseId }: { courseId: number }) => {
         />
       ))}
       <div>
-        {!!pageInfo && pageAble.page < pageInfo.totalPages && (
+        {!!pageInfo && pageAble.page < pageInfo.totalPages - 1 && (
           <NButton
             className="w-full"
             variant="filled"

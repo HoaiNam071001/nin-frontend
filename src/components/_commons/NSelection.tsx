@@ -8,10 +8,11 @@ import SvgIcon from "./SvgIcon";
 import useEffectSkipFirst from "@/hooks/useEffectSkipFirst";
 
 type DropdownProps<T> = {
-  value: T | T[keyof T];
+  value: T | T[keyof T] | T[] | T[keyof T][];
   options: T[];
   bindLabel?: keyof T;
   bindValue?: keyof T;
+  compareField?: keyof T;
   className?: string;
   multiple?: boolean;
   placeholder?: string;
@@ -19,7 +20,7 @@ type DropdownProps<T> = {
   clearable?: boolean;
   searchOnFirstOpen?: boolean;
   dropdownWidth?: string;
-  onChange: (value: T | T[keyof T]) => void; // Sử dụng union type
+  onChange: (value: T | T[keyof T] | T[] | T[keyof T][]) => void; // Sử dụng union type
   onSearch?: (key?: string) => void;
   renderLabel?: (option: T) => React.ReactNode;
   renderOption?: (option: T) => React.ReactNode;
@@ -30,6 +31,7 @@ const NSelection = <T extends object>({
   options = [],
   bindLabel = "name" as keyof T,
   bindValue,
+  compareField,
   placeholder,
   className,
   multiple = false,
@@ -80,7 +82,7 @@ const NSelection = <T extends object>({
     }
   };
 
-  const setOpen = (open: boolean)=> {
+  const setOpen = (open: boolean) => {
     if (isOpen === open) {
       return;
     }
@@ -95,16 +97,16 @@ const NSelection = <T extends object>({
       }
     }
     setIsOpen(open);
-  }
+  };
 
   const renderSelectedLabel = (fieldValue) => {
     if (multiple) {
       const selectedOptions = bindValue
-        ? options.filter((option) => fieldValue?.includes(option[bindValue]))
+        ? options?.filter((option) => fieldValue?.includes(option[bindValue]))
         : fieldValue;
       return (
         <div className="flex items-center flex-wrap gap-2">
-          {selectedOptions.map((option, index) => (
+          {selectedOptions?.map((option, index) => (
             <div key={index} className="relative group">
               {renderLabel ? renderLabel(option) : option[bindLabel]}
               {clearable && (
@@ -155,7 +157,7 @@ const NSelection = <T extends object>({
       <div
         ref={buttonRef}
         onClick={toggleDropdown}
-        className={`cursor-pointer w-full min-w-[100px] px-2 py-1 hover:bg-slate-50 focus:bg-slate-50 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-between border border-[var(--n-border)] rounded-sm`}
+        className={`bg-white cursor-pointer w-full min-w-[100px] px-2 py-1 hover:bg-slate-50 focus:bg-slate-50 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-between border border-[var(--n-border)] rounded-md`}
       >
         {(multiple && (value as T[])?.length) || (!multiple && value) ? (
           <span>{renderSelectedLabel(value)}</span>
@@ -164,11 +166,12 @@ const NSelection = <T extends object>({
             {placeholder || "Select an option"}
           </span>
         )}
-        {clearable && (
-          <div className="ml-auto hover:text-red" onClick={clearAll}>
-            <SvgIcon className="icon icon-sm" icon="close"></SvgIcon>
-          </div>
-        )}
+        {((multiple && (value as T[])?.length > 0) || (!multiple && value)) &&
+          clearable && (
+            <div className="ml-auto hover:text-red" onClick={clearAll}>
+              <SvgIcon className="icon icon-sm" icon="close"></SvgIcon>
+            </div>
+          )}
         <SvgIcon
           className="icon icon-sm ml-1 rotate-180"
           icon="arrow"
@@ -204,10 +207,16 @@ const NSelection = <T extends object>({
           </div>
         )}
         <ul className="text-sm text-gray-700">
-          {options.map((option, index) => {
+          {options?.map((option, index) => {
+            const field = compareField || bindValue;
+            const _opt = field ? option[field] : option;
             const isSelected = multiple
-              ? (value as T[]).some((val) => val === option[bindValue])
-              : (value as T) === option[bindValue];
+              ? (value as T[])?.some(
+                  (val) => (compareField ? val[compareField] : val) === _opt
+                )
+              : (compareField
+                  ? (value as T)?.[compareField] || value
+                  : value) === _opt;
 
             return (
               <li key={index}>
