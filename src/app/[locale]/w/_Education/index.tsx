@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
+
+import { SectionProgressList } from "@/app/[locale]/w/_Education/SectionProgressList";
+import I18n from "@/components/_commons/I18n";
 import { TopCourses } from "./TopCourses";
-import { CategoryTab } from "./CategoryTab";
-import { SectionList } from "../CourseItem/SectionList";
-import I18n from "../_commons/I18n";
 
 const Education: React.FC = () => {
   const tabs = [
@@ -21,15 +21,15 @@ const Education: React.FC = () => {
     <>
       <div className=" container mx-auto">
         <div className="mb-4">
-          <div className="text-title-sm font-semibold mb-4">
+          <div className="text-title-sm font-semibold">
             <I18n i18key={" Pick up where you left off"}></I18n>
           </div>
-          <SectionList ></SectionList>
+          <SectionProgressList></SectionProgressList>
         </div>
 
         <div className="mb-4">
           <TopCourses title={"What to learn next"}>
-            <CategoryTab tabs={tabs}></CategoryTab>
+            {/* <CategoryTab tabs={tabs}></CategoryTab> */}
           </TopCourses>
         </div>
 

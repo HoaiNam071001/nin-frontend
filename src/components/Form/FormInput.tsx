@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import React from "react";
 import {
-  Controller,
   Control,
+  Controller,
   FieldValues,
-  PathValue,
   Path,
+  PathValue,
   RegisterOptions,
 } from "react-hook-form";
 import NInput, { InputType } from "../_commons/NInput"; // Giả sử bạn có component NInput
@@ -22,7 +22,7 @@ type ControlledInputProps<TFieldValues extends FieldValues> = {
   >;
   id?: string;
   addonBefore?: React.ReactNode; // Addon content before the input
-  addonAfter?: React.ReactNode; 
+  addonAfter?: React.ReactNode;
   type?: InputType; // Common input types
   onSearch?: (value: string) => void;
   disabled?: boolean;
@@ -34,6 +34,7 @@ const FormInput = <TFieldValues extends object>({
   defaultValue,
   placeholder = "",
   rules,
+  disabled,
   id,
   type = "text",
   addonBefore,
@@ -47,6 +48,7 @@ const FormInput = <TFieldValues extends object>({
       control={control}
       defaultValue={defaultValue}
       rules={rules}
+      disabled={disabled}
       render={({ field, fieldState }) => (
         <>
           <NInput
@@ -59,6 +61,7 @@ const FormInput = <TFieldValues extends object>({
             addonBefore={addonBefore}
             addonAfter={addonAfter}
             onSearch={onSearch}
+            disabled={disabled}
             {...rest}
           />
           {rules && <FormError error={fieldState.error} />}

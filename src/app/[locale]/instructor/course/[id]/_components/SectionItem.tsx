@@ -1,23 +1,24 @@
+import HMSDisplay from "@/components/_commons/HMSDisplay";
+import Loader from "@/components/_commons/Loader";
 import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
+import FormInput from "@/components/Form/FormInput";
+import FormTimeInput from "@/components/Form/FormTimeInput";
 import { Course } from "@/models";
 import { Section, SectionContent } from "@/models/course/section.model";
 import { sectionService } from "@/services/courses/section.service";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { SectionOptions } from "./SectionOptions";
-import FormInput from "@/components/Form/FormInput";
-import Loader from "@/components/_commons/Loader";
-import { SectionFileContent } from "./SectionFileContent";
 import { SectionCreator } from "./SectionCreator";
-import HMSDisplay from "@/components/_commons/HMSDisplay";
-import FormTimeInput from "@/components/Form/FormTimeInput";
+import { SectionFileContent } from "./SectionFileContent";
+import { SectionOptions } from "./SectionOptions";
 
 export function SectionItem({
   item,
   course,
   parent,
   indexes,
+  disabled,
   onAddSection,
   onEditSection,
   onDeleteSection,
@@ -25,6 +26,7 @@ export function SectionItem({
   item?: Section;
   course: Course;
   parent?: Section;
+  disabled?: boolean;
   indexes: number[];
   onAddSection: (section: Section, parent?: Section) => void;
   onEditSection: (original: Section, section: Section) => void;
@@ -142,13 +144,15 @@ export function SectionItem({
                 </span>
               )}
             </div>
-            <div className="ml-auto">
-              <SectionOptions
-                deleteMessage="Are you sure to delete this Section?"
-                onRemove={onRemove}
-                onEdit={() => switchModeEdit(true)}
-              />
-            </div>
+            {!disabled && (
+              <div className="ml-auto">
+                <SectionOptions
+                  deleteMessage="Are you sure to delete this Section?"
+                  onRemove={onRemove}
+                  onEdit={() => switchModeEdit(true)}
+                />
+              </div>
+            )}
           </div>
         )}
         {editing && (
@@ -205,6 +209,7 @@ export function SectionItem({
           <SectionFileContent
             section={item}
             content={content}
+            disabled={disabled}
             setContent={(value) => onResetSectionContent(value)}
           />
         </div>
@@ -223,13 +228,14 @@ export function SectionItem({
               item={e}
               indexes={[...indexes, index + 1]}
               parent={item}
+              disabled={disabled}
               onDeleteSection={onDeleteSection}
               onEditSection={onEditSection}
               onAddSection={onAddSection}
             ></SectionItem>
           </div>
         ))}
-        {!parent && (
+        {!disabled && !parent && (
           <div className="mt-4">
             <SectionCreator
               parent={item}

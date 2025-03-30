@@ -1,11 +1,11 @@
 "use client";
 
+import useDebounce from "@/hooks/useDebounce";
+import useEffectSkipFirst from "@/hooks/useEffectSkipFirst";
 import React, { useRef, useState } from "react";
 import ClickOutside from "../_commons/ClickOutside";
 import FormInput from "../_commons/NInput";
-import useDebounce from "@/hooks/useDebounce";
 import SvgIcon from "./SvgIcon";
-import useEffectSkipFirst from "@/hooks/useEffectSkipFirst";
 
 type DropdownProps<T> = {
   value: T | T[keyof T] | T[] | T[keyof T][];
@@ -20,6 +20,7 @@ type DropdownProps<T> = {
   clearable?: boolean;
   searchOnFirstOpen?: boolean;
   dropdownWidth?: string;
+  disabled?: boolean;
   onChange: (value: T | T[keyof T] | T[] | T[keyof T][]) => void; // Sử dụng union type
   onSearch?: (key?: string) => void;
   renderLabel?: (option: T) => React.ReactNode;
@@ -38,6 +39,7 @@ const NSelection = <T extends object>({
   searchable = false,
   clearable = false,
   searchOnFirstOpen = false,
+  disabled = false,
   dropdownWidth = "100%",
   onChange,
   onSearch,
@@ -157,7 +159,11 @@ const NSelection = <T extends object>({
       <div
         ref={buttonRef}
         onClick={toggleDropdown}
-        className={`bg-white cursor-pointer w-full min-w-[100px] px-2 py-1 hover:bg-slate-50 focus:bg-slate-50 transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-between border border-[var(--n-border)] rounded-md`}
+        className={`${
+          disabled
+            ? `pointer-events-none bg-gray-50`
+            : "cursor-pointer bg-white  hover:bg-slate-50 focus:bg-slate-50 "
+        } w-full min-w-[100px] px-2 py-1 transition-all duration-300 ease-in-out inline-flex items-center justify-between border border-[var(--n-border)] rounded-md`}
       >
         {(multiple && (value as T[])?.length) || (!multiple && value) ? (
           <span>{renderSelectedLabel(value)}</span>

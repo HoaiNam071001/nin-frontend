@@ -1,6 +1,6 @@
+import I18n from "@/components/_commons/I18n";
+import { ItemList } from "@/components/CourseItem/ItemList";
 import React from "react";
-import { ItemList } from "../CourseItem/ItemList";
-import I18n from "../_commons/I18n";
 
 type TopCourseProps = {
   title: string;
@@ -13,9 +13,9 @@ export const TopCourses: React.FC<TopCourseProps> = ({ title, children }) => {
       <div className="text-title-sm font-semibold mb-1">
         <I18n i18key={title}></I18n>
       </div>
-        {children}
+      {children}
       <div className="mt-4">
-      <ItemList></ItemList>
+        <ItemList></ItemList>
       </div>
     </>
   );

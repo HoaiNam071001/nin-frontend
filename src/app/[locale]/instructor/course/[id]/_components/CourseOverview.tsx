@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { CourseSubmit } from "./CourseSubmit";
+import FormInput from "@/components/Form/FormInput";
+import FormSelection from "@/components/Form/FormSelection";
+import CustomImage from "@/components/_commons/CustomImage";
+import FileUpload from "@/components/_commons/FileUpload";
+import NEditor from "@/components/_commons/NEditor";
+import SearchWithDropdown from "@/components/_commons/SearchWidthDropdown";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
+import { upsertItem } from "@/helpers";
 import {
   Category,
   Course,
@@ -9,27 +14,17 @@ import {
   SettingSubmitProps,
   Topic,
 } from "@/models";
-import { upsertItem } from "@/helpers";
-import { map } from "lodash";
-import { levelService } from "@/services/courses/level.service";
+import { NFile, SystemFileType, UploadFilePayload } from "@/models/file.model";
 import { categoryService } from "@/services/courses/category.service";
 import { courseService } from "@/services/courses/course.service";
-import { toastService } from "@/services/toast.service";
+import { levelService } from "@/services/courses/level.service";
 import { topicService } from "@/services/courses/topic.service";
-import {
-  NFile,
-  SystemFileType,
-  UploadFilePayload,
-} from "@/models/file.model";
 import { fileService } from "@/services/file.service";
-import FormInput from "@/components/Form/FormInput";
-import NEditor from "@/components/_commons/NEditor";
-import FormSelection from "@/components/Form/FormSelection";
-import SearchWithDropdown from "@/components/_commons/SearchWidthDropdown";
-import CustomImage from "@/components/_commons/CustomImage";
-import FileUpload from "@/components/_commons/FileUpload";
-import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
-
+import { toastService } from "@/services/toast.service";
+import { map } from "lodash";
+import React, { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { CourseSubmit } from "./CourseSubmit";
 
 interface OverviewFormValues {
   name: string;
@@ -45,6 +40,7 @@ interface OverviewFormValues {
 export const CourseOverview: React.FC<SettingSubmitProps> = ({
   moveToNextStep,
   course,
+  editable,
   setCourse,
 }) => {
   const { handleSubmit, control, setValue, getValues, watch } =
@@ -57,7 +53,7 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
         subCategory: course?.subCategory,
         topics: course?.topics || [],
         thumbnail: course?.thumbnail,
-        summary: course?.summary
+        summary: course?.summary,
       },
     });
   const [loading, setLoading] = useState<boolean>(false);
@@ -82,7 +78,7 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
       const response: Course = await courseService.update(course.id, payload);
       setCourse(response);
       setLoading(false);
-      toastService.success('Updated successfully');
+      toastService.success("Updated successfully");
     } catch (error) {
       toastService.error(error?.message);
       setLoading(false);
@@ -92,12 +88,15 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
   return (
     <>
       <div className="">
+        <Thumbnail control={control} setValue={setValue} editable={editable} />
+
         <div className="form-group">
           <label htmlFor="overview-name">Name</label>
           <FormInput
             name={`name`}
             control={control}
             defaultValue={""}
+            disabled={!editable}
             rules={{
               required: "Name is required",
             }}
@@ -105,14 +104,12 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
           />
         </div>
 
-        <Thumbnail control={control} setValue={setValue} />
-
-
         <div className="form-group">
           <label htmlFor="overview-summary">Summary</label>
           <FormInput
             name={`summary`}
             control={control}
+            disabled={!editable}
             defaultValue={""}
             placeholder="Enter brief description of the course"
           />
@@ -123,34 +120,41 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
           <Controller
             name="description"
             control={control}
+            disabled={!editable}
             render={({ field }) => (
-              <NEditor value={field.value} onChange={field.onChange} />
+              <NEditor
+                value={field.value}
+                onChange={field.onChange}
+                editable={editable}
+              />
             )}
           />
         </div>
 
-        <BasicInfo control={control} watch={watch} />
+        <BasicInfo control={control} watch={watch} editable={editable} />
 
         <TopicInfo
           control={control}
           getValues={getValues}
           setValue={setValue}
+          editable={editable}
         />
-
       </div>
       {/* Submit Button */}
-      <CourseSubmit
-        moveToNextStep={onNext}
-        nextLabel={'Save'}
-        // moveToPrevStep={onPrev}
-        cancel={moveToNextStep}
-        loading={loading}
-      ></CourseSubmit>
+      {editable && (
+        <CourseSubmit
+          moveToNextStep={onNext}
+          nextLabel={"Save"}
+          disabled={!editable}
+          cancel={moveToNextStep}
+          loading={loading}
+        ></CourseSubmit>
+      )}
     </>
   );
 };
 
-const BasicInfo = ({ control, watch }) => {
+const BasicInfo = ({ control, watch, editable }) => {
   const [levels, setLevels] = useState<Level[]>();
   const [categories, setCategories] = useState<Category[]>();
   const [subCategories, setSubcategories] = useState<Category[]>();
@@ -218,6 +222,7 @@ const BasicInfo = ({ control, watch }) => {
             control={control}
             name={"level"}
             options={levels}
+            disabled={!editable}
             className="flex-1"
             placeholder="Select Level"
           ></FormSelection>
@@ -226,6 +231,7 @@ const BasicInfo = ({ control, watch }) => {
             name={"category"}
             options={categories}
             className="flex-1"
+            disabled={!editable}
             onSearch={(value) => setCategorySearch(value)}
             placeholder="Select Category"
             searchable={true}
@@ -236,6 +242,7 @@ const BasicInfo = ({ control, watch }) => {
             searchable={true}
             options={subCategories}
             className="flex-1"
+            disabled={!editable}
             onSearch={(value) => setSubCategorySearch(value)}
             placeholder="Select SubCategory"
           ></FormSelection>
@@ -245,7 +252,7 @@ const BasicInfo = ({ control, watch }) => {
   );
 };
 
-const TopicInfo = ({ control, getValues, setValue }) => {
+const TopicInfo = ({ control, getValues, setValue, editable }) => {
   const handleAddTag = (value) => {
     const items = getValues?.("topics") || [];
     setValue("topics", upsertItem(items, value, "id"));
@@ -270,6 +277,7 @@ const TopicInfo = ({ control, getValues, setValue }) => {
       <SearchWithDropdown
         apiCall={getTopics}
         bindLabel="name"
+        disabled={!editable}
         onSelect={handleAddTag}
       ></SearchWithDropdown>
 
@@ -277,6 +285,7 @@ const TopicInfo = ({ control, getValues, setValue }) => {
         <Controller
           name="topics"
           control={control}
+          disabled={!editable}
           render={({ field }) =>
             field.value?.length > 0 ? (
               <div className="flex flex-wrap gap-2">
@@ -286,13 +295,15 @@ const TopicInfo = ({ control, getValues, setValue }) => {
                     className="flex items-center justify-between px-3 py-1 bg-blue-200 text-blue-800 rounded-full"
                   >
                     <span>{topic?.name}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTag(topic)}
-                      className="ml-2 text-blue-600 hover:text-blue-800"
-                    >
-                      &times;
-                    </button>
+                    {editable && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(topic)}
+                        className="ml-2 text-blue-600 hover:text-blue-800"
+                      >
+                        &times;
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
@@ -306,7 +317,7 @@ const TopicInfo = ({ control, getValues, setValue }) => {
   );
 };
 
-const Thumbnail = ({ control, setValue }) => {
+const Thumbnail = ({ control, setValue, editable }) => {
   const uploadFile = async (file: File) => {
     const payload: UploadFilePayload = {
       file: file,
@@ -317,19 +328,29 @@ const Thumbnail = ({ control, setValue }) => {
   };
 
   return (
-    <div className="flex items-center mb-2">
-      <FileUpload label={"Thumbnail"} upload={uploadFile}></FileUpload>
+    <div className="flex items-center justify-center gap-2 mb-2 relative group">
       <Controller
         name="thumbnail"
         control={control}
+        disabled={!editable}
         render={({ field }) => (
           <CustomImage
             src={field.value || DEFAULT_COURSE_THUMBNAIL}
             alt="preview"
-            className="w-[250px] h-[140px] rounded-lg border-stroke border ml-auto"
+            className="w-[250px] h-[140px] rounded-lg border-stroke border"
           />
         )}
       />
+      {editable && (
+        <div className="bg-white bg-opacity-20 absolute top-0 left-0 invisible group-hover:visible w-full h-full flex items-center justify-center">
+          <FileUpload
+            label={"Upload"}
+            upload={uploadFile}
+            width={500}
+            height={300}
+          ></FileUpload>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,9 +1,19 @@
 "use client";
 
-import { Course, CourseAccessType, InstructorTypes, User } from "@/models";
-import { courseService } from "@/services/courses/course.service";
-import { toastService } from "@/services/toast.service";
-import React, { useEffect, useMemo, useState } from "react";
+import NAvatar from "@/components/_commons/NAvatar";
+import NButton from "@/components/_commons/NButton";
+import NInput from "@/components/_commons/NInput";
+import NSelection from "@/components/_commons/NSelection";
+import NTable, { TableColumns } from "@/components/_commons/NTable";
+import NTooltip from "@/components/_commons/NTooltip";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import UserStatusBadge from "@/components/User/UserStatusBadge";
+import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
+import { formatDate } from "@/helpers/date";
+import useAuth from "@/hooks/useAuth";
+import useDebounce from "@/hooks/useDebounce";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { User } from "@/models";
 import {
   DropdownOption,
   List2Res,
@@ -12,35 +22,12 @@ import {
   PageInfo,
   SortOrder,
 } from "@/models/utils.model";
-import {
-  CourseStatus,
-  DEFAULT_PAGESIZE,
-  FIRST_PAGE,
-  RoleBackgrounds,
-  RoleLabels,
-  ROUTES,
-} from "@/constants";
-import NTable, { TableColumns } from "@/components/_commons/NTable";
-import CustomImage from "@/components/_commons/CustomImage";
-import { formatDate } from "@/helpers/date";
-import StatusBadge from "@/components/CourseItem/StatusBadge";
-import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
-import { useI18nRouter } from "@/hooks/useI18nRouter";
-import { courseSearchService } from "@/services/courses/course-search.service";
-import NDropdown from "@/components/_commons/NDropdown";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import NButton from "@/components/_commons/NButton";
-import useAuth from "@/hooks/useAuth";
-import useDebounce from "@/hooks/useDebounce";
-import NSelection from "@/components/_commons/NSelection";
-import NInput from "@/components/_commons/NInput";
-import { adminService } from "@/services/admin/admin.service";
-import NAvatar from "@/components/_commons/NAvatar";
 import { useModal } from "@/providers/ModalProvider";
+import { adminService } from "@/services/admin/admin.service";
+import { toastService } from "@/services/toast.service";
+import { useEffect, useMemo, useState } from "react";
 import RoleLabel from "./_components/RoleLabel";
 import { UserSetting } from "./_components/UserSetting";
-import NTooltip from "@/components/_commons/NTooltip";
-import UserStatusBadge from "@/components/User/UserStatusBadge";
 
 const sortItems: DropdownOption<OrderBy>[] = [
   {
@@ -248,7 +235,10 @@ const UserList = ({ userId }) => {
               tooltip={!user.active ? "Activate" : "Disable"}
               onClick={() => switchUser(user)}
             >
-              <SvgIcon icon={user.active ? "remove" : "revert"} className="icon icon-sm" />
+              <SvgIcon
+                icon={user.active ? "remove" : "revert"}
+                className="icon icon-sm"
+              />
             </NButton>
           </div>
         ),

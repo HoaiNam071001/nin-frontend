@@ -8,8 +8,8 @@ import {
   PathValue,
   RegisterOptions,
 } from "react-hook-form";
-import FormError from "./FormError";
 import NSelection from "../_commons/NSelection";
+import FormError from "./FormError";
 
 interface FormSelectionProps<T, F> {
   control: Control<F>;
@@ -27,6 +27,7 @@ interface FormSelectionProps<T, F> {
   clearable?: boolean;
   dropdownWidth?: string;
   searchOnFirstOpen?: boolean;
+  disabled?: boolean;
   rules?: Omit<
     RegisterOptions<F>,
     "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
@@ -47,6 +48,7 @@ const FormSelection = <T extends object, F extends object>({
   rules,
   searchable = false,
   clearable = false,
+  disabled = false,
   searchOnFirstOpen,
   dropdownWidth,
   onSearch,
@@ -58,6 +60,7 @@ const FormSelection = <T extends object, F extends object>({
       control={control}
       name={name}
       rules={rules}
+      disabled={disabled}
       defaultValue={defaultValue as PathValue<F, Path<F>>}
       render={({ field, fieldState }) => (
         <>
@@ -70,6 +73,7 @@ const FormSelection = <T extends object, F extends object>({
             multiple={multiple}
             className={className}
             clearable={clearable}
+            disabled={disabled}
             options={options}
             searchOnFirstOpen={searchOnFirstOpen}
             dropdownWidth={dropdownWidth}

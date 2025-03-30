@@ -14,22 +14,23 @@ import {
   SectionType,
   Video,
 } from "@/models/course/section.model";
-import { NFile, SystemFileType } from "@/models/file.model";
-import { postService } from "@/services/courses/post.service";
-import { sectionService } from "@/services/courses/section.service";
-import { toastService } from "@/services/toast.service";
-import { videoService } from "@/services/courses/video.service";
-import { Button, Empty, Popconfirm } from "antd";
-import { useEffect, useState } from "react";
+import { NFile } from "@/models/file.model";
 import { MIN_TIME } from "@/models/utils.model";
+import { postService } from "@/services/courses/post.service";
+import { videoService } from "@/services/courses/video.service";
+import { toastService } from "@/services/toast.service";
+import { Button, Popconfirm } from "antd";
+import { useEffect, useState } from "react";
 
 export function SectionFileContent({
   section,
   content,
+  disabled,
   setContent,
 }: {
   section: Section;
   content: SectionContent;
+  disabled?: boolean;
   setContent: (content: SectionContent) => void;
 }) {
   const handleFileUpload = (file: File) => {
@@ -79,6 +80,7 @@ export function SectionFileContent({
             <VideoContent
               section={section}
               content={content}
+              disabled={disabled}
               updateVideo={updateVideo}
               removeVideo={removeVideo}
             />
@@ -87,13 +89,14 @@ export function SectionFileContent({
             <PostContent
               section={section}
               content={content}
+              disabled={disabled}
               updatePost={updatePost}
             />
           )}
         </div>
         <SectionFiles
           sectionId={section?.id}
-          canEdit={true}
+          canEdit={!disabled}
           files={content?.files || []}
           addFile={addFile}
           removeFile={removeFile}
@@ -106,10 +109,12 @@ export function SectionFileContent({
 const PostContent = ({
   section,
   content,
+  disabled,
   updatePost,
 }: {
   section: Section;
   content: SectionContent;
+  disabled?: boolean;
   updatePost: (file: Post) => void;
 }) => {
   const [editing, setEditing] = useState(false);
@@ -167,7 +172,9 @@ const PostContent = ({
               <span className="font-semibold mr-2">Last updated:</span>
               {formatDate({ date: content.post?.createdAt })}
             </div>
-            <NButton onClick={() => setEditing(true)}>Edit</NButton>
+            {!disabled && (
+              <NButton onClick={() => setEditing(true)}>Edit</NButton>
+            )}
           </div>
         </>
       )}
@@ -178,11 +185,13 @@ const PostContent = ({
 const VideoContent = ({
   section,
   content,
+  disabled,
   updateVideo,
   removeVideo,
 }: {
   section: Section;
   content: SectionContent;
+  disabled?: boolean;
   updateVideo: (file: Video) => void;
   removeVideo: (video: Video) => void;
 }) => {
@@ -221,6 +230,7 @@ const VideoContent = ({
           )}
           <div className="flex justify-center">
             <FileUpload
+              disabled={disabled}
               upload={handleVideoUpload}
               accept={"video/*"}
               label={"Upload Video"}

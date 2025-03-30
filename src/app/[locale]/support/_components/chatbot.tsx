@@ -1,25 +1,24 @@
 "use client";
 
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  FC,
-  useContext,
-} from "react";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import ChatInput from "./chatInput";
-import { ChatbotRole, ChatMessage, Conversation } from "@/models/chatbot";
-import ChatMessageList from "./chatMessage";
-import { chatbotService } from "@/services/ai/chatbot.service";
-import { ChatbotContext } from "../page";
-import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
-import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
-import { toastService } from "@/services/toast.service";
-import { v4 } from "uuid";
 import CustomImage from "@/components/_commons/CustomImage";
 import NAvatar from "@/components/_commons/NAvatar";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
+import { ChatbotRole, ChatMessage, Conversation } from "@/models/chatbot";
+import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
+import { chatbotService } from "@/services/ai/chatbot.service";
+import { toastService } from "@/services/toast.service";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { v4 } from "uuid";
+import { ChatbotContext } from "../page";
+import ChatInput from "./chatInput";
+import ChatMessageList from "./chatMessage";
 
 const Chatbot = () => {
   const { conversation, setAdd } = useContext(ChatbotContext);
@@ -84,11 +83,8 @@ const Chatbot = () => {
 
   return (
     <div className="h-full flex flex-col border border-stroke rounded-lg overflow-hidden">
-      <div className="px-4 py-2 bg-slate-50 border-b border-stroke capitalize flex items-center gap-4">
-      <NAvatar
-          name={'BOT'}
-          src="/images/chatbot.png"
-        />
+      <div className="px-4 py-2 bg-slate-50 border-b border-stroke  flex items-center gap-4">
+        <NAvatar name={"BOT"} src="/images/chatbot.png" />
         <div className="font-semibold">{conversation?.name}</div>
       </div>
       <div
@@ -126,7 +122,6 @@ export const ChatbotContent = ({
   const [loading, setLoading] = useState(false);
   const [draftQuestion, setDraftQuestion] = useState(null);
 
-  
   useEffect(() => {
     checkIfAtBottom();
   }, [messages]);

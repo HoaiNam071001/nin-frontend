@@ -1,15 +1,13 @@
 :root {
-
-  --n-primary: #1F75FF;
-  --n-border: #DDE8F1;
+  --n-primary: #1f75ff;
+  --n-border: #dde8f1;
   --n-row-hover: #f3f4f6;
   --n-row-selected: #ebf3ff;
   --n-secondary: #a1a8cc;
-  --n-orange: #FF9500;
+  --n-orange: #ff9500;
 }
-@import './grid.scss';
-@import './table.scss';
-
+@import "./grid.scss";
+@import "./table.scss";
 
 .icon {
   &.icon-sm {
@@ -56,11 +54,12 @@
 }
 
 .custom-checkbox-input {
-  @apply w-[14px] h-[14px] relative bg-white border border-secondary rounded-sm; 
+  @apply w-[14px] h-[14px] relative bg-white border border-secondary rounded-sm;
   &::before {
     @apply content-[''];
   }
-  &.checked, &:checked {
+  &.checked,
+  &:checked {
     @apply bg-system border-system;
     &::before {
       @apply rotate-45 w-[5px] h-[9px] border-r border-b block translate-x-1;
@@ -80,6 +79,10 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.line-clamp-2 {
+  @apply whitespace-normal;
 }

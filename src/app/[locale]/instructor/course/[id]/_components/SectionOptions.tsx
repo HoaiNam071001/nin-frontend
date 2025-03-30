@@ -1,55 +1,39 @@
-import NDropdown from "@/components/_commons/NDropdown";
-import NModal from "@/components/_commons/NModal";
+import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
-import { useState } from "react";
+import { useModal } from "@/providers/ModalProvider";
 
 export const SectionOptions = ({
   onRemove,
   onEdit,
-  deleteMessage
+  deleteMessage,
 }: {
   onRemove: () => void;
   onEdit: () => void;
   deleteMessage?: string;
 }) => {
-  const [open, setOpen] = useState(false);
+  const { openConfirm } = useModal();
 
-  const items = [
-    {
-      key: 'edit',
-      label: (
-        <div className="flex space-x-2 items-center">
-          <SvgIcon className="icon icon-sm" icon="edit"></SvgIcon>
-          <span>Edit</span>
-        </div>
-      ),
-      onClick: () => onEdit(),
-    },
-    {
-      key: 'remove',
-      label: (
-        <div className="flex space-x-2 items-center">
-          <SvgIcon className="icon icon-sm" icon="remove"></SvgIcon>
-          <span>Remove</span>
-        </div>
-      ),
-      onClick: () => setOpen(true),
-    },
-  ];
+  const onConFirm = () => {
+    openConfirm({
+      header: "Delete",
+      content: deleteMessage,
+      onOk: () => onRemove(),
+    });
+  };
 
   return (
-    <>
-      <NDropdown items={items} />
-
-      <NModal
-        title="Delete"
-        content={deleteMessage}
-        onOk={() => {
-          onRemove?.(), setOpen(false);
-        }}
-        isOpen={open}
-        onCancel={() => setOpen(false)}
-      />
-    </>
+    <div className="flex gap-2 items-center">
+      <NButton
+        variant="filled"
+        color="red"
+        className="!px-1"
+        onClick={() => onConFirm()}
+      >
+        <SvgIcon className="icon icon-sm" icon="remove"></SvgIcon>
+      </NButton>
+      <NButton variant="filled" onClick={() => onEdit()} className="!px-1">
+        <SvgIcon className="icon icon-sm" icon="edit"></SvgIcon>
+      </NButton>
+    </div>
   );
 };

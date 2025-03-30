@@ -1,7 +1,17 @@
-import { Course, User } from "@/models";
-import { courseService } from "@/services/courses/course.service";
-import { toastService } from "@/services/toast.service";
-import React, { useEffect, useState } from "react";
+import CustomImage from "@/components/_commons/CustomImage";
+import NAvatar from "@/components/_commons/NAvatar";
+import NButton from "@/components/_commons/NButton";
+import NInput from "@/components/_commons/NInput";
+import NTable, { TableColumns } from "@/components/_commons/NTable";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
+import { formatNumber } from "@/helpers";
+import { formatDate } from "@/helpers/date";
+import useDebounce from "@/hooks/useDebounce";
+import { User } from "@/models";
+import { DashboardSubPayload } from "@/models/admin/course-admin.model";
+import { CourseSubscriptionFull } from "@/models/course/course-subscription.model";
 import {
   Currency,
   List2Res,
@@ -9,26 +19,9 @@ import {
   PageInfo,
   SortOrder,
 } from "@/models/utils.model";
-import {
-  CourseStatus,
-  DEFAULT_PAGESIZE,
-  FIRST_PAGE,
-  ROUTES,
-} from "@/constants";
-import NTable, { TableColumns } from "@/components/_commons/NTable";
-import CustomImage from "@/components/_commons/CustomImage";
-import { formatDate } from "@/helpers/date";
-import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
-import { coursePaymentService } from "@/services/courses/course-subscription.service";
-import { CourseSubscriptionFull } from "@/models/course/course-subscription.model";
-import { formatNumber } from "@/helpers";
-import NAvatar from "@/components/_commons/NAvatar";
-import useDebounce from "@/hooks/useDebounce";
-import NInput from "@/components/_commons/NInput";
-import NButton from "@/components/_commons/NButton";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import { DashboardSubPayload } from "@/models/admin/course-admin.model";
 import { courseAdminService } from "@/services/admin/course-admin.service";
+import { toastService } from "@/services/toast.service";
+import { useEffect, useState } from "react";
 
 const columns: TableColumns<CourseSubscriptionFull> = [
   {
@@ -93,10 +86,10 @@ const columns: TableColumns<CourseSubscriptionFull> = [
     dataIndex: "payment.amount",
     key: "payment.amount",
     render: (_, item: CourseSubscriptionFull) => (
-      <span>
-        {formatNumber(+item.payment?.amount)}{" "}
+      <div className="text-end">
+        {formatNumber(+item.payment?.amount || 0)}{" "}
         {item.payment?.currency || Currency.VND}
-      </span>
+      </div>
     ),
     width: 150,
   },
@@ -125,10 +118,7 @@ const CourseSub = ({ filter }: { filter: DashboardSubPayload }) => {
   const getCourses = async () => {
     try {
       const { content, ...res }: List2Res<CourseSubscriptionFull> =
-        await courseAdminService.getSubscriptionByCourse(
-          filter,
-          pageAble
-        );
+        await courseAdminService.getSubscriptionByCourse(filter, pageAble);
       setRows(content);
       setPageInfo(res);
     } catch (error) {

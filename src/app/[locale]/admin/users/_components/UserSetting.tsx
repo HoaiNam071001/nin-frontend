@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import FormInput from "@/components/Form/FormInput";
-import { userService } from "@/services/user/user.service";
-import { useDispatch } from "react-redux";
-import { authAction } from "@/redux";
-import useAuth from "@/hooks/useAuth";
-import { toastService } from "@/services/toast.service";
-import NButton from "@/components/_commons/NButton";
 import I18n from "@/components/_commons/I18n";
-import { formatDate } from "@/helpers/date";
+import NButton from "@/components/_commons/NButton";
+import FormInput from "@/components/Form/FormInput";
+import FormSelection from "@/components/Form/FormSelection";
 import { DATE_FORMATS, Role, RoleOptions } from "@/constants";
-import { adminService } from "@/services/admin/admin.service";
+import { formatDate } from "@/helpers/date";
+import useAuth from "@/hooks/useAuth";
+import { User } from "@/models";
 import {
   CreateUserPayload,
   UpdateUserPayload,
 } from "@/models/admin/admin.model";
-import FormSelection from "@/components/Form/FormSelection";
 import { DropdownOption } from "@/models/utils.model";
-import RoleLabel from "./RoleLabel";
 import { useModal } from "@/providers/ModalProvider";
-import { User } from "@/models";
+import { authAction } from "@/redux";
+import { adminService } from "@/services/admin/admin.service";
+import { toastService } from "@/services/toast.service";
+import { userService } from "@/services/user/user.service";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import RoleLabel from "./RoleLabel";
 
 interface UserProps {
   email?: string;

@@ -1,27 +1,20 @@
+import CustomImage from "@/components/_commons/CustomImage";
+import NButton from "@/components/_commons/NButton";
+import NInput from "@/components/_commons/NInput";
+import NTable, { TableColumns } from "@/components/_commons/NTable";
+import Rating from "@/components/_commons/Rating";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import { DEFAULT_PAGESIZE, FIRST_PAGE, ROUTES } from "@/constants";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
+import { formatDate } from "@/helpers/date";
+import useDebounce from "@/hooks/useDebounce";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { Course } from "@/models";
+import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
-import React, { useEffect, useMemo, useState } from "react";
-import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
-import {
-  CourseStatus,
-  DEFAULT_PAGESIZE,
-  FIRST_PAGE,
-  ROUTES,
-} from "@/constants";
-import NTable, { TableColumns } from "@/components/_commons/NTable";
-import CustomImage from "@/components/_commons/CustomImage";
-import { formatDate } from "@/helpers/date";
-import StatusBadge from "@/components/CourseItem/StatusBadge";
-import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
-import { useI18nRouter } from "@/hooks/useI18nRouter";
-import NButton from "@/components/_commons/NButton";
-import SvgIcon from "@/components/_commons/SvgIcon";
+import { useEffect, useMemo, useState } from "react";
 import CourseRatingChart from "./CourseRatingChart";
-import Rating from "@/components/_commons/Rating";
-import useDebounce from "@/hooks/useDebounce";
-import NInput from "@/components/_commons/NInput";
-import { EyeOutlined } from "@ant-design/icons";
 
 const RatingTab = () => {
   const [rows, setRows] = useState<Course[]>([]);
@@ -52,7 +45,7 @@ const RatingTab = () => {
               alt="preview"
               className="w-[40px] h-[30px] rounded-md border-stroke border"
             />
-            <span className="capitalize">{record.name}</span>
+            <span className="">{record.name}</span>
           </div>
         ),
         width: 400,
@@ -92,15 +85,17 @@ const RatingTab = () => {
               variant="filled"
               onClick={() => router.push(`${ROUTES.COURSE}/${record.slug}`)}
             >
-              <SvgIcon icon={"eye"} className="icon icon-sm"/>
-              </NButton>
+              <SvgIcon icon={"eye"} className="icon icon-sm" />
+            </NButton>
             <NButton
               size="sm"
               variant="filled"
               color="gray"
-              onClick={() => router.push(`${ROUTES.INSTRUCTOR_COURSE}/${record.id}`)}
+              onClick={() =>
+                router.push(`${ROUTES.INSTRUCTOR_COURSE}/${record.id}`)
+              }
             >
-              <SvgIcon icon={"edit"} className="icon icon-sm"/>
+              <SvgIcon icon={"edit"} className="icon icon-sm" />
             </NButton>
           </div>
         ),

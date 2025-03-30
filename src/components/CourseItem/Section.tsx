@@ -1,61 +1,50 @@
-import { formatNumber } from "@/helpers";
-import I18n from "../_commons/I18n";
-import SvgIcon from "../_commons/SvgIcon";
-import Progress from "antd/es/progress";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants";
+import { SectionProgress } from "@/models/course/section-progress.model";
+import { SectionType } from "@/models/course/section.model";
 import { Tooltip } from "antd";
-
-const item = {
-  name: "1. Lorem Ipsum is simply dummy text of the printing ",
-  description:
-    "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 196",
-  course: {
-    name: "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing ",
-    description:
-      "What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 196",
-    rating: 4.7,
-    review: 200000,
-    time: 10,
-  },
-  time: 100,
-  progress: 30,
-};
+import CustomImage from "../_commons/CustomImage";
+import HMSDisplay, { HMSDisplayMode } from "../_commons/HMSDisplay";
+import SvgIcon from "../_commons/SvgIcon";
 
 type ProgressSectionProps = {
+  item: SectionProgress;
   onView?: () => void;
 };
 
-export const ProgressSection: React.FC<ProgressSectionProps> = (props) => {
+export const ProgressSection: React.FC<ProgressSectionProps> = ({
+  item,
+  onView,
+}) => {
   return (
     <div
-      className="border border-stroke rounded-lg p-3 hover:shadow-default cursor-pointer flex"
-      onClick={() => props?.onView?.()}
+      className="border-[0.5px] border-stroke rounded-lg hover:shadow-lg shadow cursor-pointer flex overflow-hidden"
+      onClick={() => onView?.()}
     >
-      <div className="grid-1 h-full mr-3 min-w-[80px] flex items-center justify-center border rounded-md border-stroke hover:bg-[rgba(0,0,0,0.25)] relative">
-        <div className="bg-white w-[45px] h-[45px] rounded-full"></div>
+      <div className="relative h-[120px] w-[80px] flex items-center justify-center border-r-[0.5px] border-stroke bg-slate-100">
         <SvgIcon
-          icon="caret-arrow"
-          className="fill-black icon icon-md z-1 absolute left-[29px]"
+          icon={item.section.type === SectionType.Post ? "file" : "video-file"}
+          className="icon icon-xl"
         ></SvgIcon>
+
+        <CustomImage
+          src={item.section.course.thumbnail || DEFAULT_COURSE_THUMBNAIL}
+          alt="preview"
+          className="absolute top-0 left-0 z-1 w-full h-full opacity-10"
+        />
       </div>
-      <div>
-        <div className="line-clamp-1">{item.course.name}</div>
+      <div className="p-3 relative flex-1 h-full overflow-hidden">
+        <div className="line-clamp-1 ">{item.section?.course?.name}</div>
         <div className="line-clamp-2 text-title-xsm font-semibold">
-          <Tooltip title={<div className="max-w-[300px]">{item.name}</div>}>
-            {item.name}
+          <Tooltip
+            title={<div className="max-w-[300px]">{item.section?.name}</div>}
+          >
+            {item.section?.name}
           </Tooltip>
         </div>
-        <div className="my-1 flex items-center">
-          <div className="text-secondary">
-            {formatNumber(item.time - item.progress)}m{" "}
-            <I18n i18key="left"></I18n>
-          </div>
-
-          <Progress
-            type="circle"
-            className="ml-auto"
-            percent={75}
-            size={50}
-            strokeWidth={10}
+        <div className="mt-auto">
+          <HMSDisplay
+            seconds={item.section.estimatedTime}
+            mode={HMSDisplayMode.short}
           />
         </div>
       </div>

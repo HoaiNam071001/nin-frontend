@@ -15,8 +15,9 @@ import { useFieldArray, useForm } from "react-hook-form";
 export const CourseTargetComponent: React.FC<SettingSubmitProps> = ({
   moveToNextStep,
   course,
+  editable,
 }) => {
-  const { control, setValue, handleSubmit } = useForm();
+  const { control, setValue, handleSubmit, getValues } = useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const defaultValuesRef = useRef({
     [CourseTargetType.achieved]: [""],
@@ -187,6 +188,7 @@ export const CourseTargetComponent: React.FC<SettingSubmitProps> = ({
                     name={`${name}.${index}`}
                     control={control}
                     rules={validation}
+                    disabled={!editable}
                     addonAfter={
                       <>
                         {fields.fields.length > 1 && (
@@ -212,6 +214,7 @@ export const CourseTargetComponent: React.FC<SettingSubmitProps> = ({
                   variant="outlined"
                   color="secondary"
                   size="md"
+                  disabled={!editable}
                   onClick={() => addItem(name)}
                 >
                   Add
@@ -222,27 +225,24 @@ export const CourseTargetComponent: React.FC<SettingSubmitProps> = ({
         ))}
       </div>
 
-      <div className="mt-auto flex justify-end gap-4 pt-3">
-        {loading && <Loader />}
-        <NButton
-          shape="md"
-          variant="outlined"  
-          color="secondary"
-          size="md"
-          onClick={onCancel}
-        >
-          <I18n i18key="Cancel"></I18n>
-        </NButton>
+      {editable && (
+        <div className="mt-auto flex justify-end gap-4 pt-3">
+          {loading && <Loader />}
+          <NButton
+            shape="md"
+            variant="outlined"
+            color="secondary"
+            size="md"
+            onClick={onCancel}
+          >
+            <I18n i18key="Cancel"></I18n>
+          </NButton>
 
-        <NButton
-          shape="md"
-          size="md"
-          onClick={onSave}
-          className="w-[100px]"
-        >
-          <I18n i18key={"Save"}></I18n>
-        </NButton>
-      </div>
+          <NButton shape="md" size="md" onClick={onSave} className="w-[100px]">
+            <I18n i18key={"Save"}></I18n>
+          </NButton>
+        </div>
+      )}
     </>
   );
 };

@@ -1,30 +1,27 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import Loader from "@/components/_commons/Loader";
+import { CourseStatus, ROUTES } from "@/constants";
+import useAuth from "@/hooks/useAuth";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
 import {
+  Course,
+  CourseAccessType,
   CourseStepItem,
   CourseSteps,
   StepType,
-  Course,
-  CourseAccessType,
 } from "@/models";
-import { findIndex } from "lodash";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
-import Loader from "@/components/_commons/Loader";
-import useAuth from "@/hooks/useAuth";
+import { findIndex } from "lodash";
 import { useParams } from "next/navigation";
-import { CourseStatus, ROUTES } from "@/constants";
+import React, { useEffect, useState } from "react";
 import CourseSetting from "./_components";
-import { CoursePermisison } from "./_components/CoursePermission";
-import { CourseTargetComponent } from "./_components/CourseTarget";
-import { CourseOverview } from "./_components/CourseOverview";
 import { CourseContent } from "./_components/CourseContent";
-import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { CourseOverview } from "./_components/CourseOverview";
 import { CoursePayment } from "./_components/CoursePayment";
-import NButton from "@/components/_commons/NButton";
-import I18n from "@/components/_commons/I18n";
-import StatusBadge from "@/components/CourseItem/StatusBadge";
+import { CoursePermission } from "./_components/CoursePermission";
+import { CourseTargetComponent } from "./_components/CourseTarget";
 
 const CourseEdit: React.FC = () => {
   const { id } = useParams();
@@ -33,6 +30,11 @@ const CourseEdit: React.FC = () => {
   const [course, setCourse] = useState<Course>();
   const [loading, setLoading] = useState<boolean>(true);
   const { currentUser } = useAuth();
+  const [editable, setEditable] = useState<boolean>(false);
+
+  useEffect(() => {
+    setEditable(course?.status !== CourseStatus.READY);
+  }, [course]);
 
   useEffect(() => {
     const getCourse = async () => {
@@ -110,6 +112,7 @@ const CourseEdit: React.FC = () => {
         <div className="m-4 relative flex-1 overflow-auto flex flex-col">
           {currentStep.type === StepType.Target && (
             <CourseTargetComponent
+              editable={editable}
               course={course}
               moveToNextStep={() => moveToNextStep()}
             />
@@ -117,6 +120,7 @@ const CourseEdit: React.FC = () => {
 
           {currentStep.type === StepType.OverView && (
             <CourseOverview
+              editable={editable}
               moveToNextStep={() => moveToNextStep()}
               moveToPrevStep={() => moveToPrevStep()}
               course={course}
@@ -125,6 +129,7 @@ const CourseEdit: React.FC = () => {
           )}
           {currentStep.type === StepType.Content && (
             <CourseContent
+              editable={editable}
               moveToNextStep={() => moveToNextStep()}
               moveToPrevStep={() => moveToPrevStep()}
               course={course}
@@ -132,7 +137,8 @@ const CourseEdit: React.FC = () => {
           )}
 
           {currentStep.type === StepType.RolePermission && (
-            <CoursePermisison
+            <CoursePermission
+              editable={editable}
               moveToNextStep={() => moveToNextStep()}
               moveToPrevStep={() => moveToPrevStep()}
               course={course}
@@ -141,6 +147,7 @@ const CourseEdit: React.FC = () => {
 
           {currentStep.type === StepType.Payment && (
             <CoursePayment
+              editable={editable}
               moveToNextStep={() => moveToNextStep()}
               moveToPrevStep={() => moveToPrevStep()}
               course={course}

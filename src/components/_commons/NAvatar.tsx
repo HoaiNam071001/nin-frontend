@@ -1,9 +1,9 @@
-import React from "react";
-import Image from "next/image";
-import { Tooltip } from "antd";
+import { ROUTES } from "@/constants";
 import { getAbbreviatedName } from "@/helpers";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
-import { ROUTES } from "@/constants";
+import { Tooltip } from "antd";
+import Image from "next/image";
+import React from "react";
 
 export interface AvatarProps {
   src: string; // URL ảnh đại diện
@@ -79,7 +79,7 @@ const NAvatar: React.FC<AvatarProps> = ({
       </Tooltip>
       {showName && (
         <div className="flex flex-col space-y-1 leading-[1rem]">
-          <div className="capitalize">{name}</div>
+          <div className="">{name}</div>
           {email && <div className="font-[12px] text-secondary">{email}</div>}
         </div>
       )}

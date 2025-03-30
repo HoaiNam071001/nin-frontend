@@ -2,7 +2,6 @@
 
 import CustomImage from "@/components/_commons/CustomImage";
 import NButton from "@/components/_commons/NButton";
-import NInput from "@/components/_commons/NInput";
 import NTable, { TableColumns } from "@/components/_commons/NTable";
 import { ROUTES } from "@/constants";
 import { formatNumber, getPriceByBestDiscount } from "@/helpers";
@@ -118,8 +117,8 @@ const CartPage: React.FC = () => {
               <div className="flex justify-between text-gray-800">
                 <span>Total Price:</span>
                 <span className="font-medium text-lg">
-              {formatNumber(totalPrice)} {Currency.VND}
-            </span>
+                  {formatNumber(totalPrice)} {Currency.VND}
+                </span>
               </div>
             </div>
 
@@ -165,7 +164,7 @@ export const CartTable = ({
         <div className="flex items-center gap-2">
           <CustomImage src={course.thumbnail} alt={""} />
           <span
-            className="cursor-pointer hover:underline capitalize"
+            className="cursor-pointer hover:underline "
             onClick={() => gotoDetail(course)}
           >
             {course.name}

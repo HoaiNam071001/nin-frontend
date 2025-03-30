@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import SvgIcon from "../_commons/SvgIcon";
-import { sectionService } from "@/services/courses/section.service";
 import { Section, SectionType } from "@/models/course/section.model";
-import { toastService } from "@/services/toast.service";
 import { useModal } from "@/providers/ModalProvider";
-import { SectionResource } from "./SectionResourse";
-import I18n from "../_commons/I18n";
+import { sectionService } from "@/services/courses/section.service";
+import { toastService } from "@/services/toast.service";
+import { useEffect, useState } from "react";
 import HMSDisplay, { HMSDisplayMode } from "../_commons/HMSDisplay";
+import I18n from "../_commons/I18n";
+import SvgIcon from "../_commons/SvgIcon";
+import { SectionResource } from "./SectionResourse";
 
 interface SectionMenuProps {
   courseId: number;
   viewContent?: boolean;
 }
 
-export const SectionMenu = ({ courseId, viewContent = false }: SectionMenuProps) => {
+export const SectionMenu = ({
+  courseId,
+  viewContent = false,
+}: SectionMenuProps) => {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -88,11 +91,14 @@ const SectionTree = ({ item, viewContent }: SectionTreeProps) => {
             isExpand ? "rotate-180" : "rotate-90"
           }`}
         />
-        <span className="font-semibold line-clamp-2 mr-4 ml-2 capitalize">
+        <span className="font-semibold line-clamp-2 mr-4 ml-2 ">
           {item.name}
         </span>
         <span className="ml-auto whitespace-nowrap">
-          <HMSDisplay seconds={item.estimatedTime} mode={HMSDisplayMode.short} />
+          <HMSDisplay
+            seconds={item.estimatedTime}
+            mode={HMSDisplayMode.short}
+          />
         </span>
       </div>
 
@@ -109,9 +115,12 @@ const SectionTree = ({ item, viewContent }: SectionTreeProps) => {
             {child.type === SectionType.Video && (
               <SvgIcon icon="video-file" className="icon icon-md" />
             )}
-            <span className="capitalize">{child.name}</span>
+            <span className="">{child.name}</span>
             <span className="ml-auto">
-              <HMSDisplay seconds={child.estimatedTime} mode={HMSDisplayMode.short} />
+              <HMSDisplay
+                seconds={child.estimatedTime}
+                mode={HMSDisplayMode.short}
+              />
             </span>
           </div>
         ))}

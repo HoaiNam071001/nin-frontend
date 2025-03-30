@@ -47,4 +47,7 @@ export const PARAMS = {
   NOTIFICATION: {
     ID: "id",
   },
+  COURSE_DETAIL: {
+    SECTION_ID: "section",
+  },
 };

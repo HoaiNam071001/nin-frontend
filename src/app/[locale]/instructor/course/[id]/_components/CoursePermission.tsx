@@ -1,7 +1,10 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { CourseSubmit } from "./CourseSubmit";
+import I18n from "@/components/_commons/I18n";
+import NButton from "@/components/_commons/NButton";
+import NUser from "@/components/_commons/NUser";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import FormSelection from "@/components/Form/FormSelection";
 import {
   Course,
   CourseAccess,
@@ -12,23 +15,19 @@ import {
   SettingSubmitProps,
   ShortUser,
 } from "@/models";
-import I18n from "@/components/_commons/I18n";
-import NButton from "@/components/_commons/NButton";
-import { useEffect, useMemo, useState } from "react";
-import NDropdown from "@/components/_commons/NDropdown";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import { useModal } from "@/providers/ModalProvider";
-import NUser from "@/components/_commons/NUser";
 import { List2Res } from "@/models/utils.model";
-import { userService } from "@/services/user/user.service";
+import { useModal } from "@/providers/ModalProvider";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
-import FormSelection from "@/components/Form/FormSelection";
+import { userService } from "@/services/user/user.service";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 
-export const CoursePermisison: React.FC<SettingSubmitProps> = ({
+export const CoursePermission: React.FC<SettingSubmitProps> = ({
   moveToNextStep,
   moveToPrevStep,
   course,
+  editable,
 }) => {
   const [instructors, setInstructors] = useState([]);
   const [adding, setAdding] = useState(false);
@@ -81,6 +80,7 @@ export const CoursePermisison: React.FC<SettingSubmitProps> = ({
             <CourseInstructor
               key={instructor.id}
               item={instructor}
+              disabled={!editable}
               onEdit={onEdit}
               onRemove={onRemove}
             />
@@ -95,7 +95,7 @@ export const CoursePermisison: React.FC<SettingSubmitProps> = ({
               </div>
             </div>
           )}
-          {!adding && (
+          {editable && !adding && (
             <div>
               <NButton
                 shape="md"
@@ -115,11 +115,13 @@ export const CoursePermisison: React.FC<SettingSubmitProps> = ({
 const CourseInstructor = ({
   item,
   course,
+  disabled,
   onAdd,
   onEdit,
   onRemove,
 }: {
   item?: Instructor;
+  disabled?: boolean;
   course?: Course;
   onAdd?: (i?: Instructor) => void;
   onEdit?: (i: Instructor) => void;
@@ -248,21 +250,27 @@ const CourseInstructor = ({
           </div>
           <div className="flex-1">{currentType()}</div>
           <div className="flex-[0.5]">{currentLevel()}</div>
-          <div>
-            <div className="flex items-center justify-center gap-2">
-              <NButton size="sm" variant="filled" onClick={() => onEditItem()}>
-                <SvgIcon icon={"edit"} className="icon icon-sm" />
-              </NButton>
-              <NButton
-                size="sm"
-                variant="filled"
-                color="red"
-                onClick={() => onDelete()}
-              >
-                <SvgIcon icon={"remove"} className="icon icon-sm" />
-              </NButton>
+          {!disabled && (
+            <div>
+              <div className="flex items-center justify-center gap-2">
+                <NButton
+                  size="sm"
+                  variant="filled"
+                  onClick={() => onEditItem()}
+                >
+                  <SvgIcon icon={"edit"} className="icon icon-sm" />
+                </NButton>
+                <NButton
+                  size="sm"
+                  variant="filled"
+                  color="red"
+                  onClick={() => onDelete()}
+                >
+                  <SvgIcon icon={"remove"} className="icon icon-sm" />
+                </NButton>
+              </div>
             </div>
-          </div>
+          )}
         </>
       )}
 
@@ -305,22 +313,24 @@ const CourseInstructor = ({
                 options={CourseAccess}
               ></FormSelection>
             ) : (
-              <div className="capitalize px-3">{accessType}</div>
+              <div className=" px-3">{accessType}</div>
             )}
           </div>
-          <div className="flex flex-col">
-            <NButton shape="sm" variant={"text"} onClick={onSave}>
-              <SvgIcon className="icon icon-sm" icon="check" />
-            </NButton>
-            <NButton
-              shape="sm"
-              color={"red"}
-              variant={"text"}
-              onClick={() => (item ? setEditing(false) : onAdd())}
-            >
-              <SvgIcon className="icon icon-sm" icon="close" />
-            </NButton>
-          </div>
+          {!disabled && (
+            <div className="flex flex-col">
+              <NButton shape="sm" variant={"text"} onClick={onSave}>
+                <SvgIcon className="icon icon-sm" icon="check" />
+              </NButton>
+              <NButton
+                shape="sm"
+                color={"red"}
+                variant={"text"}
+                onClick={() => (item ? setEditing(false) : onAdd())}
+              >
+                <SvgIcon className="icon icon-sm" icon="close" />
+              </NButton>
+            </div>
+          )}
         </>
       )}
     </div>

@@ -4,10 +4,10 @@ import { FullCourse } from "@/models";
 import { courseSearchService } from "@/services/courses/course-search.service";
 import { toastService } from "@/services/toast.service";
 import { useEffect, useState } from "react";
-import { CourseSectionMenu } from "./CourseSectionMenu";
 import { CourseDetailContent } from "./CourseDetailContent";
-import DetailTitle from "./DetailTitle";
+import { CourseSectionMenu } from "./CourseSectionMenu";
 import CourseTabContent from "./CourseTabContent";
+import DetailTitle from "./DetailTitle";
 
 const DetailContainer = ({ slug }) => {
   const [course, setCourse] = useState<FullCourse>();
@@ -24,9 +24,11 @@ const DetailContainer = ({ slug }) => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     getBySlug();
   }, [slug]);
+
   return (
     <>
       {course && (

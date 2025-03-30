@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import Loader from "@/components/_commons/Loader";
 import { SettingSubmitProps } from "@/models";
 import { Section } from "@/models/course/section.model";
 import { sectionService } from "@/services/courses/section.service";
 import { toastService } from "@/services/toast.service";
-import { CourseSubmit } from "./CourseSubmit";
-import Loader from "@/components/_commons/Loader";
+import React, { useEffect, useState } from "react";
 import { SectionCreator } from "./SectionCreator";
 import { SectionItem } from "./SectionItem";
 
 export const CourseContent: React.FC<SettingSubmitProps> = ({
   moveToNextStep,
   course,
+  editable,
 }) => {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -110,12 +110,15 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
               onAddSection={onAddSection}
               onEditSection={onEditSection}
               onDeleteSection={onDeleteSection}
+              disabled={!editable}
             ></SectionItem>
           </div>
         ))}
-        <div className="mt-4">
-          <SectionCreator course={course} onCreate={onAddSection} />
-        </div>
+        {editable && (
+          <div className="mt-4">
+            <SectionCreator course={course} onCreate={onAddSection} />
+          </div>
+        )}
       </div>
     </>
   );

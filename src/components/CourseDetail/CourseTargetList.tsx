@@ -35,7 +35,7 @@ const CourseTargetList = ({ items }) => {
           <h4 className="text-lg font-medium mb-2">Mục tiêu khóa học</h4>
           {Object.entries(targets).map(([type, targetList]) => (
             <div key={type} className="mb-4">
-              <h5 className="text-md font-medium capitalize">
+              <h5 className="text-md font-medium ">
                 {type === CourseTargetType.achieved
                   ? "Bạn sẽ học gì?"
                   : type === CourseTargetType.requirement

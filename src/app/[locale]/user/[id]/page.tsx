@@ -1,16 +1,16 @@
 "use client";
 
 import NAvatar from "@/components/_commons/NAvatar";
-import useAuth from "@/hooks/useAuth";
-import UseTab from "../_components/UseTab";
-import { useEffect, useState } from "react";
-import { userService } from "@/services/user/user.service";
-import { User } from "@/models";
-import { toastService } from "@/services/toast.service";
 import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
-import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { ROUTES } from "@/constants";
+import useAuth from "@/hooks/useAuth";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { User } from "@/models";
+import { toastService } from "@/services/toast.service";
+import { userService } from "@/services/user/user.service";
+import { useEffect, useState } from "react";
+import UseTab from "../_components/UseTab";
 interface PageProps {
   params: { id: number };
 }
@@ -45,9 +45,9 @@ const UserDetail: React.FC = ({ params }: PageProps) => {
     <div className="">
       <div className="rounded-lg shadow-lg bg-blue-50">
         <div className="relative flex gap-4 p-4 rounded-md">
-            <NAvatar size="xxl" src={user.avatar} name={user.fullName} />
+          <NAvatar size="xxl" src={user.avatar} name={user.fullName} />
           <div className=" p-2">
-            <div className="text-title-lg capitalize font-semibold flex">
+            <div className="text-title-lg  font-semibold flex">
               <div className="relative">
                 {user.fullName}
                 {currentUser?.id === user?.id && (
@@ -60,9 +60,7 @@ const UserDetail: React.FC = ({ params }: PageProps) => {
               </div>
             </div>
             <div>{user.email}</div>
-            <div className="text-secondary">
-              {user.bio}
-            </div>
+            <div className="text-secondary">{user.bio}</div>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { NFile } from "../file.model";
+import { Course } from "./course.model";
 
 export interface Section {
   id: number;
@@ -10,9 +11,13 @@ export interface Section {
   parent?: Section;
 }
 
+export interface SectionCourse extends Section {
+  course?: Course;
+}
+
 export enum SectionType {
-  Video = 'video',
-  Post = 'post',
+  Video = "video",
+  Post = "post",
 }
 
 export interface CreateSectionPayload {
@@ -43,7 +48,6 @@ export interface PostPayload {
   content?: string;
   estimatedTime?: number;
 }
-
 
 export interface Video {
   id: number;

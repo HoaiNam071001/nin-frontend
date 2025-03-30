@@ -1,9 +1,16 @@
-import React, { FocusEventHandler, useState } from "react";
-import { Input } from "antd";
-import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { useTranslate } from "@/hooks/useTranslate";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
+import { Input } from "antd";
+import React, { FocusEventHandler, useState } from "react";
 
-export type InputType =  'text' | 'password' | 'email' | 'number' | 'tel' | 'date' | 'time';
+export type InputType =
+  | "text"
+  | "password"
+  | "email"
+  | "number"
+  | "tel"
+  | "date"
+  | "time";
 
 export interface NInputProps {
   id?: string;
@@ -20,12 +27,26 @@ export interface NInputProps {
   className?: string;
   addonBefore?: React.ReactNode;
   addonAfter?: React.ReactNode;
-  size?: "sm" | "md" | "lg" | "xl" | "xxl"; // Kích thước input
-  shape?: "none" | "sm" | "md" | "lg" | "xl" | "xxl" | "full"; // Hình dạng input
-  align?: "left" | "center" | "right"; // Add align prop
+  size?: "sm" | "md" | "lg" | "xl" | "xxl";
+  shape?: "none" | "sm" | "md" | "lg" | "xl" | "xxl" | "full";
+  align?: "left" | "center" | "right";
   min?: number;
   max?: number;
+  separator?: boolean;
+  disabled?: boolean;
 }
+
+const formatNumber = (value: string | number) => {
+  if (typeof value === "number") value = value.toString();
+  const [integer, decimal] = value.split(".");
+  return decimal !== undefined
+    ? integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + decimal
+    : integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+const parseNumber = (value: string) => {
+  return value.replace(/,/g, "");
+};
 
 const NInput: React.FC<NInputProps> = ({
   id,
@@ -42,13 +63,14 @@ const NInput: React.FC<NInputProps> = ({
   className = "",
   addonBefore,
   addonAfter,
-  size = "md", // Kích thước mặc định là md
-  shape = "md", // Hình dạng mặc định là md
+  size = "md",
+  shape = "md",
   align = "left",
+  separator = false,
+  disabled = false,
   ...rest
 }) => {
   const translate = useTranslate();
-
   const [showPassword, setShowPassword] = useState(false);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -65,7 +87,8 @@ const NInput: React.FC<NInputProps> = ({
     setShowPassword((prevState) => !prevState);
   };
 
-  const inputType = type === "password" && showPassword ? "text" : type;
+  const inputType =
+    (type === "password" && showPassword) || separator ? "text" : type;
 
   const passwordAddonAfter =
     type === "password" ? (
@@ -81,7 +104,6 @@ const NInput: React.FC<NInputProps> = ({
       </span>
     ) : null;
 
-    // Định nghĩa styles cho kích thước input
   const sizeClasses = {
     sm: "text-xs px-2 py-1",
     md: "px-3 py-1",
@@ -90,7 +112,6 @@ const NInput: React.FC<NInputProps> = ({
     xxl: "text-2xl px-10 py-4",
   };
 
-  // Định nghĩa styles cho hình dạng input
   const shapeClasses = {
     none: "rounded-none",
     sm: "rounded-sm",
@@ -105,6 +126,19 @@ const NInput: React.FC<NInputProps> = ({
     left: "text-left",
     center: "text-center",
     right: "text-right",
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = e.target.value;
+    if (type === "number") {
+      newValue = newValue.replace(/[^\d.]/g, ""); // Chỉ cho phép số và dấu chấm
+      const dotCount = (newValue.match(/\./g) || []).length;
+      if (dotCount > 1) return; // Chỉ cho phép một dấu chấm
+      if (separator) {
+        newValue = parseNumber(newValue);
+      }
+    }
+    onValueChange?.(newValue);
   };
 
   return (
@@ -122,19 +156,22 @@ const NInput: React.FC<NInputProps> = ({
       <Input
         id={id}
         type={inputType}
-        value={value}
-        size="large" // giữ nguyên size của antd
-        onChange={(e) => onValueChange(e.target.value)}
+        value={type === "number" && separator ? formatNumber(value) : value}
+        size="large"
+        onChange={handleChange}
         onInput={input}
         onKeyUp={keyUp}
         onKeyDown={handleKeyDown}
         onBlur={onBlur}
         onFocus={onFocus}
         placeholder={translate(placeholder)}
-        className={`border-stroke placeholder:text-secondary ${className} ${alignClasses[align]} ${sizeClasses[size]} ${shapeClasses[shape]} ${
+        className={`border-stroke placeholder:text-secondary ${className} ${
+          alignClasses[align]
+        } ${sizeClasses[size]} ${shapeClasses[shape]} ${
           addonBefore ? "pl-[40px]" : ""
         } ${addonAfter || passwordAddonAfter ? "pr-[50px]" : ""}`}
         addonBefore={addonBefore}
+        disabled={disabled}
         {...rest}
       />
     </div>

@@ -1,5 +1,7 @@
+import { useModal } from "@/providers/ModalProvider";
 import React, { useRef, useState } from "react";
 import CustomImage from "./CustomImage";
+import ImageCropper from "./ImageCropper";
 import NButton from "./NButton";
 import SvgIcon from "./SvgIcon";
 
@@ -10,14 +12,22 @@ const FileUpload = ({
   accept = "",
   children,
   className,
+  width = 200,
+  height = 200,
+  disabled = false,
 }: {
   label: string;
   upload: (file: File) => void;
   showPreview?: boolean;
   accept?: string;
   className?: string;
+  width?: number;
+  height?: number;
+  disabled?: boolean;
   children?: React.ReactNode;
 }) => {
+  const { openModal, closeModal } = useModal();
+
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string>("");
@@ -27,14 +37,33 @@ const FileUpload = ({
       setFile(selectedFile);
       setFileName(selectedFile.name);
 
-      // Create a Blob from the selected file
-      const blob = new Blob([selectedFile], { type: selectedFile.type });
-
-      // Generate a URL from the Blob
-      const blobUrl = URL.createObjectURL(blob);
-      upload?.(selectedFile);
-      // Save the Blob URL to the previewUrl state
-      setPreviewUrl(blobUrl);
+      openModal({
+        header: "Crop the image",
+        content: (
+          <>
+            <ImageCropper
+              width={width}
+              height={height}
+              file={selectedFile}
+              onCropComplete={(file) => {
+                closeModal();
+                // Create a Blob from the selected file
+                const blob = new Blob([file], { type: file.type });
+                console.log(file, selectedFile);
+                // // Generate a URL from the Blob
+                const blobUrl = URL.createObjectURL(blob);
+                upload?.(file);
+                // Save the Blob URL to the previewUrl state
+                setPreviewUrl(blobUrl);
+              }}
+            />
+          </>
+        ),
+        onClose: () => {},
+        config: {
+          width: "600px",
+        },
+      });
     }
   };
 
@@ -53,7 +82,10 @@ const FileUpload = ({
 
   return (
     <div className="flex items-center">
-      <div className="cursor-pointer" onClick={handleMenuClick}>
+      <div
+        className={disabled ? "pointer-events-none" : "cursor-pointer"}
+        onClick={handleMenuClick}
+      >
         {children ?? (
           <NButton variant="filled" className={className}>
             <div className="flex items-center space-x-2">
@@ -68,6 +100,7 @@ const FileUpload = ({
         type="file"
         ref={fileInputRef}
         accept={accept}
+        disabled={disabled}
         className="hidden"
         onChange={handleFileChange}
       />
@@ -87,6 +120,7 @@ const FileUpload = ({
           )}
           <button
             onClick={handleRemoveFile}
+            disabled={disabled}
             className="mt-2 text-sm text-red-500 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             Remove File

@@ -3,30 +3,28 @@
 import NDatePicker from "@/components/_commons/Datepicker";
 import I18n from "@/components/_commons/I18n";
 import NButton from "@/components/_commons/NButton";
-import NInput from "@/components/_commons/NInput";
-import NSelection from "@/components/_commons/NSelection";
 import NTable, { TableColumn } from "@/components/_commons/NTable";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import FormInput from "@/components/Form/FormInput";
+import FormSelection from "@/components/Form/FormSelection";
+import { DATE_FORMATS } from "@/constants";
 import {
-  Course,
-  CoursePayload,
   Discount,
   DiscountPayload,
   DiscountType,
   SettingSubmitProps,
 } from "@/models";
+import { useModal } from "@/providers/ModalProvider";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { SectionOptions } from "./SectionOptions";
-import { useModal } from "@/providers/ModalProvider";
 import { useForm } from "react-hook-form";
-import FormInput from "@/components/Form/FormInput";
-import FormSelection from "@/components/Form/FormSelection";
-import { DATE_FORMATS } from "@/constants";
-import SvgIcon from "@/components/_commons/SvgIcon";
 
-export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
+export const DiscountManager: React.FC<SettingSubmitProps> = ({
+  course,
+  editable,
+}) => {
   const { openModal } = useModal();
 
   const [discounts, setDiscounts] = useState<Discount[]>([]);
@@ -146,21 +144,25 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
       title: "",
       render: (record) => (
         <div className="flex items-center justify-center gap-2">
-          <NButton
-            size="sm"
-            variant="filled"
-            onClick={() => handleEditDiscount(record.id)}
-          >
-            <SvgIcon icon={"edit"} className="icon icon-sm" />
-          </NButton>
-          <NButton
-            size="sm"
-            variant="filled"
-            color="red"
-            onClick={() => handleDeleteDiscount(record)}
-          >
-            <SvgIcon icon={"remove"} className="icon icon-sm" />
-          </NButton>
+          {editable && (
+            <>
+              <NButton
+                size="sm"
+                variant="filled"
+                onClick={() => handleEditDiscount(record.id)}
+              >
+                <SvgIcon icon={"edit"} className="icon icon-sm" />
+              </NButton>
+              <NButton
+                size="sm"
+                variant="filled"
+                color="red"
+                onClick={() => handleDeleteDiscount(record)}
+              >
+                <SvgIcon icon={"remove"} className="icon icon-sm" />
+              </NButton>
+            </>
+          )}
         </div>
       ),
     },
@@ -172,7 +174,9 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({ course }) => {
         <I18n i18key={"Discounts"} />
       </div>
       <NTable<Discount> columns={columns} dataSource={discounts} />
-      <NButton onClick={handleAddDiscount}>Create Discount</NButton>
+      {editable && (
+        <NButton onClick={handleAddDiscount}>Create Discount</NButton>
+      )}
     </div>
   );
 };

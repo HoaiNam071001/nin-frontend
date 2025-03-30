@@ -1,13 +1,13 @@
-import React, { useState, useCallback } from "react";
-import { Input, AutoComplete, Spin } from "antd";
+import { AutoComplete, Input } from "antd";
 import { debounce } from "lodash";
-import NInput from "./NInput";
+import React, { useCallback, useState } from "react";
 
 interface SearchWithAPIProps {
   apiCall: (keyword: string) => Promise<any[]>; // Hàm gọi API
   placeholder?: string;
   debounceTime?: number; // Thời gian debounce
   bindLabel?: string;
+  disabled?: boolean;
   onSearchChange?: (value: string) => void; // Callback khi giá trị thay đổi
   onSelect?: (value: { id: string; name: string }) => void; // Callback khi người dùng chọn một giá trị
 }
@@ -17,6 +17,7 @@ const SearchWithDropdown: React.FC<SearchWithAPIProps> = ({
   placeholder = "Tìm kiếm...",
   debounceTime = 500,
   bindLabel,
+  disabled,
   onSearchChange,
   onSelect,
 }) => {
@@ -57,7 +58,9 @@ const SearchWithDropdown: React.FC<SearchWithAPIProps> = ({
 
   // Xử lý sự kiện khi người dùng chọn kết quả
   const handleSelect = (value: string) => {
-    const selectedOption = options.find((option) => (bindLabel ? option[bindLabel] : option) === value);
+    const selectedOption = options.find(
+      (option) => (bindLabel ? option[bindLabel] : option) === value
+    );
     if (selectedOption && onSelect) {
       onSelect(selectedOption); // Truyền đối tượng {id, name} ra ngoài khi người dùng chọn
     }
@@ -69,6 +72,7 @@ const SearchWithDropdown: React.FC<SearchWithAPIProps> = ({
         value={searchTerm}
         onChange={handleSearch}
         onSelect={handleSelect}
+        disabled={disabled}
         placeholder={placeholder}
         style={{ width: "100%" }}
         popupMatchSelectWidth={false}
@@ -76,9 +80,8 @@ const SearchWithDropdown: React.FC<SearchWithAPIProps> = ({
           value: bindLabel ? option[bindLabel] : option,
         }))}
       >
-        <Input className="border-stroke" size="large"/>
+        <Input className="border-stroke" size="large" />
       </AutoComplete>
-      
     </div>
   );
 };

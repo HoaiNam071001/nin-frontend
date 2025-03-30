@@ -2,7 +2,7 @@
 
 import CustomImage from "@/components/_commons/CustomImage";
 import NButton from "@/components/_commons/NButton";
-import { ROUTES } from "@/constants";
+import { DEFAULT_COURSE_THUMBNAIL, ROUTES } from "@/constants";
 import { formatNumber, getPriceByBestDiscount } from "@/helpers";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { Course } from "@/models";
@@ -15,8 +15,7 @@ import { CartItem } from "@/models/user/cart.model";
 import { Currency } from "@/models/utils.model";
 import { coursePaymentService } from "@/services/courses/course-subscription.service";
 import { toastService } from "@/services/toast.service";
-import { cartService } from "@/services/user/cart.service";
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 // Định nghĩa mảng phương thức thanh toán
 const PAYMENT_METHODS = [
@@ -174,10 +173,13 @@ const CartItemDisplay = ({ item }: { item: CartItem }) => {
       className="flex items-center gap-2 border border-stroke rounded-sm mb-2"
       key={item.id}
     >
-      <CustomImage src={item.course?.thumbnail} alt={""} />
+      <CustomImage
+        src={item.course?.thumbnail || DEFAULT_COURSE_THUMBNAIL}
+        alt={""}
+      />
       <div className="flex flex-col overflow-hidden">
         <div
-          className="cursor-pointer hover:underline capitalize text-ellipsis"
+          className="cursor-pointer hover:underline  text-ellipsis"
           onClick={() => gotoDetail(item.course)}
         >
           {item.course?.name}

@@ -1,21 +1,15 @@
 "use client";
 
+import I18n from "@/components/_commons/I18n";
+import NButton from "@/components/_commons/NButton";
+import NInput from "@/components/_commons/NInput";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import { formatDate } from "@/helpers/date";
 import { Conversation } from "@/models/chatbot";
 import { chatbotService } from "@/services/ai/chatbot.service";
 import { toastService } from "@/services/toast.service";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { ChatbotContext } from "../page";
-import NButton from "@/components/_commons/NButton";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import I18n from "@/components/_commons/I18n";
-import NInput from "@/components/_commons/NInput";
-import { formatDate } from "@/helpers/date";
 
 const ChatList = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -73,23 +67,23 @@ const ChatList = () => {
     const formatted: { [date: string]: string } = {};
     Object.keys(groupedConversations).forEach((date) => {
       const formattedDate = new Date(date).toLocaleDateString();
-      formatted[date] = formattedDate === today ? 'Today' : formatDate({date});
+      formatted[date] =
+        formattedDate === today ? "Today" : formatDate({ date });
     });
     return formatted;
   }, [groupedConversations]);
-
 
   return (
     <div className="h-full min-w-[100px] overflow-hidden flex flex-col">
       <div className="font-semibold my-3 mx-2">Support</div>
       <NButton
-          variant="filled"
-          color="primary"
-          className="mb-3 sticky top-0"
-          onClick={addNew}
-        >
-          <I18n i18key={"New"} />
-        </NButton>
+        variant="filled"
+        color="primary"
+        className="mb-3 sticky top-0"
+        onClick={addNew}
+      >
+        <I18n i18key={"New"} />
+      </NButton>
       <div className="flex flex-col overflow-auto flex-1">
         {Object.keys(groupedConversations).map((date) => (
           <div key={date}>
@@ -199,7 +193,7 @@ const ChatItem = ({ row, setRows, conversation, setConversation }) => {
       {!editing && (
         <>
           <div
-            className="cursor-pointer flex-1 px-2 py-3 capitalize text-ellipsis"
+            className="cursor-pointer flex-1 px-2 py-3  text-ellipsis"
             onClick={() => select(row)}
             title={row.name}
           >
