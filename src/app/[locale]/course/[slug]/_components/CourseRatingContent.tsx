@@ -9,7 +9,7 @@ import SvgIcon from "@/components/_commons/SvgIcon";
 import TimeAgo from "@/components/_commons/TimeAgo";
 import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
 import useAuth from "@/hooks/useAuth";
-import { FullCourse } from "@/models";
+import { Course, FullCourse } from "@/models";
 import {
   CourseRating,
   CreateCourseRatingDto,
@@ -29,11 +29,17 @@ import { useEffect, useState } from "react";
 interface ItemProps {
   rating: CourseRating;
   courseId?: number;
+  editable?: boolean;
   remove?: () => void;
   onUpdated?: (updatedRating: CourseRating) => void; // Callback để cập nhật đánh giá
 }
 
-export const CommentItem = ({ rating, remove, onUpdated }: ItemProps) => {
+export const CommentItem = ({
+  editable,
+  rating,
+  remove,
+  onUpdated,
+}: ItemProps) => {
   const { openConfirm } = useModal();
   const { currentUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false); // Trạng thái chỉnh sửa
@@ -82,7 +88,7 @@ export const CommentItem = ({ rating, remove, onUpdated }: ItemProps) => {
           <Rating initialValue={rating.rating} />
           <p>{rating.content}</p>
 
-          {rating.user?.id === currentUser?.id && (
+          {editable && rating.user?.id === currentUser?.id && (
             <div className="absolute -right-1 translate-x-full top-0 h-full group-hover:visible invisible flex items-center gap-2">
               {/* Nút Edit */}
               <NButton
@@ -237,7 +243,13 @@ const filterItems: DropdownOption<number>[] = [
   },
 ];
 
-export const CourseRatingContent = ({ course }: { course: FullCourse }) => {
+export const CourseRatingContent = ({
+  course,
+  editable = true,
+}: {
+  course: FullCourse | Course;
+  editable?: boolean;
+}) => {
   const [ratings, setRatings] = useState<CourseRating[]>([]);
   const [sorter, setSorter] = useState<DropdownOption<OrderBy>>(sortItems[0]);
   const [pageAble, setPageAble] = useState<PageAble>({
@@ -281,22 +293,33 @@ export const CourseRatingContent = ({ course }: { course: FullCourse }) => {
       if (!currentUser) {
         return;
       }
+      if (!course) {
+        setSelfRating(null);
+        return;
+      }
       const item = await courseRatingService.getByUser(course?.id);
       setSelfRating(item);
     } catch (error) {
+      setSelfRating(null);
       console.error("Failed to fetch Self Rating:", error);
     }
   };
 
   useEffect(() => {
     fetchSelf();
-  }, []);
+  }, [course]);
 
   useEffect(() => {
     if (pageAble) {
       fetchRatings();
     }
   }, [pageAble]);
+
+  useEffect(() => {
+    setPageAbleValue({
+      page: FIRST_PAGE,
+    });
+  }, [course]);
 
   const setPageAbleValue = (value: PageAble) => {
     setPageAble({
@@ -357,11 +380,12 @@ export const CourseRatingContent = ({ course }: { course: FullCourse }) => {
         </div>
       </div>
 
-      {currentUser && !selfRating && (
+      {editable && currentUser && !selfRating && (
         <CommentForm courseId={course?.id} onCreated={handleCommentCreated} />
       )}
       {currentUser && selfRating && (
         <CommentItem
+          editable={editable}
           rating={selfRating}
           courseId={course.id}
           remove={() => setSelfRating(null)}
@@ -371,6 +395,7 @@ export const CourseRatingContent = ({ course }: { course: FullCourse }) => {
 
       {ratings.map((rating) => (
         <CommentItem
+          editable={editable}
           key={rating.id}
           rating={rating}
           courseId={course.id}

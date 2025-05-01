@@ -36,6 +36,14 @@ const RatingTab = () => {
   const columns: TableColumns<Course> = useMemo(() => {
     return [
       {
+        title: "Id",
+        dataIndex: "id",
+        width: 50,
+        key: "id",
+        fixed: "left",
+        sorter: true,
+      },
+      {
         title: "Name",
         dataIndex: "name",
         render: (_, record: Course) => (
@@ -65,10 +73,11 @@ const RatingTab = () => {
         title: "Rating",
         dataIndex: "rating",
         key: "rating",
+        align: "right",
         render: (rating) => (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-end gap-2">
             <div>{rating}</div>
-            <Rating size="sm" maxStars={1} initialValue={1} />
+            <Rating size="sm" maxStars={5} initialValue={rating} />
           </div>
         ),
         width: 150,
@@ -149,7 +158,7 @@ const RatingTab = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 h-[70vh]">
         <div
-          className={`px-2 col-span-12 ${
+          className={`px-2 col-span-12 h-[70vh] ${
             selected ? "md:col-span-8" : "md:col-span-12"
           }`}
         >
@@ -158,7 +167,6 @@ const RatingTab = () => {
             dataSource={rows}
             updated={handleTableChange}
             pageInfo={pageInfo}
-            scroll={{ x: "100%", y: "70vh" }}
             onRow={(record) => {
               return {
                 onClick: () => {
@@ -181,7 +189,7 @@ const RatingTab = () => {
             >
               <SvgIcon icon={"close"} />
             </NButton>
-            <CourseRatingChart courseId={selected.id} />
+            <CourseRatingChart course={selected} />
           </div>
         )}
       </div>

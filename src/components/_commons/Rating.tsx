@@ -10,7 +10,7 @@ interface RatingProps {
   onChange?: (value: number) => void;
   activeColor?: string;
   inactiveColor?: string;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "ssm" | "sm" | "md" | "lg" | "xl";
   maxStars?: number; // Thêm prop maxStars
 }
 
@@ -38,7 +38,8 @@ const Rating: React.FC<RatingProps> = ({
   const displayValue = editable && hover !== null ? hover : initialValue;
 
   // Logic để xác định trạng thái của từng sao
-  const isFullStar = (ratingValue: number) => ratingValue <= Math.floor(displayValue);
+  const isFullStar = (ratingValue: number) =>
+    ratingValue <= Math.floor(displayValue);
   const isHalfStar = (ratingValue: number) =>
     ratingValue === Math.ceil(displayValue) && displayValue % 1 !== 0;
 
@@ -52,22 +53,30 @@ const Rating: React.FC<RatingProps> = ({
         return (
           <div
             key={index}
-            className={`cursor-${editable ? "pointer" : "default"} relative icon-${size}`}
+            className={`cursor-${
+              editable ? "pointer" : "default"
+            } relative icon-${size}`}
             onClick={() => handleClick(ratingValue)}
             onMouseEnter={() => editable && setHover(ratingValue)}
             onMouseLeave={() => editable && setHover(null)}
           >
             {/* Sao nền (inactive) */}
-            <SvgIcon icon="star" className={`icon icon-${size} ${inactiveColor}`} />
+            <SvgIcon
+              icon="star"
+              className={`icon icon-${size} ${inactiveColor}`}
+            />
             {/* Sao active hoặc nửa sao */}
             {(fullStar || halfStar) && (
               <div
                 className="absolute top-0 left-0"
                 style={{
-                  clipPath: halfStar ? 'inset(0 50% 0 0)' : 'none', // Cắt nửa bên phải
+                  clipPath: halfStar ? "inset(0 50% 0 0)" : "none", // Cắt nửa bên phải
                 }}
               >
-                <SvgIcon icon="star" className={`icon icon-${size} ${activeColor}`} />
+                <SvgIcon
+                  icon="star"
+                  className={`icon icon-${size} ${activeColor}`}
+                />
               </div>
             )}
           </div>

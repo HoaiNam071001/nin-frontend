@@ -51,8 +51,9 @@ const NTable = <T extends object>({
       // className={styles.customTable}
       columns={columns}
       dataSource={dataSource}
-      scroll={{ x: "max-content" }}
+      scroll={{ x: "max-content", y: "calc(100% - 43px)" }}
       rowKey={(record, index) => `${index}`}
+      className="h-full"
       onChange={onChangePage}
       pagination={
         pageInfo

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
 import NButton from "@/components/_commons/NButton";
+import { useMemo, useState } from "react";
 import CoursePay from "./CoursePay";
 import RatingTab from "./CourseRatingTab";
 
@@ -11,12 +11,12 @@ const UseTab = () => {
     return [
       {
         id: "pay",
-        label: "Doanh thu",
+        label: "Revenue",
         component: <CoursePay />,
       },
       {
         id: "rating",
-        label: "Đánh Giá",
+        label: "Rating",
         component: <RatingTab />,
       },
     ];

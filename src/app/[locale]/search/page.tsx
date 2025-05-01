@@ -1,12 +1,10 @@
 "use client";
 
-import SearchFilter from "./component/SearchFilter";
-import SearchContent from "./component/SearchContent";
-import { createContext } from "react";
-import { CourseSearchPayload } from "@/models";
-import { ReactNode, useState } from "react";
 import { CourseStatus } from "@/constants";
-import SearchSuggest from "./component/Suggest";
+import { CourseSearchPayload } from "@/models";
+import { createContext, ReactNode, useState } from "react";
+import SearchContent from "./component/SearchContent";
+import SearchFilter from "./component/SearchFilter";
 // import { useState } from "react";
 export const SearchContext = createContext<{
   filter: CourseSearchPayload;
@@ -38,9 +36,9 @@ const CourseBoard: React.FC = () => {
           <SearchContent />
         </div>
       </div>
-      <div className="mt-4">
+      {/* <div className="mt-4">
       <SearchSuggest></SearchSuggest>
-      </div>
+      </div> */}
     </SearchProvider>
   );
 };

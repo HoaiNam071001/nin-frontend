@@ -211,7 +211,7 @@ const CourseInstructor = ({
   };
 
   const UserLabel = (val: ShortUser) => (
-    <NUser src={val.avatar} name={val.fullName} />
+    <NUser src={val.avatar} name={val.fullName} email={val.email} />
   );
 
   const editMode = !item || editing;

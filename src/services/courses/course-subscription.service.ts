@@ -1,25 +1,29 @@
 import {
-  PaymentTransaction,
-  PaymentDetail,
-  CourseSubscription,
-  PaymentStatus,
-  CreatePaymentPayload,
-  CreateSubscriptionPayload,
-  CourseSubscriptionFull,
   ChartCoursePayload,
   ChartCourseResponse,
+  CourseSubscription,
+  CourseSubscriptionFull,
+  CreatePaymentPayload,
+  CreateSubscriptionPayload,
+  PaymentDetail,
+  PaymentStatus,
+  PaymentTransaction,
 } from "@/models/course/course-subscription.model";
-import apiClient from "../config";
 import { List2Res, PageAble, stringifyPageAble } from "@/models/utils.model";
 import queryString from "query-string";
+import apiClient from "../config";
 
 export const coursePaymentService = {
   // PaymentTransaction APIs
   createTransaction: async (payload: CreatePaymentPayload) => {
-    const response = await apiClient.post<{
-      transaction: PaymentTransaction;
-      details: PaymentDetail[];
-    }>("/payments/transactions", payload);
+    // {
+    //   transaction: PaymentTransaction;
+    //   details: PaymentDetail[];
+    // }
+    const response = await apiClient.post<any>(
+      "/payments/transactions",
+      payload
+    );
     return response.data;
   },
 

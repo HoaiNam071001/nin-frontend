@@ -1,0 +1,19 @@
+.quill {
+  .ql-toolbar {
+    @apply border rounded-t-md !border-stroke;
+  }
+  .ql-container {
+    &:not(.ql-disabled) {
+      @apply border rounded-b-md !border-stroke;
+    }
+    .ql-editor::before {
+      @apply text-secondary;
+    }
+
+    &.ql-disabled {
+      .ql-editor {
+        @apply p-0;
+      }
+    }
+  }
+}

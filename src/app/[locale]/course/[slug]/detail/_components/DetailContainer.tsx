@@ -12,6 +12,7 @@ import DetailTitle from "./DetailTitle";
 const DetailContainer = ({ slug }) => {
   const [course, setCourse] = useState<FullCourse>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [collapsed, setCollapsed] = useState(false);
 
   const getBySlug = async () => {
     try {
@@ -32,18 +33,26 @@ const DetailContainer = ({ slug }) => {
   return (
     <>
       {course && (
-        <div>
-          <div className="mb-2">
-            <DetailTitle course={course}></DetailTitle>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div className="md:col-span-8 space-y-4">
+        <div className="transition-all duration-300 ease-in-out">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div
+              className={`flex-1 space-y-4 transition-all duration-300 ease-in-out ${
+                collapsed ? "max-w-full" : "md:max-w-[66.7%]"
+              }`}
+            >
+              <DetailTitle
+                collapsed={collapsed}
+                setCollapsed={setCollapsed}
+                course={course}
+              />
               <CourseDetailContent />
               <CourseTabContent course={course} />
             </div>
-            <div className="md:col-span-4">
-              <CourseSectionMenu courseId={course.id} />
-            </div>
+            {!collapsed && (
+              <div className="md:w-[33.3%] transition-all duration-300 ease-in-out opacity-100">
+                <CourseSectionMenu courseId={course.id} />
+              </div>
+            )}
           </div>
         </div>
       )}

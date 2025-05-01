@@ -85,20 +85,6 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
           <span className="px-2 rounded-sm py-1 bg-blue-200 inline-block">
             Build your course content!
           </span>
-
-          <div className="p-2 bg-gray-50 my-2">
-            <div>
-              <b>Lecture video:</b> Upload or link a video tutorial for
-              students.
-            </div>
-            <div>
-              <b>Post:</b> Create post content with text, images, or links
-            </div>
-            <div>
-              <b>Useful.</b> Use the Add Section button to organize the course
-              into sections.
-            </div>
-          </div>
         </div>
 
         {sections?.map((e, index) => (

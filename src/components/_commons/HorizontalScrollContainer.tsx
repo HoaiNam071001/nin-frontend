@@ -1,6 +1,6 @@
 "use client";
 
-import debounce from "lodash/debounce";
+import { throttle } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import NButton from "./NButton";
 import SvgIcon from "./SvgIcon";
@@ -64,7 +64,7 @@ const HorizontalScrollContainer = ({
     }
   };
 
-  const debouncedHandleScroll = debounce(() => {
+  const debouncedHandleScroll = throttle(() => {
     updateScrollState();
 
     // Chỉ kiểm tra loadMore khi cuộn
@@ -121,6 +121,7 @@ const HorizontalScrollContainer = ({
           shape="full"
           size="md-circle"
           variant="filled"
+          disabled={!showRightArrow}
         >
           <SvgIcon icon={"arrow"} className="icon icon-md rotate-90" />
         </NButton>

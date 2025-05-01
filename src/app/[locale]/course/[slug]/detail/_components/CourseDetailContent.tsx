@@ -11,6 +11,7 @@ import { SystemFileType } from "@/models/file.model";
 import { sectionProgressService } from "@/services/courses/section-progress.service";
 import { sectionService } from "@/services/courses/section.service";
 import { toastService } from "@/services/toast.service";
+import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import { CourseDetailContext } from "../page";
 import PostContent from "./PostContent";
@@ -48,7 +49,10 @@ export const CourseDetailContent = ({ courseId }: { courseId?: number }) => {
       if (!progress) {
         progress = await sectionProgressService.create(section.id);
       }
-      setSProgress(progress);
+      // setSProgress(progress);
+      updateProgress({
+        updatedAt: moment().toISOString(),
+      });
     } catch (error: any) {
       toastService.error(error?.message);
     }
@@ -97,6 +101,10 @@ export const CourseDetailContent = ({ courseId }: { courseId?: number }) => {
             <NEmpty description="No Data" />
           </>
         )}
+      </div>
+
+      <div className="mt-3 text-title-sm text-slate-600 font-bold">
+        {section.name}
       </div>
     </div>
   );

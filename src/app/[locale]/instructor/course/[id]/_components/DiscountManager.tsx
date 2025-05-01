@@ -117,6 +117,7 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({
     {
       title: "Discount",
       dataIndex: "discountType",
+      width: 100,
       render: (value, record) =>
         value === DiscountType.PERCENT
           ? `${record.amount}%`
@@ -125,10 +126,12 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({
     {
       title: "Discount Code",
       dataIndex: "discountCode",
+      width: 150,
     },
     {
       title: "Description",
       dataIndex: "description",
+      width: 150,
     },
     {
       title: "Start Date",
@@ -257,6 +260,7 @@ const DiscountForm: React.FC<DiscountFormProps> = ({
         <FormInput
           name={`discountCode`}
           control={control}
+          rules={{ required: "Value is required" }}
           defaultValue={""}
           placeholder="Enter value"
         />

@@ -35,7 +35,7 @@ export const ROUTES = {
 
   // Admin
   ADMIN_USER: "/admin/users",
-  ADMIN_COURSE: "/admin/course",
+  ADMIN_SYSTEM: "/admin/system",
 };
 
 export const PARAMS = {

@@ -10,8 +10,8 @@ import { List2Res, PageInfo } from "@/models/utils.model";
 import { notificationsService } from "@/services/user/notification.service";
 import { uniqBy } from "lodash";
 import { useEffect, useState } from "react";
+import CustomImage from "../_commons/CustomImage";
 import InfiniteScroll from "../_commons/InfiniteScroll";
-import NAvatar from "../_commons/NAvatar";
 import NButton from "../_commons/NButton";
 import SvgIcon from "../_commons/SvgIcon";
 import TimeAgo from "../_commons/TimeAgo";
@@ -29,7 +29,7 @@ const NotificationList: React.FC<NotificationListProps> = ({
   const [pageInfo, setPageInfo] = useState<PageInfo>();
   const [loading, setLoading] = useState(false);
 
-  const fetchNotifications = async (page = 1) => {
+  const fetchNotifications = async (page = FIRST_PAGE) => {
     try {
       if (loading) {
         return;
@@ -37,7 +37,7 @@ const NotificationList: React.FC<NotificationListProps> = ({
       setLoading(true);
       const { content, ...res }: List2Res<NotificationModel> =
         await notificationsService.find({ page });
-      if (page === 1) {
+      if (page === FIRST_PAGE) {
         setRows(content);
       } else {
         const combinedRows = [...rows, ...content];
@@ -143,10 +143,10 @@ const NotificationList: React.FC<NotificationListProps> = ({
               }`}
               onClick={() => handleClick(notification)}
             >
-              <NAvatar
-                src={notification.sender?.avatar}
-                name={notification.sender?.fullName || "System"}
-              />
+              <div className="flex items-center w-[50px]">
+                <CustomImage src={notification.course?.thumbnail} width={50} />
+              </div>
+
               <div className="flex flex-col">
                 <div className="font-semibold">
                   {NotificationContext[notification.type].title}

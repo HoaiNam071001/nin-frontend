@@ -47,6 +47,14 @@ const CourseSub = ({ filter }) => {
   const columns: TableColumns<CourseSubscriptionFull> = useMemo(() => {
     return [
       {
+        title: "Id",
+        dataIndex: "id",
+        width: 50,
+        key: "course.id",
+        fixed: "left",
+        sorter: true,
+      },
+      {
         title: "Name",
         dataIndex: "name",
         render: (_, record: CourseSubscriptionFull) => (
@@ -182,7 +190,6 @@ const CourseSub = ({ filter }) => {
         dataSource={rows}
         updated={handleTableChange}
         pageInfo={pageInfo}
-        scroll={{ x: "100%", y: "70vh" }}
         className="mt-5"
         onRow={(record) => {
           return {

@@ -1,22 +1,24 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
 import NButton from "@/components/_commons/NButton";
+import useAuth from "@/hooks/useAuth";
+import { useMemo, useState } from "react";
 import UserCollaboration from "./UserCollaboration";
 import UserCourseList from "./UserCourseList";
 
 const UseTab = ({ user }) => {
+  const { currentUser } = useAuth();
   // Sử dụng useMemo để tính toán mảng tabs
   const tabs = useMemo(() => {
     return [
       {
         id: "bookmarks",
-        label: "Khóa học đã tạo",
+        label: "Courses Created",
         component: <UserCourseList userId={user?.id} />,
       },
-      {
+      currentUser?.id === user?.id && {
         id: "collaborator",
-        label: "Khóa học đóng góp",
+        label: "Contributed Courses",
         component: <UserCollaboration userId={user?.id} />,
       },
     ];

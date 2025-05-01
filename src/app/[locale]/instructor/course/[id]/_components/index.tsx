@@ -13,13 +13,6 @@ import {
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 
-const statuses = {
-  [CourseStatus.READY]: CourseStatus.PRIVATE,
-  [CourseStatus.PRIVATE]: CourseStatus.READY,
-  [CourseStatus.REJECT]: CourseStatus.PENDING,
-  [CourseStatus.DRAFT]: CourseStatus.PENDING,
-  [CourseStatus.PENDING]: CourseStatus.DRAFT,
-};
 const CourseSetting = ({
   currentStep,
   course,
@@ -65,26 +58,14 @@ const CourseSetting = ({
               <I18n i18key={"Publish"} />
             </NButton>
           )}
-          {course?.status === CourseStatus.READY && (
-            <NButton onClick={() => onSubmit(CourseStatus.PRIVATE)}>
-              <I18n i18key={"Close"} />
-            </NButton>
-          )}
           {course?.status === CourseStatus.PENDING && (
             <NButton onClick={() => onSubmit(CourseStatus.DRAFT)}>
               <I18n i18key={"Cancel"} />
             </NButton>
           )}
-          {course?.status === CourseStatus.DELETED && (
-            <NButton onClick={() => onSubmit(CourseStatus.DRAFT)}>
-              <I18n i18key={"Restore"} />
-            </NButton>
-          )}
-          {course?.status === CourseStatus.PRIVATE && (
-            <NButton onClick={() => onSubmit(CourseStatus.READY)}>
-              <I18n i18key={"Republished"} />
-            </NButton>
-          )}
+          <NButton onClick={() => onSubmit(CourseStatus.DELETED)}>
+            <I18n i18key={"Delete"} />
+          </NButton>
         </div>
       </div>
       <div className="text-[14px] mb-3 space-y-2">

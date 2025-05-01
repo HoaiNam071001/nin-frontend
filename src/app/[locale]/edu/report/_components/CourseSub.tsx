@@ -161,7 +161,6 @@ const CourseSub = ({ filter }: { filter: DashboardSubPayload }) => {
         dataSource={rows}
         updated={handleTableChange}
         pageInfo={pageInfo}
-        scroll={{ x: "100%", y: "70vh" }}
         className="mt-5"
         onRow={(record) => {
           return {

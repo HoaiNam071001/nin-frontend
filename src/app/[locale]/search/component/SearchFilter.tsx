@@ -6,7 +6,7 @@ import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { Category, Level } from "@/models";
 import { categoryService } from "@/services/courses/category.service";
 import { levelService } from "@/services/courses/level.service";
-import { isArray, isNumber, isString } from "lodash";
+import { isArray, isString } from "lodash";
 import { useSearchParams } from "next/navigation";
 import queryString from "query-string";
 import { useContext, useEffect, useState } from "react";
@@ -157,7 +157,9 @@ const LevelFilter = ({
                 selected[level.name] ? "checked" : ""
               }`}
             ></div>
-            <span className="ml-2">{level.name}</span>
+            <span className="ml-2">
+              <I18n i18key={level.name}></I18n>
+            </span>
           </label>
         ))}
       </div>
@@ -177,7 +179,6 @@ const CategoryFilter = ({
   const [selected, setSelected] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
-
     if (!params) {
       return;
     }
@@ -190,8 +191,7 @@ const CategoryFilter = ({
           return acc;
         }, {})
       );
-    }
-    else if (isString(categoryIds)) {
+    } else if (isString(categoryIds)) {
       setSelected({ [+categoryIds]: true });
     }
   }, [categories, params]);
@@ -214,7 +214,7 @@ const CategoryFilter = ({
             key={category.id}
             className="flex items-center"
             style={{
-              order: selected[category.id] ? '-1' : 0
+              order: selected[category.id] ? "-1" : 0,
             }}
             onClick={() => onChange(category)}
           >
@@ -223,7 +223,10 @@ const CategoryFilter = ({
                 selected[category.id] ? "checked" : ""
               }`}
             ></div>
-            <span className="ml-2">{category.name}</span>
+            <span className="ml-2">
+              {" "}
+              <I18n i18key={category.name}></I18n>
+            </span>
           </label>
         ))}
       </div>

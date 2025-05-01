@@ -8,8 +8,12 @@
 }
 @import "./grid.scss";
 @import "./table.scss";
+@import "./editor.scss";
 
 .icon {
+  &.icon-ssm {
+    @apply w-[12px] h-[12px] min-w-[12px] min-h-[12px];
+  }
   &.icon-sm {
     @apply w-[16px] h-[16px] min-w-[16px] min-h-[16px];
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import HorizontalScrollContainer from "@/components/_commons/HorizontalScrollContainer";
+import I18n from "@/components/_commons/I18n";
 import { DEFAULT_PAGESIZE, FIRST_PAGE, PARAMS, ROUTES } from "@/constants";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { SectionProgress } from "@/models/course/section-progress.model";
@@ -64,25 +65,34 @@ export const SectionProgressList: React.FC = () => {
     }
   };
 
+  if (loading || !items?.length) {
+    return;
+  }
+
   return (
     <>
-      <HorizontalScrollContainer
-        scrollOffset={"100%"}
-        onLoadMore={loadMore}
-        loadMoreThreshold={60}
-      >
-        <div className="px-2 py-4 ">
-          <div className="grid grid-flow-col gap-4 auto-cols-1 md:auto-cols-2 lg:auto-cols-3 xl:auto-cols-4">
-            {items?.map((item) => (
-              <ProgressSection
-                key={item.id}
-                item={item}
-                onView={() => onView(item)}
-              />
-            ))}
-          </div>
+      <div>
+        <div className="text-title-sm font-semibold">
+          <I18n i18key={"Pick up where you left off"}></I18n>
         </div>
-      </HorizontalScrollContainer>
+        <HorizontalScrollContainer
+          scrollOffset={"100%"}
+          onLoadMore={loadMore}
+          loadMoreThreshold={60}
+        >
+          <div className="px-2 py-4">
+            <div className="grid grid-flow-col gap-4 auto-cols-1 md:auto-cols-2 lg:auto-cols-3 xl:auto-cols-4">
+              {items?.map((item) => (
+                <ProgressSection
+                  key={item.id}
+                  item={item}
+                  onView={() => onView(item)}
+                />
+              ))}
+            </div>
+          </div>
+        </HorizontalScrollContainer>
+      </div>
     </>
   );
 };

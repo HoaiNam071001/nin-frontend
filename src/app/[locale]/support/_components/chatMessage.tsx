@@ -1,16 +1,16 @@
 //#region --- Types & Enums ---
 
+import I18n from "@/components/_commons/I18n";
+import Loader from "@/components/_commons/Loader";
 import NAvatar from "@/components/_commons/NAvatar";
-import { ChatbotRole, ChatMessage } from "@/models/chatbot";
-import { FC } from "react";
-import "./chatbot.scss";
-import { formatDate } from "@/helpers/date";
 import { DATE_FORMATS } from "@/constants";
+import { formatDate } from "@/helpers/date";
 import useAuth from "@/hooks/useAuth";
 import { User } from "@/models";
-import Loader from "@/components/_commons/Loader";
-import I18n from "@/components/_commons/I18n";
-
+import { ChatbotRole, ChatMessage } from "@/models/chatbot";
+import { FC } from "react";
+import ReactMarkdown from "react-markdown";
+import "./chatbot.scss";
 //#endregion
 
 //#region --- ChatMessageItem Component ---
@@ -19,7 +19,10 @@ interface ChatMessageItemProps {
   currentUser: User;
 }
 
-const ChatMessageItem: FC<ChatMessageItemProps> = ({ message, currentUser }) => {
+const ChatMessageItem: FC<ChatMessageItemProps> = ({
+  message,
+  currentUser,
+}) => {
   const isBot = message.sender === ChatbotRole.BOT;
   return (
     <div
@@ -30,22 +33,35 @@ const ChatMessageItem: FC<ChatMessageItemProps> = ({ message, currentUser }) => 
       {isBot && (
         <NAvatar
           tooltip={formatDate({
-            date: message.createdAt, 
-            format: DATE_FORMATS.AM_PM_FORMAT
+            date: message.createdAt,
+            format: DATE_FORMATS.AM_PM_FORMAT,
           })}
-          name={'BOT'}
+          name={"BOT"}
           src="/images/chatbot.png"
         />
       )}
+
       <div className="p-2 bg-system bg-opacity-5 border border-stroke rounded-lg message-container">
-        {message.content && <span dangerouslySetInnerHTML={{ __html: message.content }}></span>}
-        {!message.content && <span className="flex items-center gap-2"><Loader size="xs"/><I18n i18key="Processing"/> </span>}
+        {message.content && (
+          <ReactMarkdown>{message.content}</ReactMarkdown>
+          // <span
+          //   dangerouslySetInnerHTML={{
+          //     __html: ,
+          //   }}
+          // ></span>
+        )}
+        {!message.content && (
+          <span className="flex items-center gap-2">
+            <Loader size="xs" />
+            <I18n i18key="Processing" />{" "}
+          </span>
+        )}
       </div>
       {!isBot && (
         <NAvatar
           tooltip={formatDate({
-            date: message.createdAt, 
-            format: DATE_FORMATS.AM_PM_FORMAT
+            date: message.createdAt,
+            format: DATE_FORMATS.AM_PM_FORMAT,
           })}
           name={`${currentUser.fullName}`}
           src={currentUser.avatar}
@@ -66,7 +82,7 @@ const ChatMessageList: FC<ChatMessageListProps> = ({ messages }) => {
   return (
     <div className="flex flex-col gap-4 mt-auto">
       {messages.map((msg, index) => (
-        <ChatMessageItem key={index} message={msg} currentUser={currentUser}/>
+        <ChatMessageItem key={index} message={msg} currentUser={currentUser} />
       ))}
     </div>
   );

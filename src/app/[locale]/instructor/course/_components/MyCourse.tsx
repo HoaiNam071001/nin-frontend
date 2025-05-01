@@ -1,23 +1,25 @@
-import { Course } from "@/models";
-import { courseService } from "@/services/courses/course.service";
-import { toastService } from "@/services/toast.service";
-import React, { useEffect, useMemo, useState } from "react";
-import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
+import CustomImage from "@/components/_commons/CustomImage";
+import NButton from "@/components/_commons/NButton";
+import NInput from "@/components/_commons/NInput";
+import NTable, { TableColumns } from "@/components/_commons/NTable";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import StatusBadge from "@/components/CourseItem/StatusBadge";
 import {
   CourseStatus,
   DEFAULT_PAGESIZE,
   FIRST_PAGE,
   ROUTES,
 } from "@/constants";
-import NTable, { TableColumns } from "@/components/_commons/NTable";
-import CustomImage from "@/components/_commons/CustomImage";
-import { formatDate } from "@/helpers/date";
-import StatusBadge from "@/components/CourseItem/StatusBadge";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
-import { useI18nRouter } from "@/hooks/useI18nRouter";
-import NButton from "@/components/_commons/NButton";
-import SvgIcon from "@/components/_commons/SvgIcon";
 import { formatNumber } from "@/helpers";
+import { formatDate } from "@/helpers/date";
+import useDebounce from "@/hooks/useDebounce";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { Course } from "@/models";
+import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
+import { courseService } from "@/services/courses/course.service";
+import { toastService } from "@/services/toast.service";
+import { useEffect, useMemo, useState } from "react";
 
 const MyCourse = () => {
   // const [loading, setLoading] = useState<boolean>(false);
@@ -29,10 +31,21 @@ const MyCourse = () => {
   });
   const [pageInfo, setPageInfo] = useState<PageInfo>();
 
+  const [keyword, setKeyword] = useState<string>();
+  const searchTextDebounce = useDebounce(keyword, 500);
+
   const router = useI18nRouter();
 
   const columns: TableColumns<Course> = useMemo(() => {
     return [
+      {
+        title: "Id",
+        dataIndex: "id",
+        width: 50,
+        key: "id",
+        fixed: "left",
+        sorter: true,
+      },
       {
         title: "Name",
         dataIndex: "name",
@@ -55,10 +68,20 @@ const MyCourse = () => {
         title: "Price",
         dataIndex: "price",
         key: "price",
-        render: (price, course: Course) => <>
-        {price > 0 && <span>{formatNumber(price)} {course.currency}</span>}
-        {!price && <span className="rounded-md bg-red px-2 py-1 text-white">Free</span>}
-        </>,
+        render: (price, course: Course) => (
+          <>
+            {price > 0 && (
+              <span>
+                {formatNumber(price)} {course.currency}
+              </span>
+            )}
+            {!price && (
+              <span className="rounded-md bg-red px-2 py-1 text-white">
+                Free
+              </span>
+            )}
+          </>
+        ),
         width: 150,
         sorter: true,
       },
@@ -105,7 +128,9 @@ const MyCourse = () => {
               size="sm"
               variant="filled"
               color="gray"
-              onClick={() => router.push(`${ROUTES.INSTRUCTOR_COURSE}/${record.id}`)}
+              onClick={() =>
+                router.push(`${ROUTES.INSTRUCTOR_COURSE}/${record.id}`)
+              }
             >
               <SvgIcon icon={"edit"} className="icon icon-sm" />
             </NButton>
@@ -117,6 +142,10 @@ const MyCourse = () => {
       },
     ];
   }, [rows]);
+
+  useEffect(() => {
+    setPageAbleValue({ keyword });
+  }, [searchTextDebounce]);
 
   const getCourses = async () => {
     try {
@@ -134,6 +163,13 @@ const MyCourse = () => {
     }
   };
 
+  const setPageAbleValue = (value: PageAble) => {
+    setPageAble({
+      ...pageAble,
+      ...value,
+    });
+  };
+
   useEffect(() => {
     if (pageAble) {
       getCourses();
@@ -144,21 +180,37 @@ const MyCourse = () => {
     setPageAble((prevPageAble) => ({ ...prevPageAble, ...newPageAble }));
   };
   return (
-    <div className="">
-      <NTable<Course>
-        columns={columns}
-        dataSource={rows}
-        updated={handleTableChange}
-        pageInfo={pageInfo}
-        scroll={{ x: "100%", y: "70vh" }}
-        className="mt-5"
-        onRow={(record) => {
-          return {
-            onClick: () => {
-            },
-          };
-        }}
-      />
+    <div className="h-full flex flex-col overflow-hidden">
+      <div className="flex mb-3">
+        <NInput
+          value={keyword}
+          onValueChange={(value: string) => setKeyword(value)}
+          placeholder="Search Course..."
+          addonAfter={
+            <NButton
+              variant="link"
+              color="secondary"
+              onClick={() => setKeyword(keyword)}
+            >
+              <SvgIcon icon="search" className="icon icon-sm" />
+            </NButton>
+          }
+        ></NInput>
+      </div>
+      <div className="flex-1">
+        <NTable<Course>
+          columns={columns}
+          dataSource={rows}
+          updated={handleTableChange}
+          pageInfo={pageInfo}
+          className="h-full"
+          onRow={(record) => {
+            return {
+              onClick: () => {},
+            };
+          }}
+        />
+      </div>
     </div>
   );
 };

@@ -3,14 +3,14 @@
 import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
 import { ROUTES } from "@/constants";
-import MyCourse from "./course/_components/MyCourse";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
+import MyCourse from "./course/_components/MyCourse";
 
 const CourseBoard: React.FC = () => {
   const router = useI18nRouter();
 
   return (
-    <div className="h-[80vh] rounded-md container mx-auto bg-slate-50 border-stroke border p-[40px] shadow-lg">
+    <div className=" rounded-md container mx-auto bg-slate-50 border-stroke border p-[40px] shadow-lg flex flex-col">
       <div className="mb-4">
         <NButton
           variant="solid"
@@ -27,7 +27,9 @@ const CourseBoard: React.FC = () => {
         </NButton>
       </div>
 
-      <MyCourse />
+      <div className="flex-1 overflow-hidden">
+        <MyCourse />
+      </div>
     </div>
   );
 };

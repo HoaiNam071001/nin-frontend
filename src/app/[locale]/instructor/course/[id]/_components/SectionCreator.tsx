@@ -1,7 +1,7 @@
 "use client";
 
-import FormSelection from "@/components/Form/FormSelection";
 import FormInput from "@/components/Form/FormInput";
+import FormSelection from "@/components/Form/FormSelection";
 import NButton from "@/components/_commons/NButton";
 import { Course } from "@/models";
 import { Section, SectionType } from "@/models/course/section.model";
@@ -27,7 +27,7 @@ export function SectionCreator({
   } = useForm<Section>({
     defaultValues: {
       name: "",
-      type: null,
+      type: SectionType.Post,
     },
   });
 
@@ -47,7 +47,7 @@ export function SectionCreator({
     setCreating(false);
     reset({
       name: "",
-      type: null,
+      type: SectionType.Post,
     });
   };
 
@@ -111,11 +111,7 @@ export function SectionCreator({
       )}
 
       {!creating && (
-        <NButton
-          shape="md"
-          color="primary"
-          onClick={() => setCreating(true)}
-        >
+        <NButton shape="md" color="primary" onClick={() => setCreating(true)}>
           Add Section
         </NButton>
       )}

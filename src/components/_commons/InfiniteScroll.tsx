@@ -6,35 +6,46 @@ import React, { useEffect, useRef } from "react";
 
 interface InfiniteScrollProps {
   onLoadMore: () => void;
+  getRef?: (ref: HTMLDivElement) => void;
   hasMore: boolean;
   isLoading?: boolean;
   children: React.ReactNode;
+  direction?: "up" | "down";
 }
 
 const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   onLoadMore,
+  getRef,
   hasMore,
   isLoading = false,
   children,
+  direction = "down", // Mặc định là "down"
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  // Sử dụng useRef để lưu các giá trị mới nhất của props
-  const propsRef = useRef({ onLoadMore, hasMore, isLoading });
+  const propsRef = useRef({ onLoadMore, hasMore, isLoading, direction });
 
   useEffect(() => {
-    propsRef.current = { onLoadMore, hasMore, isLoading };
-  }, [onLoadMore, hasMore, isLoading]);
+    propsRef.current = { onLoadMore, hasMore, isLoading, direction };
+  }, [onLoadMore, hasMore, isLoading, direction]);
 
   const handleScroll = useRef(
     throttleFunc(() => {
       const container = containerRef.current;
-      const { onLoadMore, hasMore, isLoading } = propsRef.current;
+      const { onLoadMore, hasMore, isLoading, direction } = propsRef.current;
       if (!container || isLoading || !hasMore) return;
+
       const { scrollTop, scrollHeight, clientHeight } = container;
-      if (scrollTop + clientHeight >= scrollHeight - 100) {
-        onLoadMore();
+      console.log(scrollTop, scrollHeight, clientHeight);
+      if (direction === "down") {
+        if (scrollTop + clientHeight >= scrollHeight - 100) {
+          onLoadMore();
+        }
+      } else if (direction === "up") {
+        if (scrollTop <= 100) {
+          onLoadMore();
+        }
       }
-    }, 300)
+    }, 500)
   ).current;
 
   useEffect(() => {
@@ -42,6 +53,8 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
     if (container) {
       container.addEventListener("scroll", handleScroll);
     }
+
+    getRef?.(container);
 
     return () => {
       if (container) {

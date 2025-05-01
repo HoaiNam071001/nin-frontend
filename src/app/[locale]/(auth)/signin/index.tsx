@@ -1,19 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
-import CustomImage from "@/components/_commons/CustomImage";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import { useForm } from "react-hook-form";
 import FormInput from "@/components/Form/FormInput";
-import NButton from "@/components/_commons/NButton";
-import { authService } from "@/services/auth.service";
-import { toastService } from "@/services/toast.service";
-import { useDispatch } from "react-redux";
+import CustomImage from "@/components/_commons/CustomImage";
+import { I18nLink } from "@/components/_commons/I18nLink";
 import Loader from "@/components/_commons/Loader";
-import { authAction } from "@/redux";
+import NButton from "@/components/_commons/NButton";
+import SvgIcon from "@/components/_commons/SvgIcon";
 import { ROUTES } from "@/constants";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
-import { I18nLink } from "@/components/_commons/I18nLink";
+import { authAction } from "@/redux";
+import { authService } from "@/services/auth.service";
+import { toastService } from "@/services/toast.service";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 interface SigninFormValues {
   email: string;
@@ -114,7 +114,7 @@ const SignIn: React.FC = () => {
                 </div>
               </NButton>
 
-              <NButton
+              {/* <NButton
                 variant="outlined"
                 color="primary"
                 size="lg"
@@ -123,7 +123,7 @@ const SignIn: React.FC = () => {
               >
                 <SvgIcon icon="google"></SvgIcon>
                 Sign in with Google
-              </NButton>
+              </NButton> */}
             </div>
 
             <div className="mt-6 text-center space-x-2">

@@ -1,7 +1,23 @@
+import CustomImage from "@/components/_commons/CustomImage";
+import NButton from "@/components/_commons/NButton";
+import NDropdown from "@/components/_commons/NDropdown";
+import NInput from "@/components/_commons/NInput";
+import NSelection from "@/components/_commons/NSelection";
+import NTable, { TableColumns } from "@/components/_commons/NTable";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import StatusBadge from "@/components/CourseItem/StatusBadge";
+import {
+  CourseStatus,
+  DEFAULT_PAGESIZE,
+  FIRST_PAGE,
+  ROUTES,
+} from "@/constants";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
+import { formatDate } from "@/helpers/date";
+import useAuth from "@/hooks/useAuth";
+import useDebounce from "@/hooks/useDebounce";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { Course, CourseAccessType, InstructorTypes } from "@/models";
-import { courseService } from "@/services/courses/course.service";
-import { toastService } from "@/services/toast.service";
-import React, { useEffect, useMemo, useState } from "react";
 import {
   DropdownOption,
   List2Res,
@@ -10,26 +26,9 @@ import {
   PageInfo,
   SortOrder,
 } from "@/models/utils.model";
-import {
-  CourseStatus,
-  DEFAULT_PAGESIZE,
-  FIRST_PAGE,
-  ROUTES,
-} from "@/constants";
-import NTable, { TableColumns } from "@/components/_commons/NTable";
-import CustomImage from "@/components/_commons/CustomImage";
-import { formatDate } from "@/helpers/date";
-import StatusBadge from "@/components/CourseItem/StatusBadge";
-import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
-import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { courseSearchService } from "@/services/courses/course-search.service";
-import NDropdown from "@/components/_commons/NDropdown";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import NButton from "@/components/_commons/NButton";
-import useAuth from "@/hooks/useAuth";
-import useDebounce from "@/hooks/useDebounce";
-import NSelection from "@/components/_commons/NSelection";
-import NInput from "@/components/_commons/NInput";
+import { toastService } from "@/services/toast.service";
+import { useEffect, useMemo, useState } from "react";
 
 const sortItems: DropdownOption<OrderBy>[] = [
   {
@@ -85,6 +84,14 @@ const UserCollaboration = ({ userId }) => {
   const columns: TableColumns<Course> = useMemo(() => {
     const _columns: TableColumns<Course> = [
       {
+        title: "Id",
+        dataIndex: "id",
+        width: 50,
+        key: "id",
+        fixed: "left",
+        sorter: true,
+      },
+      {
         title: "Name",
         dataIndex: "name",
         render: (_, record: Course) => (
@@ -139,7 +146,7 @@ const UserCollaboration = ({ userId }) => {
         title: "Created At",
         dataIndex: "createdAt",
         key: "createdAt",
-        render: (date) => <span>{formatDate({date})}</span>,
+        render: (date) => <span>{formatDate({ date })}</span>,
         width: 150,
         sorter: true,
       },
@@ -211,7 +218,7 @@ const UserCollaboration = ({ userId }) => {
 
   return (
     <div className="">
-      <div className="flex items-center mb-4">
+      <div className="flex items-center mb-5">
         <NInput
           value={keyword}
           onValueChange={(value: string) => setKeyword(value)}
@@ -245,7 +252,6 @@ const UserCollaboration = ({ userId }) => {
         dataSource={rows}
         updated={handleTableChange}
         pageInfo={pageInfo}
-        scroll={{ x: "100%", y: "70vh" }}
         className="mt-5"
       />
     </div>

@@ -28,6 +28,11 @@ export const AdminNavItems: NavItem[] = [
     name: "User List",
     path: ROUTES.ADMIN_USER,
   },
+  {
+    icon: "report-all",
+    name: "Report",
+    path: ROUTES.ADMIN_SYSTEM,
+  },
 ];
 
 export const StudentNavItems: NavItem[] = [
@@ -37,7 +42,6 @@ export const StudentNavItems: NavItem[] = [
     path: ROUTES.MY_COURSE,
   },
   CartNavItem,
-  ...AdminNavItems,
 ];
 
 export const TeacherNavItems: NavItem[] = [

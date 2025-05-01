@@ -1,19 +1,19 @@
-import {
-  RoleRequest,
-  ShortUser,
-  User,
-  UserPayload,
-  UserSearchPayload,
-} from "@/models";
-import apiClient from "../config";
-import { List2Res, PageAble, stringifyPageAble } from "@/models/utils.model";
-import queryString from "query-string";
+import { User } from "@/models";
 import {
   CreateUserPayload,
   UpdateUserPayload,
 } from "@/models/admin/admin.model";
+import { DashboardReport } from "@/models/admin/course-admin.model";
+import { List2Res, PageAble, stringifyPageAble } from "@/models/utils.model";
+import apiClient from "../config";
 
 export const adminService = {
+  getSystemInfo: async () => {
+    const response = await apiClient.get<DashboardReport>(
+      `/dashboard/system-info`
+    );
+    return response.data;
+  },
   getUsers: async (pageAble: PageAble) => {
     const params = `${stringifyPageAble(pageAble)}`;
     const response = await apiClient.get<List2Res<User>>(

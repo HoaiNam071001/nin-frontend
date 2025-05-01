@@ -4,22 +4,30 @@ import NAvatar from "@/components/_commons/NAvatar";
 import NTable, { TableColumns } from "@/components/_commons/NTable";
 import StatusBadge from "@/components/CourseItem/StatusBadge";
 import { formatDate } from "@/helpers/date";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 // import { TableRowSelection } from "antd/es/table/interface";
-import { CourseStatus, DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
-import CensorFilter from "./_component/filter";
-import { courseSearchService } from "@/services/courses/course-search.service";
-import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
-import { Course, CourseSearchPayload } from "@/models";
 import CustomImage from "@/components/_commons/CustomImage";
-import { useModal } from "@/providers/ModalProvider";
-import CourseConfirmDetail from "./_component/course-detail";
-import { toastService } from "@/services/toast.service";
-import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
 import I18n from "@/components/_commons/I18n";
+import { CourseStatus, DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
+import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
 import useEffectAfterMount from "@/hooks/useEffectSkipFirst";
+import { Course, CourseSearchPayload } from "@/models";
+import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
+import { useModal } from "@/providers/ModalProvider";
+import { courseSearchService } from "@/services/courses/course-search.service";
+import { toastService } from "@/services/toast.service";
+import CourseConfirmDetail from "./_component/course-detail";
+import CensorFilter from "./_component/filter";
 
 const columns: TableColumns<Course> = [
+  {
+    title: "Id",
+    dataIndex: "id",
+    width: 50,
+    key: "id",
+    fixed: "left",
+    sorter: true,
+  },
   {
     title: "Name",
     dataIndex: "name",
@@ -44,7 +52,14 @@ const columns: TableColumns<Course> = [
     key: "owner",
     render: (user) => (
       <div className="flex gap-2 items-center">
-        <NAvatar tooltip="" name={user.fullName} src={user.avatar} showName={true} userId={user.id} email={user.email}/>
+        <NAvatar
+          tooltip=""
+          name={user.fullName}
+          src={user.avatar}
+          showName={true}
+          userId={user.id}
+          email={user.email}
+        />
       </div>
     ),
     width: 300,
@@ -53,7 +68,7 @@ const columns: TableColumns<Course> = [
     title: "Created At",
     dataIndex: "createdAt",
     key: "createdAt",
-    render: (date) => <span>{formatDate({date})}</span>,
+    render: (date) => <span>{formatDate({ date })}</span>,
     width: 150,
     sorter: true,
   },
@@ -61,7 +76,7 @@ const columns: TableColumns<Course> = [
     title: "Updated At",
     dataIndex: "updatedAt",
     key: "updatedAt",
-    render: (date) => <span>{formatDate({date})}</span>,
+    render: (date) => <span>{formatDate({ date })}</span>,
     width: 150,
     sorter: true,
   },
@@ -148,8 +163,7 @@ const EduBoard: React.FC = () => {
           <CourseConfirmDetail course={item} update={updateCourse} />
         </>
       ),
-      onClose: () => {
-      },
+      onClose: () => {},
       config: {
         width: "1000px",
       },
@@ -171,7 +185,6 @@ const EduBoard: React.FC = () => {
         dataSource={rows}
         pageInfo={pageInfo}
         updated={handleTableChange}
-        scroll={{ x: "100%", y: "70vh" }}
         className="mt-5"
         onRow={(record, index) => {
           return {

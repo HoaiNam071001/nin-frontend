@@ -1,6 +1,7 @@
 "use client";
 
 import CustomImage from "@/components/_commons/CustomImage";
+import I18n from "@/components/_commons/I18n";
 import NButton from "@/components/_commons/NButton";
 import { DEFAULT_COURSE_THUMBNAIL, ROUTES } from "@/constants";
 import { formatNumber, getPriceByBestDiscount } from "@/helpers";
@@ -21,7 +22,7 @@ import { useMemo, useState } from "react";
 const PAYMENT_METHODS = [
   {
     value: PaymentMethod.CARD,
-    label: "Thẻ tín dụng/Thẻ ghi nợ",
+    label: "Credit Card/Debit Card",
     icon: "/images/card-payment.png",
   },
   {
@@ -76,9 +77,10 @@ const PaymentContainer = ({ cartItems }: { cartItems: CartItem[] }) => {
         status: PaymentStatus.SUCCESS,
         currency: Currency.VND,
       };
-      await coursePaymentService.createTransaction(payload);
-      toastService.success("Payment successful!");
-      router.push(ROUTES.MY_COURSE);
+      const { payUrl } = await coursePaymentService.createTransaction(payload);
+      if (payUrl) {
+        window.location.href = payUrl;
+      }
     } catch (error) {
       toastService.error(error?.message || "500 Error");
     }
@@ -87,9 +89,13 @@ const PaymentContainer = ({ cartItems }: { cartItems: CartItem[] }) => {
   return (
     <div className="flex justify-center p-5">
       <div className="w-1/2 p-5 border-r border-gray-300">
-        <h2 className="text-2xl font-semibold mb-4">Thanh toán</h2>
+        <h2 className="text-2xl font-semibold mb-4">
+          <I18n i18key={"Pay"} />
+        </h2>
         <div className="mb-4">
-          <h3 className="text-lg font-medium mb-2">Phương thức thanh toán</h3>
+          <h3 className="text-lg font-medium mb-2">
+            <I18n i18key={"Payment method"} />
+          </h3>
           <div className="space-y-1">
             {PAYMENT_METHODS.map((method) => (
               <label
@@ -106,48 +112,46 @@ const PaymentContainer = ({ cartItems }: { cartItems: CartItem[] }) => {
                   className="mr-2"
                 />
                 <CustomImage width={25} src={method.icon} />
-                {method.label}
+                <I18n i18key={method.label} />
               </label>
             ))}
           </div>
         </div>
         <div className="mb-4 overflow-hidden">
-          <h3 className="text-lg font-medium mb-2">Thông tin đặt hàng</h3>
+          <h3 className="text-lg font-medium mb-2">
+            <I18n i18key={"Order information"} />
+          </h3>
           {cartItems.map((item) => (
             <CartItemDisplay key={item.id} item={item} />
           ))}
         </div>
       </div>
-      <div className="w-1/4 p-5">
-        <div className="border border-stroke p-4">
-          <h2 className="text-2xl font-semibold mb-4">Tóm tắt</h2>
+      <div className="w-1/3 p-5">
+        <div className="border border-stroke p-4 shadow-lg">
+          <h2 className="text-2xl font-semibold mb-4">
+            <I18n i18key={"Summary"} />
+          </h2>
           <div className="flex items-center">
-            Giá gốc:{" "}
+            <I18n i18key={"Original price"} />:{" "}
             <div className="ml-auto">
               {formatNumber(originPrice)} {Currency.VND}
             </div>
           </div>
           <div className="flex items-center">
-            Chiết khấu:{" "}
+            <I18n i18key={"Discount"} />:{" "}
             <div className="ml-auto">
               {formatNumber(originPrice - totalPrice)} {Currency.VND}
             </div>
           </div>
           <div className="my-2 border-stroke border-[0.5px]"></div>
           <div className="flex items-center">
-            Tổng:{" "}
+            <I18n i18key={"Total"} />:
             <div className="ml-auto">
               {formatNumber(totalPrice)} {Currency.VND}
             </div>
           </div>
-          <NButton
-            onClick={handlePayment}
-            className="mt-3 w-full"
-            shape="none"
-            size="lg"
-          >
-            {" "}
-            Hoàn tất thanh toán
+          <NButton onClick={handlePayment} className="mt-3 w-full" size="lg">
+            <I18n i18key={"Complete payment"} />
           </NButton>
         </div>
       </div>
@@ -170,12 +174,13 @@ const CartItemDisplay = ({ item }: { item: CartItem }) => {
 
   return (
     <div
-      className="flex items-center gap-2 border border-stroke rounded-sm mb-2"
+      className="flex items-center gap-2 border border-stroke rounded-md mb-2"
       key={item.id}
     >
       <CustomImage
         src={item.course?.thumbnail || DEFAULT_COURSE_THUMBNAIL}
         alt={""}
+        className="rounded-s"
       />
       <div className="flex flex-col overflow-hidden">
         <div

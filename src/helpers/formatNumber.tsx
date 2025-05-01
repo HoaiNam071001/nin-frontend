@@ -1,6 +1,9 @@
 export function formatNumber(value: number | null | undefined): string {
   if (value === null || value === undefined) return "";
-  return value.toLocaleString("vi-VN"); // Định dạng số theo chuẩn Việt Nam
+  return value.toLocaleString("en-US", {
+    minimumFractionDigits: 0, // Ensure at least 2 decimal places
+    maximumFractionDigits: 2, // Ensure at most 2 decimal places
+  });
 }
 
 export function formatFileSize(bytes: number): string {

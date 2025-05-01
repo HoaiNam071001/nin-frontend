@@ -16,4 +16,5 @@ export interface SectionProgress {
 export interface UpdateSectionProgressPayload {
   completed?: boolean;
   progress?: number;
+  updatedAt?: string;
 }

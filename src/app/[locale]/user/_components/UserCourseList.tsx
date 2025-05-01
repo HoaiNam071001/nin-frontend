@@ -1,9 +1,16 @@
 "use client";
 
+import { CourseItem } from "@/components/CourseItem";
+import CourseContainer from "@/components/_commons/ContainerGrid";
+import NButton from "@/components/_commons/NButton";
+import NEmpty from "@/components/_commons/NEmpty";
+import NInput from "@/components/_commons/NInput";
+import NPagination from "@/components/_commons/NPagination";
+import NSelection from "@/components/_commons/NSelection";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
+import useDebounce from "@/hooks/useDebounce";
 import { Course } from "@/models";
-import { courseService } from "@/services/courses/course.service";
-import { toastService } from "@/services/toast.service";
-import React, { useEffect, useState } from "react";
 import {
   DropdownOption,
   List2Res,
@@ -12,18 +19,9 @@ import {
   PageInfo,
   SortOrder,
 } from "@/models/utils.model";
-import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
-import { CourseItem } from "@/components/CourseItem";
-import NPagination from "@/components/_commons/NPagination";
-import CourseContainer from "@/components/_commons/ContainerGrid";
-import NInput from "@/components/_commons/NInput";
-import useDebounce from "@/hooks/useDebounce";
-import NSelection from "@/components/_commons/NSelection";
-import I18n from "@/components/_commons/I18n";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import NButton from "@/components/_commons/NButton";
-import NEmpty from "@/components/_commons/NEmpty";
 import { courseSearchService } from "@/services/courses/course-search.service";
+import { toastService } from "@/services/toast.service";
+import { useEffect, useState } from "react";
 
 const sortItems: DropdownOption<OrderBy>[] = [
   {
@@ -57,7 +55,7 @@ const UserCourseList = ({ userId }) => {
   const getCourses = async () => {
     try {
       const { content, ...res }: List2Res<Course> =
-        await courseSearchService.getByUser(userId, pageAble);
+        await courseSearchService.getPublicByUser(userId, pageAble);
       setRows(content);
       setPageInfo(res);
     } catch (error) {
@@ -131,7 +129,7 @@ const UserCourseList = ({ userId }) => {
         </div>
       )}
 
-      <div className="p-4 pt-0">
+      <div className="p-4 pt-4">
         <NPagination
           pageInfo={pageInfo}
           updated={(pageAble) => setPageAbleValue(pageAble)}

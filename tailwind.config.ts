@@ -85,9 +85,34 @@ const config = {
           "0%": { opacity: "0", transform: "translateY(20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        fadeOut: {
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(20px)" },
+        },
+        slideDown: {
+          "0%": { opacity: "0", transform: "translateY(-20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideUp: {
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(-20px)" },
+        },
+        slideLeft: {
+          "0%": { opacity: "0", transform: "translateX(20px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        slideRight: {
+          "0%": { opacity: "0", transform: "translateX(-20px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
       },
       animation: {
         fadeIn: "fadeIn 0.5s ease-out forwards",
+        fadeOut: "fadeOut 0.5s ease-out forwards",
+        slideDown: "slideDown 0.3s ease-out forwards",
+        slideUp: "slideUp 0.3s ease-out forwards",
+        slideLeft: "slideLeft 0.3s ease-out forwards",
+        slideRight: "slideRight 0.3s ease-out forwards",
       },
       gridAutoColumns: {
         // Tùy chỉnh grid auto columns cho 5 cột, 4 cột, 3 cột, 2 cột và 1 cột

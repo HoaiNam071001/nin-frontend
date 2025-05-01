@@ -2,9 +2,10 @@ import { ROUTES } from "@/constants";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { Course } from "@/models";
-import { Tooltip } from "antd";
 import CustomImage from "../_commons/CustomImage";
+import I18n from "../_commons/I18n";
 import NAvatar from "../_commons/NAvatar";
+import NTooltip from "../_commons/NTooltip";
 import Rating from "../_commons/Rating";
 
 type CourseProps = {
@@ -54,8 +55,13 @@ export const CourseItem: React.FC<CourseProps> = ({
 
       <div className="p-3 space-y-2">
         <div className="flex items-center gap-2">
-          <Rating initialValue={Math.round(course.rating)} size="sm" />
+          <Rating initialValue={course.rating} size="ssm" />
           <div className="font-semibold">{course.rating}</div>
+          {course.level && (
+            <div className="ml-auto bg-slate-100 text-slate-600 px-2 rounded-sm">
+              <I18n i18key={course.level.name}></I18n>
+            </div>
+          )}
         </div>
         {course.owner && (
           <div>
@@ -66,10 +72,10 @@ export const CourseItem: React.FC<CourseProps> = ({
             />
           </div>
         )}
-        <div className="line-clamp-1 text-title-xsm font-semibold">
-          <Tooltip title={<div className="max-w-[300px]">{course?.name}</div>}>
-            {course?.name}
-          </Tooltip>
+        <div className="overflow-hidden text-title-xsm font-semibold">
+          <NTooltip title={<div className="text-ellipsis">{course?.name}</div>}>
+            <div className="text-ellipsis">{course?.name}</div>
+          </NTooltip>
         </div>
         <div className="line-clamp-2">{course?.summary}</div>
       </div>

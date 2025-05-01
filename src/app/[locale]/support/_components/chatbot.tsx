@@ -1,6 +1,7 @@
 "use client";
 
 import CustomImage from "@/components/_commons/CustomImage";
+import InfiniteScroll from "@/components/_commons/InfiniteScroll";
 import NAvatar from "@/components/_commons/NAvatar";
 import SvgIcon from "@/components/_commons/SvgIcon";
 import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
@@ -8,13 +9,7 @@ import { ChatbotRole, ChatMessage, Conversation } from "@/models/chatbot";
 import { List2Res, PageAble, PageInfo } from "@/models/utils.model";
 import { chatbotService } from "@/services/ai/chatbot.service";
 import { toastService } from "@/services/toast.service";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { v4 } from "uuid";
 import { ChatbotContext } from "../page";
 import ChatInput from "./chatInput";
@@ -23,7 +18,8 @@ import ChatMessageList from "./chatMessage";
 const Chatbot = () => {
   const { conversation, setAdd } = useContext(ChatbotContext);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [containerRef, setContainerRef] = useState<HTMLDivElement>();
   const [pageAble, setPageAble] = useState<PageAble>({
     page: FIRST_PAGE,
     size: DEFAULT_PAGESIZE,
@@ -40,10 +36,11 @@ const Chatbot = () => {
         setMessages([]);
         return;
       }
-
+      setLoading(true);
       if (pageAble.page === FIRST_PAGE) {
         setMessages([]);
       }
+
       const { content, ...res }: List2Res<ChatMessage> =
         await chatbotService.getMessages(conversation?.id, pageAble);
       if (res.page === FIRST_PAGE) {
@@ -51,14 +48,21 @@ const Chatbot = () => {
           setMessages(content);
         }
         setTimeout(() => {
-          containerRef.current.scrollTo({
-            top: containerRef.current.scrollHeight,
+          containerRef.scrollTo({
+            top: containerRef.scrollHeight,
           });
         }, 200);
       } else {
         setMessages([...content, ...messages]);
+        const { scrollTop, scrollHeight } = containerRef;
+        // setTimeout(() => {
+        //   containerRef.scrollTo({
+        //     top: scrollHeight - scrollTop,
+        //   });
+        // }, 400);
       }
       setPageInfo(res);
+      setLoading(false);
     } catch (error) {
       toastService.info(error?.message);
     }
@@ -87,17 +91,28 @@ const Chatbot = () => {
         <NAvatar name={"BOT"} src="/images/chatbot.png" />
         <div className="font-semibold">{conversation?.name}</div>
       </div>
-      <div
-        className="flex-1 overflow-auto flex flex-col gap-4 px-4 pt-4 bg-white shadow-lg"
-        ref={containerRef}
-      >
-        <ChatbotContent
-          messages={messages}
-          setMessages={setMessages}
-          conversation={conversation}
-          addConversation={addCon}
-          containerRef={containerRef}
-        ></ChatbotContent>
+      <div className="flex-1 overflow-hidden pt-4 bg-white shadow-lg">
+        <InfiniteScroll
+          onLoadMore={() => {
+            getOldMessage();
+          }}
+          getRef={(ref) => setContainerRef(ref)}
+          direction={"up"}
+          hasMore={pageInfo?.page !== pageInfo?.totalPages}
+          isLoading={loading}
+        >
+          <div className="flex flex-col gap-4 px-4">
+            {containerRef && (
+              <ChatbotContent
+                messages={messages}
+                setMessages={setMessages}
+                conversation={conversation}
+                addConversation={addCon}
+                containerRef={containerRef}
+              ></ChatbotContent>
+            )}
+          </div>
+        </InfiniteScroll>
       </div>
     </div>
   );
@@ -116,7 +131,7 @@ export const ChatbotContent = ({
   setMessages: (messages: ChatMessage[]) => void;
   conversation: Conversation;
   addConversation: () => void;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: HTMLDivElement;
 }) => {
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -135,24 +150,24 @@ export const ChatbotContent = ({
 
   // Scroll container xuống dưới
   const scrollToBottom = useCallback(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
+    if (containerRef) {
+      containerRef.scrollTo({
         behavior: "smooth",
-        top: containerRef.current.scrollHeight,
+        top: containerRef.scrollHeight,
       });
     }
   }, []);
 
   // Kiểm tra xem container có đang ở cuối không
   const checkIfAtBottom = useCallback(() => {
-    if (containerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+    if (containerRef) {
+      const { scrollTop, scrollHeight, clientHeight } = containerRef;
       setIsAtBottom(scrollTop + clientHeight + 50 >= scrollHeight);
     }
   }, []);
 
   useEffect(() => {
-    const container = containerRef.current;
+    const container = containerRef;
     if (!container) return;
     container.addEventListener("scroll", checkIfAtBottom);
     return () => container.removeEventListener("scroll", checkIfAtBottom);

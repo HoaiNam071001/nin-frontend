@@ -1,35 +1,34 @@
 "use client";
 
 import NButton from "@/components/_commons/NButton";
-import CourseBreadcrumb from "../../_components/course-breadcrumb";
 import SvgIcon from "@/components/_commons/SvgIcon";
-import { toastService } from "@/services/toast.service";
+import CourseBreadcrumb from "../../_components/course-breadcrumb";
 
-const DetailTitle = ({ course }) => {
-  const handleCopyLink = async () => {
-    try {
-      const currentUrl = window.location.href;
-
-      await navigator.clipboard.writeText(currentUrl);
-
-      toastService.success("Link copied to clipboard!");
-    } catch (error) {
-      toastService.error("Failed to copy link!");
-    }
-  };
+const DetailTitle = ({ course, collapsed, setCollapsed }) => {
   return (
     <>
       {course && (
-        <div className="grid gap-2">
-          <div className="flex items-center">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center relative">
             <CourseBreadcrumb course={course} />
-            <div className="flex items-center gap-4 ml-auto">
-              <NButton className="flex items-center gap-2" onClick={handleCopyLink}>
-                <SvgIcon className="icon icon-sm" icon={"share"}></SvgIcon>Share
-              </NButton>
-            </div>
+
+            <NButton
+              color="primary"
+              variant="filled"
+              size="sm-circle"
+              shape="full"
+              onClick={() => setCollapsed(!collapsed)}
+              className="absolute top-0 right-0 transition-all duration-300 ease-in-out"
+            >
+              <SvgIcon
+                icon="arrow"
+                className={`icon icon-md transition-transform duration-300 ease-in-out ${
+                  !collapsed ? "rotate-90" : "-rotate-90"
+                }`}
+              />
+            </NButton>
           </div>
-          <div>
+          <div className="transition-all duration-300 ease-in-out">
             <div className="line-clamp-2 text-title-md font-semibold">
               {course?.name}
             </div>

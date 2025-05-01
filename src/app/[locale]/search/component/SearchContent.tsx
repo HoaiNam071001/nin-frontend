@@ -1,9 +1,14 @@
 "use client";
 
+import CourseContainer from "@/components/_commons/ContainerGrid";
+import I18n from "@/components/_commons/I18n";
+import NEmpty from "@/components/_commons/NEmpty";
+import NPagination from "@/components/_commons/NPagination";
+import NSelection from "@/components/_commons/NSelection";
 import { CourseItem } from "@/components/CourseItem";
-import { usePathname } from "next/navigation";
-import { useContext, useEffect, useRef, useState } from "react";
-import { SearchContext } from "../page";
+import { DEFAULT_PAGESIZE, FIRST_PAGE } from "@/constants";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { Course } from "@/models";
 import {
   DropdownOption,
   List2Res,
@@ -12,18 +17,13 @@ import {
   PageInfo,
   SortOrder,
 } from "@/models/utils.model";
-import { Course } from "@/models";
-import { courseSearchService } from "@/services/courses/course-search.service";
-import { DEFAULT_PAGESIZE, FIRST_PAGE, ROUTES } from "@/constants";
-import NPagination from "@/components/_commons/NPagination";
-import { toastService } from "@/services/toast.service";
-import NSelection from "@/components/_commons/NSelection";
-import { useSelector } from "react-redux";
 import { RootState } from "@/redux";
-import I18n from "@/components/_commons/I18n";
-import { useI18nRouter } from "@/hooks/useI18nRouter";
-import CourseContainer from "@/components/_commons/ContainerGrid";
-import NEmpty from "@/components/_commons/NEmpty";
+import { courseSearchService } from "@/services/courses/course-search.service";
+import { toastService } from "@/services/toast.service";
+import { usePathname } from "next/navigation";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { SearchContext } from "../page";
 
 const sortItems: DropdownOption<OrderBy>[] = [
   {
@@ -118,7 +118,7 @@ const SearchContent: React.FC = () => {
 
   return (
     <div className="overflow-auto px-3 rounded-md relative flex-1">
-      <div className="flex sticky top-0 z-10 bg-white py-3">
+      <div className="flex sticky top-0 z-10 bg-white pt-3 mb-3">
         <div className="font-semibold text-title-sm">
           <I18n i18key={"Search"} />
         </div>
@@ -148,7 +148,7 @@ const SearchContent: React.FC = () => {
           <NEmpty />
         </div>
       )}
-      <div className="p-4 pt-0">
+      <div className="pt-5 pt-0">
         <NPagination
           pageInfo={pageInfo}
           updated={(pageAble) => setPageAbleValue(pageAble)}

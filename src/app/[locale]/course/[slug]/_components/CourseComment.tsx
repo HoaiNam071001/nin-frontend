@@ -219,19 +219,21 @@ export const CommentItem = ({
               </div>
             )}
 
-            {showReply && !!pageInfo && pageAble.page < pageInfo.totalPages && (
-              <NButton
-                className="w-full"
-                variant="filled"
-                onClick={() =>
-                  setPageAbleValue({
-                    page: pageInfo?.page + 1,
-                  })
-                }
-              >
-                Xem thêm
-              </NButton>
-            )}
+            {showReply &&
+              !!pageInfo &&
+              pageAble.page < pageInfo.totalPages - 1 && (
+                <NButton
+                  className="w-full"
+                  variant="filled"
+                  onClick={() =>
+                    setPageAbleValue({
+                      page: pageInfo?.page + 1,
+                    })
+                  }
+                >
+                  Xem thêm
+                </NButton>
+              )}
           </div>
         )}
       </div>

@@ -1,24 +1,23 @@
 "use client";
 
-import { formatNumber, getPriceByBestDiscount } from "@/helpers";
-import CustomImage from "../_commons/CustomImage";
-import NButton from "../_commons/NButton";
-import SvgIcon from "../_commons/SvgIcon";
-import { courseSearchService } from "@/services/courses/course-search.service";
-import { Course, DiscountType, FullCourse } from "@/models";
-import { useEffect, useMemo, useState } from "react";
 import { DEFAULT_COURSE_THUMBNAIL, ROUTES } from "@/constants";
-import { coursePaymentService } from "@/services/courses/course-subscription.service";
+import { formatNumber, getPriceByBestDiscount } from "@/helpers";
+import useAuth from "@/hooks/useAuth";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { FullCourse } from "@/models";
 import {
   CourseSubscription,
   CourseSubType,
   CreateSubscriptionPayload,
 } from "@/models/course/course-subscription.model";
-import useAuth from "@/hooks/useAuth";
-import I18n from "../_commons/I18n";
+import { coursePaymentService } from "@/services/courses/course-subscription.service";
 import { toastService } from "@/services/toast.service";
-import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { useEffect, useMemo, useState } from "react";
+import CustomImage from "../_commons/CustomImage";
 import HMSDisplay from "../_commons/HMSDisplay";
+import I18n from "../_commons/I18n";
+import NButton from "../_commons/NButton";
+import SvgIcon from "../_commons/SvgIcon";
 
 export const CourseCard = ({
   course,
@@ -44,6 +43,9 @@ export const CourseCard = ({
   };
 
   const buyNow = () => {
+    if (!currentUser) {
+      return router.push(`${ROUTES.SIGN_IN}`);
+    }
     router.push(`${ROUTES.PAYMENT}/${course.id}`);
   };
 

@@ -1,18 +1,17 @@
-import apiClient from "../config";
-import { List2Res, PageAble, stringifyPageAble } from "@/models/utils.model";
-import queryString from "query-string";
 import { DashboardSubPayload } from "@/models/admin/course-admin.model";
 import {
   ChartCourseResponse,
   CourseSubscriptionFull,
 } from "@/models/course/course-subscription.model";
+import { List2Res, PageAble, stringifyPageAble } from "@/models/utils.model";
+import queryString from "query-string";
+import apiClient from "../config";
 
 export const courseAdminService = {
   getSubscriptionByCourse: async (
     payload: DashboardSubPayload,
     pageAble?: PageAble
   ) => {
-    console.log(queryString.stringify(payload));
     const response = await apiClient.get<List2Res<CourseSubscriptionFull>>(
       `/dashboard/course-report?${
         queryString.stringify(payload) +
