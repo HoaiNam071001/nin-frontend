@@ -40,7 +40,7 @@ export const CourseItem: React.FC<CourseProps> = ({
 
   return (
     <div
-      className="rounded-lg shadow-md hover:shadow-xl cursor-pointer overflow-hidden transition-all border-[0.5px] border-stroke"
+      className="rounded-lg shadow-md hover:shadow-lg cursor-pointer overflow-hidden transition-all border-[0.5px] border-stroke"
       onClick={() => onView()}
     >
       <div className="h-[170px] w-0 px-[50%] relative border-b-[0.5px] border-stroke">

@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import FormInput from "@/components/Form/FormInput";
+import FileUpload from "@/components/_commons/FileUpload";
+import I18n from "@/components/_commons/I18n";
+import NAvatar from "@/components/_commons/NAvatar";
+import NButton from "@/components/_commons/NButton";
+import SvgIcon from "@/components/_commons/SvgIcon";
+import { DATE_FORMATS, ROUTES } from "@/constants";
+import { formatDate } from "@/helpers/date";
+import useAuth from "@/hooks/useAuth";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { User, UserPayload } from "@/models";
 import { NFile, SystemFileType, UploadFilePayload } from "@/models/file.model";
-import { fileService } from "@/services/file.service";
-import FormInput from "@/components/Form/FormInput";
-import CustomImage from "@/components/_commons/CustomImage";
-import FileUpload from "@/components/_commons/FileUpload";
-import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
-import { userService } from "@/services/user/user.service";
-import { useDispatch } from "react-redux";
 import { authAction } from "@/redux";
-import useAuth from "@/hooks/useAuth";
+import { fileService } from "@/services/file.service";
 import { toastService } from "@/services/toast.service";
-import SvgIcon from "@/components/_commons/SvgIcon";
-import NButton from "@/components/_commons/NButton";
-import I18n from "@/components/_commons/I18n";
-import { formatDate } from "@/helpers/date";
-import { DATE_FORMATS } from "@/constants";
-import NAvatar from "@/components/_commons/NAvatar";
+import { userService } from "@/services/user/user.service";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 export const UserSetting = ({ userId }) => {
   const [user, setUser] = useState<User>();
   const dispatch = useDispatch();
   const { currentUser } = useAuth();
+  const router = useI18nRouter();
 
   const { handleSubmit, control, setValue, getValues, watch } =
     useForm<UserPayload>({
@@ -66,6 +66,7 @@ export const UserSetting = ({ userId }) => {
         dispatch(authAction.setUser(updatedUser));
       }
       setUser(updatedUser);
+      router.push(`${ROUTES.USER}/${currentUser.id}`);
     } catch (error) {
       toastService.error(error?.message);
     }
@@ -80,7 +81,7 @@ export const UserSetting = ({ userId }) => {
   };
 
   const onCancel = () => {
-    onSetForm(user);
+    router.push(`${ROUTES.USER}/${currentUser.id}`);
   };
 
   return (
@@ -91,7 +92,7 @@ export const UserSetting = ({ userId }) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-12">
           <div className="col-span-12 md:col-span-4">
-            <Thumbnail control={control} setValue={setValue} user={user}/>
+            <Thumbnail control={control} setValue={setValue} user={user} />
           </div>
           <div className="col-span-12 md:col-span-8 p-4">
             <div className="form-group">
@@ -131,24 +132,26 @@ export const UserSetting = ({ userId }) => {
                 placeholder="Enter Bio"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="overview-summary">Phone Number</label>
-              <FormInput
-                name={`phoneNumber`}
-                control={control}
-                type="number"
-                placeholder="Enter Phone Number"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="overview-summary">Birth Day</label>
-              <FormInput
-                name={`birthDay`}
-                control={control}
-                defaultValue={""}
-                type="date"
-                placeholder="Enter Bio"
-              />
+            <div className="form-group grid grid-cols-12 gap-4">
+              <div className="col-span-6">
+                <label htmlFor="overview-summary">Phone Number</label>
+                <FormInput
+                  name={`phoneNumber`}
+                  control={control}
+                  type="number"
+                  placeholder="Enter Phone Number"
+                />
+              </div>
+              <div className="col-span-6">
+                <label htmlFor="overview-summary">Birth Day</label>
+                <FormInput
+                  name={`birthDay`}
+                  control={control}
+                  defaultValue={""}
+                  type="date"
+                  placeholder="Enter Bio"
+                />
+              </div>
             </div>
 
             <div>

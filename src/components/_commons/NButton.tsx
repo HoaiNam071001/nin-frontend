@@ -1,4 +1,3 @@
-import { Tooltip } from "antd";
 import { TooltipPlacement } from "antd/es/tooltip";
 import React from "react";
 import NTooltip from "./NTooltip";
@@ -56,7 +55,7 @@ const NButton: React.FC<CustomButtonProps> = ({
   shape = "md", // Default to medium shape
   className,
   tooltip = "",
-  tooltipPlacement = 'top',
+  tooltipPlacement = "top",
   canClick = true,
 }) => {
   // Define styles for different button sizes
@@ -129,7 +128,9 @@ const NButton: React.FC<CustomButtonProps> = ({
   return (
     <NTooltip title={tooltip} placement={tooltipPlacement}>
       <button
-        onClick={(event) => { canClick && handleClick(event) }}
+        onClick={(event) => {
+          canClick && handleClick(event);
+        }}
         disabled={disabled || loading}
         className={buttonClass}
       >

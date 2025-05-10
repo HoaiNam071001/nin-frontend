@@ -183,7 +183,6 @@ const CategoryFilter = ({
       return;
     }
     const categoryIds = params[PARAMS.SEARCH.CATEGORY];
-    console.log(categoryIds);
     if (isArray<string>(categoryIds)) {
       setSelected(
         categoryIds.reduce((acc, curr) => {

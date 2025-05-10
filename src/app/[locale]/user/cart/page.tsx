@@ -255,5 +255,9 @@ export const CartTable = ({
     },
   ];
 
-  return <NTable<CartItem> columns={columns} dataSource={cartItems} />;
+  return (
+    <div className="">
+      <NTable<CartItem> columns={columns} dataSource={cartItems} />
+    </div>
+  );
 };

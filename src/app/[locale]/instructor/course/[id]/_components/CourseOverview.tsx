@@ -43,7 +43,7 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
   editable,
   setCourse,
 }) => {
-  const { handleSubmit, control, setValue, getValues, watch } =
+  const { handleSubmit, control, setValue, getValues, watch, reset } =
     useForm<OverviewFormValues>({
       defaultValues: {
         name: course?.name || "",
@@ -83,12 +83,31 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
       toastService.error(error?.message);
       setLoading(false);
     }
+    callback();
+  };
+
+  const onCancel = () => {
+    reset({
+      name: course?.name || "",
+      description: course?.description,
+      level: course?.level,
+      category: course?.category,
+      subCategory: course?.subCategory,
+      topics: course?.topics || [],
+      thumbnail: course?.thumbnail,
+      summary: course?.summary,
+    });
   };
 
   return (
     <>
       <div className="">
-        <Thumbnail control={control} setValue={setValue} editable={editable} />
+        <Thumbnail
+          control={control}
+          setValue={setValue}
+          editable={editable}
+          course={course}
+        />
 
         <div className="form-group">
           <label htmlFor="overview-name">Name</label>
@@ -146,7 +165,7 @@ export const CourseOverview: React.FC<SettingSubmitProps> = ({
           moveToNextStep={onNext}
           nextLabel={"Save"}
           disabled={!editable}
-          cancel={moveToNextStep}
+          cancel={onCancel}
           loading={loading}
         ></CourseSubmit>
       )}
@@ -317,11 +336,12 @@ const TopicInfo = ({ control, getValues, setValue, editable }) => {
   );
 };
 
-const Thumbnail = ({ control, setValue, editable }) => {
+const Thumbnail = ({ control, setValue, editable, course }) => {
   const uploadFile = async (file: File) => {
     const payload: UploadFilePayload = {
       file: file,
       type: SystemFileType.COURSE_INFO,
+      courseId: course.id,
     };
     const fileRes: NFile = await fileService.upload(payload);
     setValue("thumbnail", fileRes.url);

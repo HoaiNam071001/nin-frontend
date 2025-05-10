@@ -1,7 +1,7 @@
 "use client";
 
 import Loader from "@/components/_commons/Loader";
-import { CourseStatus, ROUTES } from "@/constants";
+import { ROUTES } from "@/constants";
 import useAuth from "@/hooks/useAuth";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import {
@@ -30,11 +30,11 @@ const CourseEdit: React.FC = () => {
   const [course, setCourse] = useState<Course>();
   const [loading, setLoading] = useState<boolean>(true);
   const { currentUser } = useAuth();
-  const [editable, setEditable] = useState<boolean>(false);
+  const [editable, setEditable] = useState<boolean>(true);
 
-  useEffect(() => {
-    setEditable(course?.status !== CourseStatus.READY);
-  }, [course]);
+  //useEffect(() => {
+  //  setEditable(course?.status !== CourseStatus.READY);
+  //}, [course]);
 
   useEffect(() => {
     const getCourse = async () => {

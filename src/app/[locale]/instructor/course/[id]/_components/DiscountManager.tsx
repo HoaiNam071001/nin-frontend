@@ -160,7 +160,7 @@ export const DiscountManager: React.FC<SettingSubmitProps> = ({
                 size="sm"
                 variant="filled"
                 color="red"
-                onClick={() => handleDeleteDiscount(record)}
+                onClick={() => handleDeleteDiscount(record?.id)}
               >
                 <SvgIcon icon={"remove"} className="icon icon-sm" />
               </NButton>

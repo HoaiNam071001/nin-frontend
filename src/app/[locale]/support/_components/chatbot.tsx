@@ -101,7 +101,7 @@ const Chatbot = () => {
           hasMore={pageInfo?.page !== pageInfo?.totalPages}
           isLoading={loading}
         >
-          <div className="flex flex-col gap-4 px-4">
+          <div className="flex flex-col gap-4 px-4 h-full">
             {containerRef && (
               <ChatbotContent
                 messages={messages}
@@ -209,7 +209,6 @@ export const ChatbotContent = ({
         }
       );
     } catch (error) {
-      console.error("Error fetching chat response:", error);
     } finally {
       setLoading(false);
     }

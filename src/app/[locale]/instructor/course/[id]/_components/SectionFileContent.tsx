@@ -234,6 +234,7 @@ const VideoContent = ({
               upload={handleVideoUpload}
               accept={"video/*"}
               label={"Upload Video"}
+              crop={false}
             />
           </div>
         </div>

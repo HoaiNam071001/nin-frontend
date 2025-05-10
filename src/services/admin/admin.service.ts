@@ -1,6 +1,7 @@
 import { User } from "@/models";
 import {
   CreateUserPayload,
+  DashboardUserFile,
   UpdateUserPayload,
 } from "@/models/admin/admin.model";
 import { DashboardReport } from "@/models/admin/course-admin.model";
@@ -39,6 +40,13 @@ export const adminService = {
     const response = await apiClient.put<User>(`/dashboard/user/status/${id}`, {
       active,
     });
+    return response.data;
+  },
+
+  getCountFile: async () => {
+    const response = await apiClient.get<DashboardUserFile[]>(
+      `/dashboard/user-file-count`
+    );
     return response.data;
   },
 };

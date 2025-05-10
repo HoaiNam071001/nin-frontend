@@ -1,8 +1,6 @@
 "use client";
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { Role, ROUTES } from "@/constants";
-import withRoleGuard from "@/guards/withRoleGuard";
 
 const CourseLayout = ({
   children,
@@ -13,8 +11,4 @@ const CourseLayout = ({
 };
 
 // client to check role
-export default withRoleGuard(
-  CourseLayout,
-  [Role.TEACHER, Role.EDUCATION_MANAGER, Role.ADMIN],
-  ROUTES.INSTRUCTOR_PREVIEW
-);
+export default CourseLayout;

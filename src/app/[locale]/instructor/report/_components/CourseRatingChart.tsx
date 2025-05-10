@@ -34,9 +34,7 @@ const CourseRatingChart = ({ course }) => {
           .filter((e) => e.value);
         setRating(ratingData);
         setData(response);
-      } catch (error) {
-        console.error("Error fetching ratings:", error);
-      }
+      } catch (error) {}
     };
     fetchReport();
   }, [course?.id]);

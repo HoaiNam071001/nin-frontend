@@ -2,7 +2,8 @@ import I18n from "@/components/_commons/I18n";
 import NButton from "@/components/_commons/NButton";
 import SvgIcon from "@/components/_commons/SvgIcon";
 import StatusBadge from "@/components/CourseItem/StatusBadge";
-import { CourseStatus } from "@/constants";
+import { CourseStatus, ROUTES } from "@/constants";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
 import {
   Course,
   CourseStatusPayload,
@@ -10,6 +11,7 @@ import {
   CourseSteps,
   StepType,
 } from "@/models";
+import { useModal } from "@/providers/ModalProvider";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
 
@@ -24,6 +26,9 @@ const CourseSetting = ({
   setStep: (step: CourseStepItem) => void;
   setCourse: (course: Course) => void;
 }) => {
+  const { openConfirm } = useModal();
+  const router = useI18nRouter();
+
   const onSubmit = async (status: CourseStatus) => {
     try {
       const payload: CourseStatusPayload = {
@@ -40,12 +45,35 @@ const CourseSetting = ({
     }
   };
 
+  const onDelete = async () => {
+    try {
+      openConfirm({
+        header: "Delete Course",
+        content:
+          "Are you sure you want to delete this course? This action cannot be undone.",
+        onOk: async () => {
+          try {
+            await courseService.delete(course.id);
+            toastService.success("Course deleted successfully");
+            router.push(ROUTES.INSTRUCTOR);
+          } catch (error) {
+            toastService.error(
+              error?.message || "Failed to delete course. Please try again."
+            );
+          }
+        },
+      });
+    } catch (error) {
+      toastService.error("An unexpected error occurred. Please try again.");
+    }
+  };
+
   return (
-    <div className="gap-2 grid">
+    <div className="flex flex-col h-full">
       <div className="text-title-md font-semibold">
         <I18n i18key="Edit Course"></I18n>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 mt-3">
         <StatusBadge status={course.status} />
         <div>
           {course?.status === CourseStatus.DRAFT && (
@@ -63,14 +91,6 @@ const CourseSetting = ({
               <I18n i18key={"Cancel"} />
             </NButton>
           )}
-          <NButton onClick={() => onSubmit(CourseStatus.DELETED)}>
-            <I18n i18key={"Delete"} />
-          </NButton>
-        </div>
-      </div>
-      <div className="text-[14px] mb-3 space-y-2">
-        <div>
-          <I18n i18key="The course creation function helps you build and organize entire course content from start to finish."></I18n>
         </div>
       </div>
 
@@ -97,6 +117,12 @@ const CourseSetting = ({
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-auto">
+        <NButton variant={"filled"} color={"red"} onClick={() => onDelete()}>
+          <I18n i18key={"Delete"} />
+        </NButton>
       </div>
     </div>
   );

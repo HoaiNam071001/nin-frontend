@@ -70,9 +70,7 @@ export const CommentItem = ({
         setComments(uniqueComments);
       }
       setPageInfo(rest);
-    } catch (error) {
-      console.error("Failed to fetch comments:", error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     if (pageAble && showReply) {
@@ -106,9 +104,7 @@ export const CommentItem = ({
     try {
       await commentService.remove(comment.id);
       remove?.();
-    } catch (error) {
-      console.error("Failed to remove comment:", error);
-    }
+    } catch (error) {}
   };
   const onRemoveChild = (item: CommentModel) => {
     setComments(comments.filter((e) => item.id !== e.id));
@@ -344,9 +340,7 @@ export const CourseComment = ({ courseId }: { courseId: number }) => {
         setComments(uniqueComments);
       }
       setPageInfo(rest);
-    } catch (error) {
-      console.error("Failed to fetch comments:", error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     if (pageAble) {

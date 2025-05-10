@@ -1,21 +1,23 @@
 "use client";
 
 // import localFont from "next/font/local";
-import "./globals.scss";
-import { useEffect, useState } from "react";
-import { Provider, useDispatch } from "react-redux";
+import Loader from "@/components/_commons/Loader";
+import { ROUTES, StorageKey } from "@/constants";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
+import { ModalProvider } from "@/providers/ModalProvider";
+import { authAction } from "@/redux";
 import store from "@/redux/store";
 import { userService } from "@/services/user/user.service";
-import { authAction } from "@/redux";
-import Loader from "@/components/_commons/Loader";
-import { StorageKey } from "@/constants";
-import { ModalProvider } from "@/providers/ModalProvider";
+import { useEffect, useState } from "react";
+import { Provider, useDispatch } from "react-redux";
+import "./globals.scss";
 
 const AppInitializer = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const router = useI18nRouter();
 
-  useEffect(() => {
+  const handleLogin = () => {
     const token = localStorage.getItem(StorageKey.AUTH_TOKEN);
     const fetchUser = async () => {
       try {
@@ -31,11 +33,34 @@ const AppInitializer = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       dispatch(authAction.loadTokenFromStorage());
       setLoading(true);
+      router.push(ROUTES.HOME);
       fetchUser();
     } else {
       setLoading(false);
     }
-  }, [dispatch]);
+  };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorageChange = (event) => {
+      if (event.key === StorageKey.AUTH_TOKEN) {
+        if (!event.newValue) {
+          router.push(ROUTES.SIGN_IN);
+          setLoading(false);
+        } else {
+          handleLogin();
+        }
+      }
+    };
+
+    handleLogin();
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   return (
     <div>

@@ -35,7 +35,6 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
       if (!container || isLoading || !hasMore) return;
 
       const { scrollTop, scrollHeight, clientHeight } = container;
-      console.log(scrollTop, scrollHeight, clientHeight);
       if (direction === "down") {
         if (scrollTop + clientHeight >= scrollHeight - 100) {
           onLoadMore();

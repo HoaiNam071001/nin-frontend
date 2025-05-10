@@ -8,11 +8,25 @@ import { formatDate } from "@/helpers/date";
 import useAuth from "@/hooks/useAuth";
 import { User } from "@/models";
 import { ChatbotRole, ChatMessage } from "@/models/chatbot";
+import moment from "moment";
 import { FC } from "react";
 import ReactMarkdown from "react-markdown";
 import "./chatbot.scss";
 //#endregion
+const formatMessengerTime = (dateString: string) => {
+  const mDate = moment(dateString);
+  const now = moment();
 
+  if (now.diff(mDate, "days") === 0) {
+    return `Today at ${mDate.format("h:mm A")}`;
+  } else if (now.diff(mDate, "days") === 1) {
+    return `Yesterday at ${mDate.format("h:mm A")}`;
+  } else if (now.diff(mDate, "days") < 7) {
+    return `${mDate.format("dddd")} at ${mDate.format("h:mm A")}`;
+  } else {
+    return mDate.format("MMM D, YYYY [at] h:mm A");
+  }
+};
 //#region --- ChatMessageItem Component ---
 interface ChatMessageItemProps {
   message: ChatMessage;
@@ -25,47 +39,53 @@ const ChatMessageItem: FC<ChatMessageItemProps> = ({
 }) => {
   const isBot = message.sender === ChatbotRole.BOT;
   return (
-    <div
-      className={`flex gap-2 ${
-        isBot ? "justify-start mr-20" : "justify-end ml-20"
-      }`}
-    >
-      {isBot && (
-        <NAvatar
-          tooltip={formatDate({
-            date: message.createdAt,
-            format: DATE_FORMATS.AM_PM_FORMAT,
-          })}
-          name={"BOT"}
-          src="/images/chatbot.png"
-        />
-      )}
-
-      <div className="p-2 bg-system bg-opacity-5 border border-stroke rounded-lg message-container">
-        {message.content && (
-          <ReactMarkdown>{message.content}</ReactMarkdown>
-          // <span
-          //   dangerouslySetInnerHTML={{
-          //     __html: ,
-          //   }}
-          // ></span>
+    <div>
+      <div
+        className={`flex gap-2 ${
+          isBot ? "justify-start mr-20" : "justify-end ml-20"
+        }`}
+      >
+        {isBot && (
+          <NAvatar
+            tooltip={formatDate({
+              date: message.createdAt,
+              format: DATE_FORMATS.AM_PM_FORMAT,
+            })}
+            name={"BOT"}
+            src="/images/chatbot.png"
+          />
         )}
-        {!message.content && (
-          <span className="flex items-center gap-2">
-            <Loader size="xs" />
-            <I18n i18key="Processing" />{" "}
-          </span>
+        <div className="p-2 bg-system bg-opacity-5 border border-stroke rounded-lg message-container overflow-hidden">
+          {message.content && (
+            <ReactMarkdown>{message.content}</ReactMarkdown>
+            // <span
+            //   dangerouslySetInnerHTML={{
+            //     __html: ,
+            //   }}
+            // ></span>
+          )}
+          {!message.content && (
+            <span className="flex items-center gap-2">
+              <Loader size="xs" />
+              <I18n i18key="Processing" />{" "}
+            </span>
+          )}
+        </div>
+        {!isBot && (
+          <NAvatar
+            tooltip={formatDate({
+              date: message.createdAt,
+              format: DATE_FORMATS.AM_PM_FORMAT,
+            })}
+            name={`${currentUser.fullName}`}
+            src={currentUser.avatar}
+          />
         )}
       </div>
       {!isBot && (
-        <NAvatar
-          tooltip={formatDate({
-            date: message.createdAt,
-            format: DATE_FORMATS.AM_PM_FORMAT,
-          })}
-          name={`${currentUser.fullName}`}
-          src={currentUser.avatar}
-        />
+        <div className={`text-[10px] text-gray-400 mt-1 text-right`}>
+          {formatMessengerTime(message.createdAt)}
+        </div>
       )}
     </div>
   );

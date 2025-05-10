@@ -42,13 +42,6 @@ const getStatusStyle = (status) => {
         borderColor: "#CBD5E0",
         label: "Deleted",
       };
-    case CourseStatus.PRIVATE:
-      return {
-        backgroundColor: "#EDF2F7",
-        color: "#718096",
-        borderColor: "#CBD5E0",
-        label: "Private",
-      };
     default:
       return {};
   }

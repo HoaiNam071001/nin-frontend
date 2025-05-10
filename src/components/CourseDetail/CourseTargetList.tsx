@@ -17,7 +17,6 @@ const CourseTargetList = ({ items }) => {
         try {
           acc[cur.type] = JSON.parse(cur.content); // Parse content thành mảng chuỗi
         } catch (error) {
-          console.error(`Error parsing content for ${cur.type}:`, error);
           acc[cur.type] = []; // Nếu parse lỗi, gán mảng rỗng
         }
         return acc;

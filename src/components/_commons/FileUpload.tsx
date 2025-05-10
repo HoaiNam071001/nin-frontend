@@ -15,6 +15,7 @@ const FileUpload = ({
   width = 200,
   height = 200,
   disabled = false,
+  crop = true,
 }: {
   label: string;
   upload: (file: File) => void;
@@ -25,6 +26,7 @@ const FileUpload = ({
   height?: number;
   disabled?: boolean;
   children?: React.ReactNode;
+  crop?: boolean;
 }) => {
   const { openModal, closeModal } = useModal();
 
@@ -36,6 +38,13 @@ const FileUpload = ({
     if (selectedFile) {
       setFile(selectedFile);
       setFileName(selectedFile.name);
+      if (!crop) {
+        const blob = new Blob([selectedFile], { type: selectedFile.type });
+        const blobUrl = URL.createObjectURL(blob);
+        upload?.(selectedFile);
+        setPreviewUrl(blobUrl);
+        return;
+      }
 
       openModal({
         header: "Crop the image",
@@ -49,7 +58,6 @@ const FileUpload = ({
                 closeModal();
                 // Create a Blob from the selected file
                 const blob = new Blob([file], { type: file.type });
-                console.log(file, selectedFile);
                 // // Generate a URL from the Blob
                 const blobUrl = URL.createObjectURL(blob);
                 upload?.(file);

@@ -4,13 +4,12 @@ import {
   CourseStatusPayload,
   Discount,
   DiscountPayload,
-  FullCourse,
   Instructor,
   InstructorPayload,
 } from "@/models";
-import apiClient from "../config";
 import { List2Res, stringifyPageAble } from "@/models/utils.model";
 import { PageAble } from "../../models/utils.model";
+import apiClient from "../config";
 
 export const courseService = {
   create: async (data: CoursePayload) => {
@@ -45,7 +44,7 @@ export const courseService = {
     const response = await apiClient.delete(`/course/instructor/${id}`);
     return response.data;
   },
-  
+
   getMyCourses: async (pageAble?: PageAble) => {
     const response = await apiClient.get<List2Res<Course>>(
       `/course?${pageAble ? stringifyPageAble(pageAble) : ""}`
@@ -75,9 +74,12 @@ export const courseService = {
     return response.data;
   },
 
+  delete: async (id: number) => {
+    const response = await apiClient.delete<Course>(`/course/${id}`);
+    return response.data;
+  },
 
   // Discounts:
-
 
   createDiscount: async (courseId: number, data: DiscountPayload) => {
     const response = await apiClient.post<Discount>(
@@ -111,5 +113,4 @@ export const courseService = {
     );
     return response.data;
   },
-
 };

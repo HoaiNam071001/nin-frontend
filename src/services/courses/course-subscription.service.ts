@@ -117,7 +117,6 @@ export const coursePaymentService = {
     payload: ChartCoursePayload,
     pageAble?: PageAble
   ) => {
-    console.log(queryString.stringify(payload));
     const response = await apiClient.get<List2Res<CourseSubscriptionFull>>(
       `/payments/subscriptions/owner?${
         queryString.stringify(payload) +

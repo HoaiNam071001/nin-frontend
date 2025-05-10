@@ -3,6 +3,8 @@
 import I18n from "@/components/_commons/I18n";
 import NButton from "@/components/_commons/NButton";
 import NInput from "@/components/_commons/NInput";
+import { ROUTES } from "@/constants";
+import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { Course, CoursePayload, SettingSubmitProps } from "@/models";
 import { courseService } from "@/services/courses/course.service";
 import { toastService } from "@/services/toast.service";
@@ -17,6 +19,7 @@ export const CoursePayment: React.FC<SettingSubmitProps> = ({
   setCourse,
 }) => {
   const [price, setPrice] = useState<number>(0);
+  const router = useI18nRouter();
 
   useEffect(() => {
     setPrice(course.price || 0);
@@ -33,6 +36,10 @@ export const CoursePayment: React.FC<SettingSubmitProps> = ({
     } catch (error) {
       toastService.error(error?.message);
     }
+  };
+
+  const onComplete = () => {
+    router.push(ROUTES.INSTRUCTOR);
   };
 
   return (
@@ -60,14 +67,14 @@ export const CoursePayment: React.FC<SettingSubmitProps> = ({
           )}
 
           {editable && (
-            <div className="ml-auto">
+            <div className="ml-4">
               <NButton
                 shape="md"
                 variant="solid"
                 color="primary"
                 size="md"
                 onClick={onSubmit}
-                className="w-[100px]"
+                className="w-[60px]"
               >
                 <I18n i18key={"Save"}></I18n>
               </NButton>
@@ -76,6 +83,18 @@ export const CoursePayment: React.FC<SettingSubmitProps> = ({
         </div>
 
         <DiscountManager course={course} editable={editable} />
+
+        <div className="mt-auto flex">
+          <NButton
+            className="ml-auto"
+            shape="md"
+            variant="filled"
+            size="lg"
+            onClick={onComplete}
+          >
+            <I18n i18key={"Back to Course Settings"}></I18n>
+          </NButton>
+        </div>
       </div>
     </>
   );

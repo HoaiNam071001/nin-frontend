@@ -13,11 +13,15 @@ import { useForm } from "react-hook-form";
 
 interface FormValues {
   name: string;
+  summary: string;
 }
 
 const Course: React.FC = () => {
   const { handleSubmit, control } = useForm<FormValues>({
-    defaultValues: {},
+    defaultValues: {
+      name: "",
+      summary: "",
+    },
   });
   const router = useI18nRouter();
   const [loading, setLoading] = useState<boolean>();
@@ -27,6 +31,7 @@ const Course: React.FC = () => {
       setLoading(true);
       const response = await courseService.create({
         name: data?.name,
+        summary: data?.summary,
       });
       setLoading(false);
       if (!response) {
@@ -43,11 +48,11 @@ const Course: React.FC = () => {
   return (
     <div className="m-3 h-[80vh] bg-gray-1 rounded-md px-4 py-3 flex">
       <div className="w-[600px] mx-auto my-auto">
-        <div className="mb-[40px]">
+        <div className="mb-2">
           <label className="text-title-md">
             What is the name of your course?
           </label>
-          <div className="mt-[40px]">
+          <div className="mt-2">
             <FormInput
               name={`name`}
               control={control}
@@ -60,7 +65,17 @@ const Course: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex justify-end">
+        <div className="form-group">
+          <label htmlFor="overview-summary">Summary</label>
+          <FormInput
+            name={`summary`}
+            control={control}
+            defaultValue={""}
+            placeholder="Enter brief description of the course"
+          />
+        </div>
+
+        <div className="flex justify-end mt-4">
           <NButton
             shape="xxl"
             variant="solid"
@@ -71,7 +86,7 @@ const Course: React.FC = () => {
           >
             <div className="flex items-center justify-center space-x-2">
               {loading && <Loader color="white" size="sm" />}
-              <I18n i18key="Next"></I18n>
+              <I18n i18key="Create"></I18n>
             </div>
           </NButton>
         </div>

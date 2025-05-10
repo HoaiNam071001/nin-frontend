@@ -1,14 +1,13 @@
-import { Section } from "@/models/course/section.model";
+import { formatFileSize } from "@/helpers";
+import { formatDate } from "@/helpers/date";
 import { NFile, SystemFileType } from "@/models/file.model";
 import { sectionService } from "@/services/courses/section.service";
 import { toastService } from "@/services/toast.service";
+import { Button, Popconfirm } from "antd";
 import { useState } from "react";
+import FileUpload from "../_commons/FileUpload";
 import NButton from "../_commons/NButton";
 import SvgIcon from "../_commons/SvgIcon";
-import FileUpload from "../_commons/FileUpload";
-import { formatFileSize } from "@/helpers";
-import { Button, Popconfirm } from "antd";
-import { formatDate } from "@/helpers/date";
 
 export const SectionFiles = ({
   sectionId,
@@ -50,8 +49,8 @@ export const SectionFiles = ({
       return;
     }
 
-    window.open(file.url, '_blank')
-  }
+    window.open(file.url, "_blank");
+  };
 
   return (
     <div className="max-h-[300px] overflow-auto">
@@ -66,11 +65,12 @@ export const SectionFiles = ({
             <SvgIcon className="icon icon-sm" icon="close" />
           </NButton>
           <div className="flex justify-center">
-            <FileUpload upload={handleFileUpload} label={"Upload Resources"} />
+            <FileUpload
+              upload={handleFileUpload}
+              label={"Upload Resources"}
+              crop={false}
+            />
           </div>
-          {/* <div className="flex justify-end items-center">
-              <NButton onClick={() => setEditing(false)}>Save</NButton>
-            </div> */}
         </div>
       )}
       {!editing && (
@@ -81,15 +81,21 @@ export const SectionFiles = ({
                 {!file.deleted &&
                   file.systemType !== SystemFileType.VIDEO_CONTENT && (
                     <div className="flex items-center overflow-hidden py-1">
-                      <div className={`flex-1 text-ellipsis mr-4 overflow-hidden text-nowrap ${download ? 'cursor-pointer hover:underline hover:text-primary' : ''}`} 
-                        onClick={()=> onDownload(file)}>
+                      <div
+                        className={`flex-1 text-ellipsis mr-4 overflow-hidden text-nowrap ${
+                          download
+                            ? "cursor-pointer hover:underline hover:text-primary"
+                            : ""
+                        }`}
+                        onClick={() => onDownload(file)}
+                      >
                         {file.name}
                       </div>
                       <div className="w-[80px] min-w-[80px]">
                         {formatFileSize(file.size)}
                       </div>
                       <div className="w-[120px] min-w-[120px]">
-                        {formatDate({date: file.createdAt})}
+                        {formatDate({ date: file.createdAt })}
                       </div>
                       {canEdit && (
                         <div className="w-[20px] min-w-[20px]">

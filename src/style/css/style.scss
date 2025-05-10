@@ -90,3 +90,8 @@ input[type="number"] {
 .line-clamp-2 {
   @apply whitespace-normal;
 }
+
+pre,
+code {
+  white-space: wrap;
+}

@@ -119,6 +119,7 @@ export const UserSetting = ({
           : null,
         bio: data.bio,
         roles: data.roles,
+        password: data.password ? data.password : undefined,
       };
       const updatedUser = await adminService.updateUser(userId, payload);
       toastService.success("Updated successfully");
@@ -210,6 +211,7 @@ export const UserSetting = ({
           <FormInput
             name={`bio`}
             control={control}
+            disabled={!!user}
             defaultValue={""}
             placeholder="Enter Bio"
           />
@@ -219,6 +221,7 @@ export const UserSetting = ({
           <FormInput
             name={`phoneNumber`}
             control={control}
+            disabled={!!user}
             type="number"
             placeholder="Enter Phone Number"
           />
@@ -229,31 +232,30 @@ export const UserSetting = ({
             name={`birthDay`}
             control={control}
             defaultValue={""}
+            disabled={!!user}
             type="date"
             placeholder="Enter Bio"
           />
         </div>
 
-        {!userId && (
-          <div className="form-group">
-            <label htmlFor="overview-name">Password</label>
-            <FormInput
-              name={`password`}
-              control={control}
-              defaultValue={""}
-              type="password"
-              rules={{
-                required: "Password is required",
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-                  message:
-                    "Password must be at least 6 characters and include both letters and numbers",
-                },
-              }}
-              placeholder="Enter password"
-            />
-          </div>
-        )}
+        <div className="form-group">
+          <label htmlFor="overview-name">Password</label>
+          <FormInput
+            name={`password`}
+            control={control}
+            defaultValue={""}
+            type="password"
+            rules={{
+              required: "Password is required",
+              pattern: {
+                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+                message:
+                  "Password must be at least 6 characters and include both letters and numbers",
+              },
+            }}
+            placeholder="Enter password"
+          />
+        </div>
 
         <div>
           <div className="flex justify-end gap-4 mt-5">
@@ -270,47 +272,3 @@ export const UserSetting = ({
     </>
   );
 };
-
-// const Thumbnail = ({ control, setValue, user }) => {
-//   const uploadFile = async (file: File) => {
-//     const payload: UploadFilePayload = {
-//       file: file,
-//       type: SystemFileType.PROFILE,
-//     };
-//     const fileRes: NFile = await fileService.upload(payload);
-//     setValue("avatar", fileRes.url);
-//   };
-
-//   return (
-//     <div className="flex justify-center items-center h-[250px]">
-//       <div className="relative group rounded-full overflow-hidden">
-//         <div className="absolute w-full h-full invisible group-hover:visible hover:bg-slate-600 hover:bg-opacity-20 flex items-center justify-center">
-//           <FileUpload label={"Thumbnail"} upload={uploadFile}>
-//             <NButton
-//               variant="filled"
-//               color="black"
-//               tooltip="Change avatar"
-//               size="xxl-circle"
-//               shape="full"
-//             >
-//               <SvgIcon className="icon icon-xxl" icon="camera" />
-//             </NButton>
-//           </FileUpload>
-//         </div>
-
-//         <Controller
-//           name="avatar"
-//           control={control}
-//           render={({ field }) => (
-//             <NAvatar
-//               src={field.value}
-//               name={user?.fullName}
-//               alt="preview"
-//               size="xxl"
-//             />
-//           )}
-//         />
-//       </div>
-//     </div>
-//   );
-// };

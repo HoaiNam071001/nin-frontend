@@ -1,7 +1,7 @@
 // components/PieChart.tsx
-import { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
 import { vibrantColors } from "@/constants";
+import * as d3 from "d3";
+import { useEffect, useRef, useState } from "react";
 
 export interface PieChartData {
   label: string;
@@ -214,7 +214,7 @@ const PieChart: React.FC<PieChartProps> = ({
       {tooltipVisible && tooltipContent && (
         <div
           ref={tooltipRef}
-          className="absolute bg-gray-800 text-white border border-gray-600 rounded-md shadow-lg p-2 text-sm z-20"
+          className="absolute bg-white rounded-md shadow-lg p-2 text-sm z-20"
           style={{
             top: `${tooltipPosition.y}px`,
             left: `${tooltipPosition.x}px`,

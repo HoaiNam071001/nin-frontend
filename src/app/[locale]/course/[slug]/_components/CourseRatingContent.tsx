@@ -48,9 +48,7 @@ export const CommentItem = ({
     try {
       await courseRatingService.remove(rating.id);
       remove?.();
-    } catch (error) {
-      console.error("Failed to remove rating:", error);
-    }
+    } catch (error) {}
   };
 
   const handleUpdate = (updatedRating: CourseRating) => {
@@ -156,9 +154,7 @@ export const CommentForm = ({
       }
       setText("");
       onCreated(item);
-    } catch (error) {
-      console.error("Failed to submit rating:", error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -283,9 +279,7 @@ export const CourseRatingContent = ({
         setRatings(unique);
       }
       setPageInfo(rest);
-    } catch (error) {
-      console.error("Failed to fetch Ratings:", error);
-    }
+    } catch (error) {}
   };
 
   const fetchSelf = async () => {
@@ -301,7 +295,6 @@ export const CourseRatingContent = ({
       setSelfRating(item);
     } catch (error) {
       setSelfRating(null);
-      console.error("Failed to fetch Self Rating:", error);
     }
   };
 

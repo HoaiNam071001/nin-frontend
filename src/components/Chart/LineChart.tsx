@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
+import React, { useEffect, useRef } from "react";
 
 interface DataPoint {
   date: Date;
@@ -30,7 +30,6 @@ const LineChart: React.FC<LineChartProps> = ({
     // Tính toán chiều rộng của biểu đồ dựa trên số lượng điểm dữ liệu và chiều rộng cột
     const columnWidth = 100;
     const chartWidth = data.length * columnWidth + margin.left + margin.right;
-    console.log(chartWidth, data.length);
     const svg = d3
       .select(svgRef.current)
       .attr("width", chartWidth)

@@ -229,14 +229,14 @@ const UserList = ({ userId }) => {
               <SvgIcon icon={"edit"} className="icon icon-sm" />
             </NButton>
             <NButton
-              color={!user.active ? "green" : "red"}
+              color={!user.active ? "gray" : "red"}
               variant="filled"
               size="sm"
               tooltip={!user.active ? "Activate" : "Disable"}
               onClick={() => switchUser(user)}
             >
               <SvgIcon
-                icon={user.active ? "remove" : "revert"}
+                icon={user.active ? "disable" : "revert"}
                 className="icon icon-sm"
               />
             </NButton>

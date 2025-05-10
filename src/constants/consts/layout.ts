@@ -83,7 +83,7 @@ export class NavbarMenu {
     type?: MenuType;
   }) {
     if (!role || !user) {
-      return [HomeNavItems, SupportNavItems];
+      return [HomeNavItems];
     }
     const profile = {
       icon: "profile",

@@ -8,7 +8,7 @@ const UserSettingPage: React.FC = () => {
 
   return (
     <div className="container mx-auto">
-      <UserSetting userId={currentUser.id} />
+      <UserSetting userId={currentUser?.id} />
     </div>
   );
 };

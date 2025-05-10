@@ -3,6 +3,7 @@ import useAuth from "@/hooks/useAuth";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { MenuType, NavItem } from "@/models";
 import { authAction } from "@/redux";
+import { userService } from "@/services/user/user.service";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import CustomDropdown from "../_commons/CustomDropdown";
@@ -38,20 +39,31 @@ const DropdownUser = () => {
     );
   }, [activeRole, currentUser]);
 
+  const onStartLecture = async (callback: () => void) => {
+    try {
+      if (currentUser?.roles.some((e) => e.roleName === Role.TEACHER)) {
+        callback();
+        return;
+      }
+      const response = await userService.addMyRole({
+        role: Role.TEACHER,
+      });
+      dispatch(authAction.setUser(response));
+      callback();
+    } catch (error) {}
+  };
+
   const onLogout = () => {
-    router.push(ROUTES.HOME);
-    setTimeout(() => {
-      dispatch(authAction.logout());
-    }, 1000);
+    dispatch(authAction.logout());
+    router.push(ROUTES.SIGN_IN);
   };
 
   const switchRole = (role: Role) => {
-    if (!role || !currentUser?.roles?.find((e) => e.roleName === role)) {
-      return;
-    }
     if (role === Role.TEACHER) {
-      router.push(ROUTES.INSTRUCTOR);
-      dispatch(authAction.switchRole(role));
+      onStartLecture(() => {
+        router.push(ROUTES.INSTRUCTOR);
+        dispatch(authAction.switchRole(role));
+      });
       return;
     }
     if (role === Role.EDUCATION_MANAGER) {
@@ -99,76 +111,72 @@ const DropdownUser = () => {
               </div>
             </div>
 
-            {((roles.isStudent && activeRole !== Role.STUDENT) ||
-              (roles.isTeacher && activeRole !== Role.TEACHER) ||
-              (roles.isEduMng && activeRole !== Role.EDUCATION_MANAGER)) && (
-              <div className="flex items-center flex-col py-2 text-gray-500 border-b border-b-[var(--n-border)]">
-                {roles.isStudent && activeRole !== Role.STUDENT && (
-                  <NButton
-                    className="w-full"
-                    shape="none"
-                    size="lg"
-                    variant="text"
-                    tooltip="Change Role to Student"
-                    onClick={() => {
-                      switchRole(Role.STUDENT);
-                      closeDropdown();
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <I18n i18key="Student" />
-                      <SvgIcon
-                        icon="arrow"
-                        className="icon icon-md rotate-90 ml-auto"
-                      ></SvgIcon>
-                    </div>
-                  </NButton>
-                )}
-                {roles.isTeacher && activeRole !== Role.TEACHER && (
-                  <NButton
-                    className="w-full"
-                    shape="none"
-                    size="lg"
-                    variant="text"
-                    tooltip="Change Role to Teacher"
-                    onClick={() => {
-                      switchRole(Role.TEACHER);
-                      closeDropdown();
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <I18n i18key="Lecturer" />
-                      <SvgIcon
-                        icon="arrow"
-                        className="icon icon-md rotate-90 ml-auto"
-                      ></SvgIcon>
-                    </div>
-                  </NButton>
-                )}
+            <div className="flex items-center flex-col py-2 text-gray-500 border-b border-b-[var(--n-border)]">
+              {roles.isStudent && activeRole !== Role.STUDENT && (
+                <NButton
+                  className="w-full"
+                  shape="none"
+                  size="lg"
+                  variant="text"
+                  tooltip="Change Role to Student"
+                  onClick={() => {
+                    switchRole(Role.STUDENT);
+                    closeDropdown();
+                  }}
+                >
+                  <div className="flex items-center">
+                    <I18n i18key="Student" />
+                    <SvgIcon
+                      icon="arrow"
+                      className="icon icon-md rotate-90 ml-auto"
+                    ></SvgIcon>
+                  </div>
+                </NButton>
+              )}
+              {activeRole !== Role.TEACHER && (
+                <NButton
+                  className="w-full"
+                  shape="none"
+                  size="lg"
+                  variant="text"
+                  tooltip="Change Role to Teacher"
+                  onClick={() => {
+                    switchRole(Role.TEACHER);
+                    closeDropdown();
+                  }}
+                >
+                  <div className="flex items-center">
+                    <I18n i18key="Lecturer" />
+                    <SvgIcon
+                      icon="arrow"
+                      className="icon icon-md rotate-90 ml-auto"
+                    ></SvgIcon>
+                  </div>
+                </NButton>
+              )}
 
-                {roles.isEduMng && activeRole !== Role.EDUCATION_MANAGER && (
-                  <NButton
-                    className="w-full"
-                    shape="none"
-                    size="lg"
-                    variant="text"
-                    tooltip="Change Role to Education Manager"
-                    onClick={() => {
-                      switchRole(Role.EDUCATION_MANAGER);
-                      closeDropdown();
-                    }}
-                  >
-                    <div className="flex items-center">
-                      <I18n i18key="Education Manager" />
-                      <SvgIcon
-                        icon="arrow"
-                        className="icon icon-md rotate-90 ml-auto"
-                      ></SvgIcon>
-                    </div>
-                  </NButton>
-                )}
-              </div>
-            )}
+              {roles.isEduMng && activeRole !== Role.EDUCATION_MANAGER && (
+                <NButton
+                  className="w-full"
+                  shape="none"
+                  size="lg"
+                  variant="text"
+                  tooltip="Change Role to Education Manager"
+                  onClick={() => {
+                    switchRole(Role.EDUCATION_MANAGER);
+                    closeDropdown();
+                  }}
+                >
+                  <div className="flex items-center">
+                    <I18n i18key="Education Manager" />
+                    <SvgIcon
+                      icon="arrow"
+                      className="icon icon-md rotate-90 ml-auto"
+                    ></SvgIcon>
+                  </div>
+                </NButton>
+              )}
+            </div>
 
             <ul className="flex flex-col border-b border-stroke px-6">
               {navItems.map((item, index) => (

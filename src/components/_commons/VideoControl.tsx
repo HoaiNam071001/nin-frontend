@@ -1,7 +1,7 @@
 // components/VideoControl.js
-"use client"
+"use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const VideoControl = ({ videoSrc }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -22,9 +22,9 @@ const VideoControl = ({ videoSrc }) => {
 
   const handleTimeUpdate = (value) => {
     if (videoRef.current) {
-      const percentage = (videoRef.current.currentTime / videoRef.current.duration) * 100;
+      const percentage =
+        (videoRef.current.currentTime / videoRef.current.duration) * 100;
       setProgress(percentage);
-
     }
   };
 
@@ -32,13 +32,9 @@ const VideoControl = ({ videoSrc }) => {
     if (videoRef.current) {
       const time = (e.target.value / 100) * videoRef.current.duration;
       videoRef.current.currentTime = time;
-      setTimeout(() => {
-        console.log('set', time, videoRef.current.currentTime);
-      }, 100);
       setProgress(e.target.value);
     }
   };
-
 
   const handleVolumeChange = (e) => {
     if (videoRef.current) {

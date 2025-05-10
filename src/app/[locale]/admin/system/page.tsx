@@ -1,11 +1,13 @@
 "use client";
 
 import StatusBadge from "@/components/CourseItem/StatusBadge";
+import { CourseStatus, Role } from "@/constants";
 import { DashboardReport } from "@/models/admin/course-admin.model";
 import { adminService } from "@/services/admin/admin.service";
 import { toastService } from "@/services/toast.service";
 import { useEffect, useState } from "react";
 import RoleLabel from "../users/_components/RoleLabel";
+import FilePanel from "./_component/FileCount";
 
 const SystemPanel = () => {
   const [report, setReport] = useState<DashboardReport | null>(null);
@@ -42,7 +44,8 @@ const SystemPanel = () => {
   }
 
   return (
-    <div className="p-4 bg-[var(--n-row-selected)]">
+    <div className="p-4 shadow bg-gray-50">
+      <FilePanel />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* User Section */}
         <section className="mb-12">
@@ -142,7 +145,7 @@ const SystemPanel = () => {
                   key={role}
                   className="bg-white rounded-xl shadow-lg p-4 flex items-center justify-between transform hover:scale-105 transition-transform duration-300"
                 >
-                  <RoleLabel role={role} />
+                  <RoleLabel role={role as Role} />
                   <span className="text-2xl font-bold text-gray-800">
                     {count}
                   </span>
@@ -194,7 +197,7 @@ const SystemPanel = () => {
                   key={status}
                   className="bg-white rounded-xl shadow-lg p-4 flex items-center justify-between transform hover:scale-105 transition-transform duration-300"
                 >
-                  <StatusBadge status={status} />
+                  <StatusBadge status={status as CourseStatus} />
                   <span className="text-2xl font-bold text-gray-800">
                     {count}
                   </span>

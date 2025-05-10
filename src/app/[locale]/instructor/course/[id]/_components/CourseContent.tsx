@@ -81,12 +81,6 @@ export const CourseContent: React.FC<SettingSubmitProps> = ({
   return (
     <>
       <div className="overflow-auto">
-        <div>
-          <span className="px-2 rounded-sm py-1 bg-blue-200 inline-block">
-            Build your course content!
-          </span>
-        </div>
-
         {sections?.map((e, index) => (
           <div key={index} className="mb-4">
             <SectionItem

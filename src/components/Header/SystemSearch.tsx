@@ -1,26 +1,26 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import SvgIcon from "../_commons/SvgIcon";
-import I18n from "../_commons/I18n";
-import { useDispatch } from "react-redux";
-import { utilsAction } from "@/redux";
-import { usePathname, useSearchParams } from "next/navigation";
 import { CourseStatus, PARAMS, ROUTES } from "@/constants";
-import queryString from "query-string";
-import ClickOutside from "../_commons/ClickOutside";
-import useDebounce from "@/hooks/useDebounce";
-import { Course } from "@/models";
-import { List2Res } from "@/models/utils.model";
-import CustomImage from "../_commons/CustomImage";
-import HighlightedText from "../_commons/HighlightedText";
-import { courseSearchService } from "@/services/courses/course-search.service";
 import { DEFAULT_COURSE_THUMBNAIL } from "@/constants/consts/course";
+import useDebounce from "@/hooks/useDebounce";
 import { useI18nRouter } from "@/hooks/useI18nRouter";
 import { useTranslate } from "@/hooks/useTranslate";
-import { recentSearchService } from "@/services/courses/recent-search.service";
+import { Course } from "@/models";
 import { RecentSearch } from "@/models/course/recent-search.model";
+import { List2Res } from "@/models/utils.model";
+import { utilsAction } from "@/redux";
+import { courseSearchService } from "@/services/courses/course-search.service";
+import { recentSearchService } from "@/services/courses/recent-search.service";
+import { usePathname, useSearchParams } from "next/navigation";
+import queryString from "query-string";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
+import ClickOutside from "../_commons/ClickOutside";
+import CustomImage from "../_commons/CustomImage";
+import HighlightedText from "../_commons/HighlightedText";
+import I18n from "../_commons/I18n";
 import NButton from "../_commons/NButton";
+import SvgIcon from "../_commons/SvgIcon";
 
 const SystemSearch = () => {
   const searchParams = useSearchParams();
@@ -96,9 +96,7 @@ const SystemSearch = () => {
     try {
       const data = await recentSearchService.getRecentByUserId();
       setSearches(data);
-    } catch (error) {
-      console.error("Error fetching recent searches:", error);
-    }
+    } catch (error) {}
   };
 
   const addSearches = async (keyword: string) => {
@@ -107,18 +105,14 @@ const SystemSearch = () => {
         searchQuery: keyword,
       });
       fetchSearches(); // Cập nhật lại danh sách recent searches
-    } catch (error) {
-      console.error("Error adding recent search:", error);
-    }
+    } catch (error) {}
   };
 
   const removeSearch = async (item: RecentSearch) => {
     try {
       await recentSearchService.remove(item.id);
       setSearches(searches.filter((e) => e.id !== item.id));
-    } catch (error) {
-      console.error("Error removing recent search:", error);
-    }
+    } catch (error) {}
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

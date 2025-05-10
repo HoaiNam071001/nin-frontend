@@ -19,9 +19,7 @@ const NotificationDropdown: React.FC = () => {
     try {
       const _count = await notificationsService.countUnRead();
       setCount(_count);
-    } catch (error) {
-      console.error("Failed to count unread notifications:", error);
-    }
+    } catch (error) {}
   };
   const handleNotificationClick = (notification: NotificationModel) => {
     router.push(
