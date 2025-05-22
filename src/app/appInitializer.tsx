@@ -33,7 +33,6 @@ const AppInitializer = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       dispatch(authAction.loadTokenFromStorage());
       setLoading(true);
-      router.push(ROUTES.HOME);
       fetchUser();
     } else {
       setLoading(false);

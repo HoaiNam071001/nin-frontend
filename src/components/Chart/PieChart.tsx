@@ -87,8 +87,8 @@ const PieChart: React.FC<PieChartProps> = ({
     // Tạo arc cho nhãn (đặt nhãn ra ngoài pie chart, cách xa hơn)
     const labelArc = d3
       .arc<d3.PieArcDatum<PieChartData>>()
-      .innerRadius(outerRadius + 20)
-      .outerRadius(outerRadius + 30);
+      .innerRadius(outerRadius + 10)
+      .outerRadius(outerRadius + 10);
 
     // Tạo màu sắc đậm và tươi hơn
     const color = d3

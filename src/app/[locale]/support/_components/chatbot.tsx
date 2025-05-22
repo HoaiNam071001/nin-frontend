@@ -89,7 +89,7 @@ const Chatbot = () => {
     <div className="h-full flex flex-col border border-stroke rounded-lg overflow-hidden">
       <div className="px-4 py-2 bg-slate-50 border-b border-stroke  flex items-center gap-4">
         <NAvatar name={"BOT"} src="/images/chatbot.png" />
-        <div className="font-semibold">{conversation?.name}</div>
+        {/* <div className="font-semibold">{conversation?.name}</div> */}
       </div>
       <div className="flex-1 overflow-hidden pt-4 bg-white shadow-lg">
         <InfiniteScroll

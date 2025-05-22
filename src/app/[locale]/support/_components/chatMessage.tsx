@@ -10,7 +10,6 @@ import { User } from "@/models";
 import { ChatbotRole, ChatMessage } from "@/models/chatbot";
 import moment from "moment";
 import { FC } from "react";
-import ReactMarkdown from "react-markdown";
 import "./chatbot.scss";
 //#endregion
 const formatMessengerTime = (dateString: string) => {
@@ -32,6 +31,23 @@ interface ChatMessageItemProps {
   message: ChatMessage;
   currentUser: User;
 }
+const transformMessageContent = (html: string) => {
+  // Thay tất cả link và loại ký tự không hợp lệ ở cuối
+  const withLinks = html.replace(/(https?:\/\/[^\s<]+)/g, (match) => {
+    // Loại các ký tự không hợp lệ ở cuối URL (., ,, ), ], ?, !)
+    const cleaned = match.replace(/[.,)\]\?!]+$/, "");
+    const suffix = match.slice(cleaned.length); // Ký tự bị cắt (nếu có)
+    return `<a href="${cleaned}" target="_blank" rel="noopener noreferrer">Link</a>${suffix}`;
+  });
+
+  // Thay ' - ' bằng <br/>
+  const withDashBreaks = withLinks.replace(/ - /g, "<br/>");
+
+  // Thay dấu '.' (kết thúc câu) bằng '.' + <br/>
+  const withDotBreaks = withDashBreaks.replace(/\.(\s|$)/g, ".<br/>");
+
+  return withDotBreaks;
+};
 
 const ChatMessageItem: FC<ChatMessageItemProps> = ({
   message,
@@ -57,12 +73,12 @@ const ChatMessageItem: FC<ChatMessageItemProps> = ({
         )}
         <div className="p-2 bg-system bg-opacity-5 border border-stroke rounded-lg message-container overflow-hidden">
           {message.content && (
-            <ReactMarkdown>{message.content}</ReactMarkdown>
-            // <span
-            //   dangerouslySetInnerHTML={{
-            //     __html: ,
-            //   }}
-            // ></span>
+            // <ReactMarkdown>{message.content}</ReactMarkdown>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: transformMessageContent(message.content),
+              }}
+            ></span>
           )}
           {!message.content && (
             <span className="flex items-center gap-2">
